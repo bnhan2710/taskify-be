@@ -4,27 +4,29 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import { NOT_FOUND } from 'http-status';
-const PORT : string | undefined = '8000'
+import { config } from 'dotenv';
+config();
+import { errorHandler } from './response/errors/errorHandle';
+import v1Api from './routes/v1.route'
+const PORT : string | undefined = process.env.PORT || '8000';
+
 const app:Express = express();
 
 //Connection to database
-// import './configs/database.config';
+import './configs/database.connect';
 
 //Middlewware
 app.use(express.json())
 app.use(cors());
 app.use(helmet());
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 
-app.get('/',(req:Request,res: Response) =>{
-    res.send('Hello World!')
-})
-
 //v1 Routes
-
+app.use('/api/v1',v1Api);
 
 //Error Handler
+app.use(errorHandler);
 
 
 app.use('*', (req : Request, res : Response) => res.status(NOT_FOUND).json({
