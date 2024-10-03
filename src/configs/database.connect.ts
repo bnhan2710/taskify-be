@@ -1,22 +1,31 @@
-import mysql, { Pool } from 'mysql2/promise';
 
-const pool: Pool = mysql.createPool({
+import { DataSource, Entity } from "typeorm";
+import {User} from "../orm/entities/User"
+import {Role} from "../orm/entities/Role"
+const databaseType = process.env.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
+
+const connection = new DataSource({
+    type: databaseType,
     host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || 'your-password',
-    database: process.env.DB_NAME || 'your-database',
+    port: parseInt(process.env.DB_PORT || '3306'),
+    username: process.env.DB_USER || 'root',
+    password: process.env.DB_PASS || '',
+    database: process.env.DB_NAME || 'test',
+    synchronize: true,
+    logging : false,
+    entities: [User,Role],
+    migrations: ["src/orm/migrations/*.ts"],
 });
 
-const testConnection = async (): Promise<void> => {
-    try {
-        const connection = await pool.getConnection();
-        console.log(`Database connected to ${connection.config.database} database`);
-        connection.release();
-    } catch (error) {
-        console.log('Error connecting to database', error);
-    }
+const ConnectDB = async (): Promise<void> => {
+  try {
+    await connection.initialize();
+    console.log(`Database connected: ${connection.options.database}`);
+  } catch (error) {
+    console.error('Error connecting to the database:', error);
+  }
 };
 
-testConnection();
+ConnectDB();
 
-export default pool;
+export default connection;

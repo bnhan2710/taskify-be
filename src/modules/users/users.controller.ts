@@ -1,28 +1,31 @@
 import { Request, Response , NextFunction } from "express";
 import UserService from "./users.service"
 import { StatusCodes } from "http-status-codes";
+import { UpdateUserDTO } from "./dto/index";
+interface CustomRequest extends Request {
+    user?: any; 
+}
 
 class UserController {
-    public async getAllUser(req: Request, res: Response, next: NextFunction) {
-        res.status(StatusCodes.OK).json(await UserService.getAllUsers())
+    public async getAllUser(req:Request, res: Response , next:NextFunction){
+      const users = await UserService.getAll();
+      res.status(StatusCodes.OK).json(users)
+    } 
+    public async getUserById(req:Request, res: Response, next:NextFunction){
+      const id = parseInt(req.params.id)
+      const user = await UserService.getOneUserById(id);
+      res.status(StatusCodes.OK).json(user)
     }
-    public async getUserById(req: Request, res: Response, next: NextFunction) {
-        const userId = parseInt(req.params.id);
-        res.status(StatusCodes.OK).json(await UserService.getUserById(userId))
+    public async updateUserById(req:Request, res: Response, next:NextFunction){
+      const id = parseInt(req.params.id)
+      const updateUserDto = UpdateUserDTO(req.body)
+      await UserService.updateOneUserById(id,updateUserDto)
+      res.send({message:'Update info succesfully!'})
     }
-    public async createUser(req: Request, res: Response, next: NextFunction) {
-        await UserService.createUser(req.body)
-        res.status(StatusCodes.CREATED).json({message: 'User created successfully'})
-    }
-    public async updateUser(req: Request, res: Response, next: NextFunction) {
-        const userId = parseInt(req.params.id);
-        await UserService.updateUser(userId, req.body)
-        res.status(StatusCodes.OK).json({message: 'User updated successfully'})
-    }
-    public async deleteUser(req: Request, res: Response, next: NextFunction) {
-        const userId = parseInt(req.params.id);
-        await UserService.deleteUser(userId)
-        res.status(StatusCodes.OK).json({message: 'User deleted successfully'})
+    public async deleteUserById(req:Request, res: Response, next:NextFunction){
+      const id = parseInt(req.params.id)
+      await UserService.deleteUserById(id)
+      res.send({message: 'Delete user succesfully!'})
     }
 }
 

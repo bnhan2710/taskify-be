@@ -1,51 +1,52 @@
-import pool from "../../configs/database.connect";
-import { BadRequestError , NotFoundError } from "../../response/errors/error.response";
-
-class UsersService {
-    public async getAllUsers(): Promise<any> {
-        const [users]: any = await pool.query('SELECT * FROM users');
-        if (!users.length || users.length === 0) {
-            throw new NotFoundError('Not found any user');
+import connection from "../../configs/database.connect";
+import { User } from '../../orm/entities/User';
+import { BadRequestError, NotFoundError } from "../../errors/error.response";
+import { UpdateUserDto } from './dto/update-user.dto';
+class UserService{
+    public async getAll():Promise<any>{
+        const users = await connection.getRepository(User).find({select:{
+            username:true,
+            fullName:true,
+            email:true,
+            age:true
+        }}) 
+        if(!users){
+            throw new NotFoundError('Not found any user')
         }
-        return users;
+        return users    
     }
 
-    public async getUserById(id: number): Promise<any> {
-        const [user]: any = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
-        if (!user.length) {
-            throw new NotFoundError('User not found');
+    public async getOneUserById(id:number,):Promise<any>{
+        const user = await connection.getRepository(User).findOne(
+            {where:{id}, 
+            select: {
+                username:true,
+                fullName:true,
+                email:true,
+                age:true
+            }
+        })
+        if(!user){
+            throw new NotFoundError(`Not found user with id = ${id}`)
         }
-        return user[0];
+        return user
     }
 
-    public async createUser(body: any): Promise<void> {
-        const {fullName , age, username, email, role} = body;
-        const existsUser: any = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
-        if (existsUser[0].length || existsUser[0].email === email) {
-            throw new BadRequestError('Username or email already exists');
+    public async updateOneUserById(id:number, updateUserDto:UpdateUserDto):Promise<void>{
+        const user = await connection.getRepository(User).findOne({ where: { id } })
+        if(!user){
+            throw new BadRequestError('Not found user')
         }
-        await pool.query('INSERT INTO users SET ?', {fullName , age, username, email, role});
+        await connection.getRepository(User).update({id},{fullName:updateUserDto.fullName})
     }
 
-    public async updateUser(id: number, body: any): Promise<void> {
-        const {fullName , age, role} = body;
-        const [user]: any = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
-        if (!user.length) {
-            throw new NotFoundError('User not found');
+    public async deleteUserById(id:number):Promise<void>{
+        const user = await connection.getRepository(User).findOne({where: {id}})
+        if(!user){
+            throw new NotFoundError('User not found')
         }
-        const [update]: any = await pool.query('UPDATE users SET ? WHERE id = ?', [{fullName , age, role}, id]);
-        if (!update.affectedRows) {
-            throw new BadRequestError('User not modified');
-        }
-    }
-
-    public async deleteUser(id: number): Promise<void> {
-        const [user]: any = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
-        if (!user.length) {
-            throw new NotFoundError('User not found');
-        }
-         await pool.query('DELETE FROM users WHERE id = ?', [id]);
+        await connection.getRepository(User).softDelete({id})
     }
 }
 
-export default new UsersService
+export default new UserService

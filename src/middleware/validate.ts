@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { BadRequestError } from '../response/errors/error.response'; 
+import { BadRequestError } from '../errors/error.response'; 
 
 const validate = (schema: any) => {
     return (req: Request, res: Response, next: NextFunction) => {
