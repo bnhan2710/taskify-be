@@ -3,6 +3,11 @@ import { User } from '../../orm/entities/User';
 import { BadRequestError, NotFoundError } from "../../errors/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
 class UserService{
+
+    public async getMe(id:number):Promise<any>{
+        return await connection.getRepository(User).findOne({where:{id}})
+    }
+
     public async getAll():Promise<any>{
         const users = await connection.getRepository(User).find({select:{
             username:true,
@@ -13,7 +18,7 @@ class UserService{
         if(!users){
             throw new NotFoundError('Not found any user')
         }
-        return users    
+        return users
     }
 
     public async getOneUserById(id:number,):Promise<any>{

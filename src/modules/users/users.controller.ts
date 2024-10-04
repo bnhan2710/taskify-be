@@ -2,11 +2,14 @@ import { Request, Response , NextFunction } from "express";
 import UserService from "./users.service"
 import { StatusCodes } from "http-status-codes";
 import { UpdateUserDTO } from "./dto/index";
-interface CustomRequest extends Request {
-    user?: any; 
-}
+
 
 class UserController {
+    public async getMe(req:Request, res: Response, next:NextFunction){
+      const id = parseInt(req.user.id)
+      const user = await UserService.getMe(id)
+      res.status(StatusCodes.OK).json(user)
+    }
     public async getAllUser(req:Request, res: Response , next:NextFunction){
       const users = await UserService.getAll();
       res.status(StatusCodes.OK).json(users)

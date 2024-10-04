@@ -20,7 +20,7 @@ export class User {
 
   @Column({ type: "int", nullable: true })
   age?: number;
-
+  
   @OneToMany(() => Role, (role) => role.user, { cascade: true })
   roles!: Role[];
 }
