@@ -1,15 +1,27 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { RoleEnum } from "../../common/enums/role";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, JoinColumn, ManyToMany, JoinTable } from "typeorm";
 import { User } from "./User";
+import { Permission } from "./Permission";
+import { permission } from "process";
 
-@Entity('users_roles')
-export class Role {
+@Entity('roles')
+export class Role{
   @PrimaryGeneratedColumn()
-  roleId!: number;
+  id!: number;
 
-  @ManyToOne(() => User, (user) => user.roles)
-  user!: User;
+  @Column({type: "varchar" , length : 100 , unique: true})
+  name!: string   
 
-  @Column({ type: "enum", enum: RoleEnum, default: RoleEnum.USER })
-  roleNames!: RoleEnum;
+  @ManyToMany(() => Permission , permissions => permissions.roles, {cascade: true})
+  @JoinTable({
+    name: 'role_permissions',
+    joinColumn: {name: 'role_id', referencedColumnName: 'id'},
+    inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
+  })  
+  permissions?: Permission[];
+  @ManyToMany(() => User, user => user.roles)
+  users?: User[];
+  
 }
+
+
+

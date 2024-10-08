@@ -37,7 +37,6 @@ class AuthService {
             }
             registerDto.password = await hashPassword(registerDto.password)
             await connection.getRepository(User).save(registerDto)  
-            await connection.getRepository(Role).save({user: registerDto, roleNames: RoleEnum.USER})
        }
 }
 

@@ -10,6 +10,7 @@ class AuthController {
         const loginDto = LoginDTO(req.body);
         res.status(StatusCodes.OK).json(await AuthService.login(loginDto))
     }
+    
     public async register(req: Request, res: Response, next : NextFunction){
         const registerDto = RegisterDTO(req.body);
         await AuthService.register(registerDto);

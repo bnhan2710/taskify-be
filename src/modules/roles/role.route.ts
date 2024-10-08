@@ -1,0 +1,22 @@
+import { Router } from "express";
+const router:Router = Router()
+
+//GET ROLE OF USER
+
+//GET PERMISSON OF ROLE
+
+//CREATE ROLE
+
+//CREATE PERMISSON
+
+//ASSIGN ROLE TO USER
+
+//ASSIGN PERMISSON TO ROLE
+
+//REMOVE PERMISSION FROM ROLE
+
+//REMOVE PERMISSION
+
+//REMOVE ROLL
+
+export default router
