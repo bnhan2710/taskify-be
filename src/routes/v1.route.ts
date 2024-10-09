@@ -6,6 +6,6 @@ const router :Router = Router()
 
 router.use('/users',UserRoute)
 router.use('/auth',AuthRoute)
-router.use('/role' ,RoleRoute)
+router.use('/roles' ,RoleRoute)
 
 export default router

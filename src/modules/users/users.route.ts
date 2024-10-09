@@ -15,3 +15,5 @@ router.put('/:id',validate(updateUserValidation) , asyncHandler(UserController.u
 router.delete('/:id', asyncHandler(UserController.deleteUserById));
 
 export default router;
+
+

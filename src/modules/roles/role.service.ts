@@ -1,10 +1,9 @@
 import { Permission } from '../../orm/entities/Permission';
 
-
 class RoleService {
 
     public async GetRoleofUser(userId: number) {
-
+        
     }
 
     public async GetPermissonofRole(roleId: number){
