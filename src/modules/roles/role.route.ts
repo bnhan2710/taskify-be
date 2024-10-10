@@ -1,22 +1,24 @@
 import { Router } from "express";
+import asyncHandler from "../../middleware/asyncHandle";
+import RoleController from "./role.controller";
 const router:Router = Router()
 
 //GET ROLE OF USER
-
-//GET PERMISSON OF ROLE
+router.get('/', asyncHandler(RoleController.GetRoleofUser))
+//GET PERMISSION OF ROLE
 
 //CREATE ROLE
-
-//CREATE PERMISSON
-
+router.post('/', asyncHandler(RoleController.CreateRole))
+//CREATE PERMISSION
+router.post('/permission', asyncHandler(RoleController.CreatePermission))
 //ASSIGN ROLE TO USER
-
-//ASSIGN PERMISSON TO ROLE
-
-//REMOVE PERMISSION FROM ROLE
-
-//REMOVE PERMISSION
-
-//REMOVE ROLL
-
+router.post('/assign', asyncHandler(RoleController.AssignRoletoUser))
+//ASSIGN PERMISSION TO ROLE
+router.post('/permission/assign', asyncHandler(RoleController.AssignPermissiontoRole))
+//DELETE PERMISSION FROM ROLE
+router.delete('/permission-of-role', asyncHandler(RoleController.DeletePermissionfromRole))
+//DELETE PERMISSION
+router.delete('/permission', asyncHandler(RoleController.DeletePermission))
+//DELETE ROLL
+router.delete('/', asyncHandler(RoleController.DeleteRole))
 export default router

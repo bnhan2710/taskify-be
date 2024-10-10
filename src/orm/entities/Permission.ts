@@ -7,7 +7,7 @@ export class Permission {
   id!: number;
 
   @Column({type: "varchar", length: 100 , unique: true })
-  permission!: string; 
+  name!: string; 
 
   @ManyToMany(() => Role, role => role.permissions)
   roles?: Role[];

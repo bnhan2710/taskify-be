@@ -28,10 +28,10 @@ class AuthService {
 
     public async register(registerDto: RegisterDto):Promise<void>{
             const ExitsUser = await connection.getRepository(User).findOne({ where: { username: registerDto.username } });
-            const ExitsEmail = await connection.getRepository(User).findOne({ where: { email: registerDto.email } });
             if(ExitsUser){
                 throw new ConflictRequestError('User already exits')
             } 
+            const ExitsEmail = await connection.getRepository(User).findOne({ where: { email: registerDto.email } });
             if(ExitsEmail){
                 throw new ConflictRequestError('Email already exits')
             }

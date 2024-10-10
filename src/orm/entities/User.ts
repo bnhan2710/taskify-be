@@ -22,7 +22,7 @@ export class User {
   age?: number;
 
   @Column({ type: "date", nullable: true })
-  created_at?: Date;
+  createdAt?: Date;
 
   @ManyToMany(() => Role, role => role.users , {cascade: true})
   @JoinTable({
