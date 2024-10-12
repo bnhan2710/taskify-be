@@ -6,7 +6,7 @@ const router:Router = Router()
 //GET ROLE OF USER
 router.get('/', asyncHandler(RoleController.GetRoleofUser))
 //GET PERMISSION OF ROLE
-
+router.get('/permission-of-role' , asyncHandler(RoleController.GetPermissionofRole))
 //CREATE ROLE
 router.post('/', asyncHandler(RoleController.CreateRole))
 //CREATE PERMISSION

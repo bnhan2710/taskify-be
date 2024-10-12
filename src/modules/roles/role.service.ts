@@ -7,29 +7,28 @@ import { IRoleDto , IPermissionDto } from './dto';
 
 class RoleService {
 
-    public async GetRoleofUser(userId: number): Promise<Role | null> {
-        const user = await connection.getRepository(User).findOne({ where: { id: userId } });
-        
-        if (!user) {
-            throw new NotFoundError('User not found');
-        }
-        
-        const role = await connection.getRepository(Role)
-            .createQueryBuilder('role')
-            .innerJoin('role.users', 'user')
-            .where('user.id = :userId', { userId: userId })
+    public async GetRoleofUser(userId: number): Promise<Role[] | null> {
+        const user = await connection.getRepository(User).createQueryBuilder('users')
+            .leftJoinAndSelect('users.roles', 'roles')
+            .where('users.id = :userId', { userId: userId })
             .getOne();
-    
-        return role || null;
+        if(!user){
+            throw new NotFoundError('User not found')
+        }
+        return user?.roles || null
+
     }    
         
-    public async GetPermissionofRole(roleId: number){
-            const role = await connection.getRepository(Role).findOne({where: {id: roleId}})
-            if(!role)
-            {
-                    throw new NotFoundError('Role not found')
-            }
+    public async GetPermissionofRole(roleId: number):Promise<Permission[] | null> {
+        const role = await connection.getRepository(Role).createQueryBuilder('roles')
+            .leftJoinAndSelect('roles.permissions', 'permissions')
+            .where('roles.id = :roleId', { roleId: roleId })
+            .getOne();
+        if(!role){
+            throw new NotFoundError('Role not found')
         }
+        return role?.permissions || null
+    }
 
     public async CreateRole(createRoleDto:IRoleDto):Promise<void>{
           const existsRole = await connection.getRepository(Role).findOne({where: {name: createRoleDto.roleName}})

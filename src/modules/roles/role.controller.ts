@@ -10,6 +10,12 @@ class RoleController {
         res.send(role)
     }
 
+    public async GetPermissionofRole(req: Request , res: Response ,next: NextFunction){
+        const {roleId} = req.body
+        const permissions = await roleService.GetPermissionofRole(roleId)
+        res.send(permissions)
+    }
+
     public async CreateRole(req: Request , res: Response ,next: NextFunction){
         const CreateRoleDto = CreateRoleDTO(req.body)
         await roleService.CreateRole(CreateRoleDto)
