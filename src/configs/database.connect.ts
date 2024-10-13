@@ -3,6 +3,7 @@ import { DataSource, Entity } from "typeorm";
 import {User} from "../orm/entities/User"
 import {Role} from "../orm/entities/Role"
 import {Permission} from "../orm/entities/Permission"
+import { Task } from "../orm/entities/Task";
 const databaseType = process.env.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
 
 const connection = new DataSource({
@@ -14,7 +15,7 @@ const connection = new DataSource({
     database: process.env.DB_NAME || 'test',
     synchronize: true,
     logging : false,
-    entities: [User,Role,Permission],
+    entities: [User,Role,Permission,Task],
     migrations: ["src/orm/migrations/*.ts"],
 });
 

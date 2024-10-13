@@ -46,3 +46,11 @@ export class ConflictRequestError extends CustomError{
     }
 }
 
+export class ForbiddenError extends CustomError{
+    readonly statusCode = StatusCodes.FORBIDDEN
+    readonly status = ReasonPhrases.FORBIDDEN
+    readonly logging = false
+    constructor(message:string){
+        super(message);
+    }
+}

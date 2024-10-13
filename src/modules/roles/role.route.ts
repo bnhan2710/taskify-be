@@ -4,9 +4,9 @@ import RoleController from "./role.controller";
 const router:Router = Router()
 
 //GET ROLE OF USER
-router.get('/', asyncHandler(RoleController.GetRoleofUser))
+router.get('/user/:id', asyncHandler(RoleController.GetRoleofUser))
 //GET PERMISSION OF ROLE
-router.get('/permission-of-role' , asyncHandler(RoleController.GetPermissionofRole))
+router.get('/permission-of-role/:id' , asyncHandler(RoleController.GetPermissionofRole))
 //CREATE ROLE
 router.post('/', asyncHandler(RoleController.CreateRole))
 //CREATE PERMISSION

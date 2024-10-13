@@ -5,13 +5,13 @@ import { StatusCodes } from 'http-status-codes';
 class RoleController {
     
     public async GetRoleofUser(req: Request , res: Response ,next: NextFunction){
-        const {userId} = req.body
+        const userId = parseInt(req.params.id)
         const role = await roleService.GetRoleofUser(userId)
         res.send(role)
     }
 
     public async GetPermissionofRole(req: Request , res: Response ,next: NextFunction){
-        const {roleId} = req.body
+        const roleId  = parseInt(req.params.id)
         const permissions = await roleService.GetPermissionofRole(roleId)
         res.send(permissions)
     }
@@ -36,7 +36,7 @@ class RoleController {
 
     public async AssignPermissiontoRole(req: Request , res: Response ,next: NextFunction){
         const {roleId , permissionId} = req.body
-        await roleService.AssignPermissiontoRole(roleId,permissionId)
+        await roleService.AssignPermissiontoRole(permissionId,roleId)
         res.status(StatusCodes.OK).send({message: 'Assign permission to role succesfully'})
     }
 
