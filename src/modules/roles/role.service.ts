@@ -104,7 +104,7 @@ class RoleService {
         }
         await connection.getRepository(Role).remove(role)
     }
-
+    
 }
 
 

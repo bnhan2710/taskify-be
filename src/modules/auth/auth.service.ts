@@ -2,7 +2,6 @@ import { LoginDto, RegisterDto} from "./dto";
 import connection from "../../configs/database.connect"
 import { User } from "../../orm/entities/User";
 import { Role } from "../../orm/entities/Role";
-import { RoleEnum } from "../../common/enums/role";
 import { generateAccessToken , hashPassword , comparePassword } from '../../utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../errors/error.response'
 
@@ -37,6 +36,7 @@ class AuthService {
             }
             registerDto.password = await hashPassword(registerDto.password)
             await connection.getRepository(User).save(registerDto)  
+            
        }
 }
 

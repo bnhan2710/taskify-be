@@ -21,4 +21,5 @@ router.delete('/permission-of-role', asyncHandler(RoleController.DeletePermissio
 router.delete('/permission', asyncHandler(RoleController.DeletePermission))
 //DELETE ROLL
 router.delete('/', asyncHandler(RoleController.DeleteRole))
+
 export default router

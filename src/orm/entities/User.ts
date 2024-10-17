@@ -24,7 +24,7 @@ export class User {
   @Column({ type: "date", nullable: true })
   createdAt?: Date;
 
-  @ManyToMany(() => Role, role => role.users , {cascade: true})
+  @ManyToMany(() => Role, role => role.users)
   @JoinTable({
     name: 'user_roles',
     joinColumn:{name: 'user_id' , referencedColumnName: 'id' },
