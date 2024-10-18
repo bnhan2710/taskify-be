@@ -8,54 +8,46 @@ import CacheUtil from "../utils/cache.util"
 
 const secretKey = process.env.SECRET_KEY as string;
 
-export function isLoggedIn(req: Request, res: Response, next: NextFunction): void {
-    try{
+export function isLoggedIn(req: Request, res: Response, next: NextFunction) : void {
         const token = req.header('Authorization')?.replace('Bearer ','')
         if(!token){
-            throw new AuthFailError('You need to login to access');
+           return next(new AuthFailError('You need to login to access'));
         }
         jwt.verify(token, secretKey, async (err, decoded) => {
             if (err) {
-                throw new AuthFailError('Token is invalid');
+                return next(new AuthFailError('Token is invalid'));
             }
             req.user = decoded as JwtPayload
 
             const userCache : any = await CacheUtil.getOneUser(req.user.id)
 
-            if(userCache || !userCache.permission){
-                throw new AuthFailError('You are not allowed to access');
+            if(!userCache || !userCache.permission){
+                return next(new AuthFailError('You are not allowed to access'));
             }
             next();
         });
-    }catch(err){
-        next(err)
-    }
 }
 
 export function canAccessBy(...allowedPermissions: string[]){
-    return async (req: Request, res: Response, next: NextFunction) => {
-      try {
-        const token = req.header('Authorization')?.replace('Bearer ','')
-        if(!token){
-            throw new AuthFailError('You need to login to access');
+    return async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
+           if(!req.user || !req.user.id){
+                return next(new AuthFailError('You need to login to access'));
         }
-        jwt.verify(token, secretKey, async (err, decoded) => {
-            if (err) {
-                throw new AuthFailError('Token is invalid');
+        const userId = req.user.id
+            const userCache : any = await CacheUtil.getOneUser(userId)
+        
+            if(!userCache || !userCache.permission){
+                return next(new AuthFailError('You are not allowed to access'));
             }
-            const userCache : any = await CacheUtil.getOneUser(req.user.id)
-            if(userCache || !userCache.permission){
-                throw new AuthFailError('You are not allowed to access');
-            }
+
+            console.log('userCache:',userCache)
+            console.log('allowedPermissions:',allowedPermissions)
+
             const hasPermission = allowedPermissions.some(permission => userCache.permission.includes(permission))
             if(!hasPermission){
-                throw new AuthFailError('You are not allowed to access');
+                return next(new ForbiddenError(`${userCache.role} is not allowed to access this resource`));
             }
             next()
-        });
-        next()
-    }catch(err){
-        next(err)
-    }
+        }
 }
-}
+

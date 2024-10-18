@@ -3,17 +3,17 @@ const router:Router = Router();
 import asyncHandler from "../../middleware/asyncHandle";
 import { isLoggedIn , canAccessBy } from "../../middleware/auth";
 import TaskController from "./task.contoller";
-import { Permission } from "../../common/enums/permission";
+import { PermissionEnum } from "../../common/enums/permission";
 
-router.get('/', isLoggedIn , canAccessBy(Permission.CanGetTask ,Permission.CanViewTag), asyncHandler(TaskController.getAllTask));
+router.get('/', isLoggedIn , canAccessBy(PermissionEnum.CanGetTask ,PermissionEnum.CanViewTag), asyncHandler(TaskController.getAllTask));
 
-router.put('/done/:id', isLoggedIn , canAccessBy(Permission.CanSetDoneTask), asyncHandler(TaskController.DoneTask));
+router.put('/done/:id', isLoggedIn , canAccessBy(PermissionEnum.CanSetDoneTask), asyncHandler(TaskController.DoneTask));
 
-router.delete('/:id', isLoggedIn , canAccessBy(Permission.CanDeleteTask), asyncHandler(TaskController.DeleteTask));
+router.delete('/:id', isLoggedIn , canAccessBy(PermissionEnum.CanDeleteTask), asyncHandler(TaskController.DeleteTask));
 
-router.post('/', isLoggedIn , canAccessBy(Permission.CanCreateTask),  asyncHandler(TaskController.CreateTask));
+router.post('/', isLoggedIn , canAccessBy(PermissionEnum.CanCreateTask),  asyncHandler(TaskController.CreateTask));
 
-router.put('/:id', isLoggedIn , canAccessBy(Permission.CanUpdateTask), asyncHandler(TaskController.UpdateTask));
+router.put('/:id', isLoggedIn , canAccessBy(PermissionEnum.CanUpdateTask), asyncHandler(TaskController.UpdateTask));
 
 
 export default router;

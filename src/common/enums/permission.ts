@@ -1,4 +1,4 @@
-export enum Permission{
+export enum PermissionEnum{
 //Task 
     CanGetTask = 'GetTask',
     CanViewTag = 'ViewTag',
