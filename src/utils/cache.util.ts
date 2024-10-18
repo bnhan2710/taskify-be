@@ -1,3 +1,35 @@
-import redis from 'redis';
+import instance from '../configs/redis.config';
+import { Role } from '../orm/entities/Role';
+import { User } from '../orm/entities/User';
+import { Permission } from '../orm/entities/Permission';
+import connection from '../configs/database.connect';
+const expTime = 60 * 60 * 24 * 30 ; 
 
+class CacheUtil {
+    async setOneUser(userId : number) : Promise<void> {
+        console.log('setOneUser')
+        const permissionOfUser = await connection.getRepository(User).createQueryBuilder('users')
+            .leftJoinAndSelect('users.roles', 'roles')
+            .leftJoinAndSelect('roles.permissions', 'permissions')
+            .where('users.id = :userId', { userId: userId })
+            .getOne()
+        const role = permissionOfUser?.roles
+        const permission = role?.map((role: Role) => role.permissions).flat()
+        const permissionList = permission?.map(p => p?.name)       
+        console.log('permissionList:',permissionList)
+        console.log('role:',role)
+        await instance.setEx(`user:${userId}`,expTime,JSON.stringify({permission: permissionList, role: role}))
+        console.log('set cache for user id:',userId)
+    }
 
+    async getOneUser(userId : number) : Promise<Permission[]> {
+        const userCache = await instance.get(`user:${userId}`)
+        if(userCache){
+            return JSON.parse(userCache)
+        }
+        await this.setOneUser(userId)
+        return JSON.parse(await instance.get(`user:${userId}`) || '[]')
+    }
+}
+
+export default new CacheUtil

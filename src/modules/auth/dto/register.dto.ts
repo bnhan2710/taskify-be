@@ -9,6 +9,6 @@ export function RegisterDTO(body: any): RegisterDto {
     return {
         username: body.username,
         password: body.password,
-        email: body.email   
+        email: body.email,   
     }
 }

@@ -3,19 +3,18 @@ const router:Router = Router();
 import validate from '../../middleware/validate';
 import UserController from "./users.controller";
 import asyncHandler from "../../middleware/asyncHandle";
-import { AuthToken } from "../../middleware/checkAuthToken";
-import { canAccessBy } from "../../middleware/checkAccess";
-
+import { isLoggedIn, canAccessBy } from "../../middleware/auth";
 import { updateUserValidation } from "./validatior/user.validator";
+import { Permission } from "../../common/enums/permission";
 
 //GET ALL USERS
-router.get('/', AuthToken , canAccessBy('GetAllUser'), asyncHandler(UserController.getAllUser));
+router.get('/', isLoggedIn , canAccessBy(Permission.CanGetAllUser,Permission.Test), asyncHandler(UserController.getAllUser));
 //GET USER BY ID
-router.get('/:id', canAccessBy('GetOneUser') , asyncHandler(UserController.getUserById));
+router.get('/:id', isLoggedIn ,canAccessBy(Permission.CanGetOneUser) , asyncHandler(UserController.getUserById));
 //UPDATE USER
-router.put('/:id', canAccessBy('CanUpdateUser') ,validate(updateUserValidation) , asyncHandler(UserController.updateUserById));
+router.put('/:id', isLoggedIn ,canAccessBy(Permission.CanUpdateUser) ,validate(updateUserValidation) , asyncHandler(UserController.updateUserById));
 //REMOVE USER
-router.delete('/:id',canAccessBy('CanDeleteUser') , asyncHandler(UserController.deleteUserById));
+router.delete('/:id', isLoggedIn , canAccessBy(Permission.CanDeleteUser) , asyncHandler(UserController.deleteUserById));
 
 export default router;
 
