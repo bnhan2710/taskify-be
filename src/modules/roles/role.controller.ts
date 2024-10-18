@@ -42,7 +42,7 @@ class RoleController {
 
     public async DeletePermissionfromRole(req: Request , res: Response ,next: NextFunction){
         const {roleId , permissionId} = req.body
-        await roleService.DeletePermissionfromRole(roleId, permissionId)
+        await roleService.DeletePermissionfromRole(permissionId,roleId)
         res.status(StatusCodes.OK).send({message: 'Remove permission from role succesfully'})
     }
 

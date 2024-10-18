@@ -4,6 +4,7 @@ import { User } from "../../orm/entities/User";
 import { Role } from "../../orm/entities/Role";
 import { generateAccessToken , hashPassword , comparePassword } from '../../utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../errors/error.response'
+import { RoleEnum } from "../../common/enums/role";
 
 class AuthService {
 
@@ -35,7 +36,16 @@ class AuthService {
                 throw new ConflictRequestError('Email already exits')
             }
             registerDto.password = await hashPassword(registerDto.password)
-            await connection.getRepository(User).save(registerDto)  
+            const role = await connection.getRepository(Role).findOne({where: {name: RoleEnum.USER}})
+            if(!role){
+                throw new NotFoundError('Role not found')
+            }
+            await connection.getRepository(User).save({
+                username: registerDto.username,
+                email: registerDto.email,
+                password: registerDto.password,
+                roles: [role]
+            })
             
        }
 }

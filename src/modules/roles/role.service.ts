@@ -63,7 +63,7 @@ class RoleService {
         user.roles = [role]
         await connection.getRepository(User).save(user)
     }
-
+    
     public async AssignPermissiontoRole(permissionId: number , roleId:number){
         const permission = await connection.getRepository(Permission).findOne({where: {id: permissionId}})
         if(!permission){
@@ -73,20 +73,23 @@ class RoleService {
         if(!role){
             throw new NotFoundError('Role not found')
         }
-        role.permissions = [permission]
-        await connection.getRepository(Role).save(role)
+        await connection.getRepository(Role).createQueryBuilder().relation(Role, 'permissions').of(role).add(permission)
 }
     public async DeletePermissionfromRole(permissionId: number , roleId:number){
+        console.log('permissionId:',permissionId)
+        console.log('roleId:',roleId)
         const permission = await connection.getRepository(Permission).findOne({where: {id: permissionId}})
         if(!permission){
             throw new NotFoundError('Permission not found')
         }
-        const role = await connection.getRepository(Role).findOne({where: {id:roleId}})
-        if(!role || !role.permissions){
-            throw new BadRequestError('Role not found or role has no permission')
+        const rolePermission = await connection.getRepository(Role).createQueryBuilder('roles')
+            .leftJoinAndSelect('roles.permissions', 'permissions')
+            .where('roles.id = :roleId', { roleId: roleId })
+            .getOne();
+        if(!rolePermission){
+            throw new NotFoundError('Role not found')
         }
-        role.permissions = role.permissions.filter(permission => permission.id !== permissionId)
-        await connection.getRepository(Role).save(role)
+        await connection.getRepository(Role).createQueryBuilder().relation(Role, 'permissions').of(rolePermission).remove(permission)
     }
 
     public async DeletePermission(permissionId:number){
