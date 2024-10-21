@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
+    "migration:run": "npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/configs/database.connect.ts",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
