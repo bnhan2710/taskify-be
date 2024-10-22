@@ -9,7 +9,6 @@ import { config } from 'dotenv';
 config();
 import { errorHandler } from './errors/errorHandle';
 import v1Api from './routes/v1.route'
-
 const PORT : string | undefined = process.env.PORT || '8000';
 
 const app:Express = express();

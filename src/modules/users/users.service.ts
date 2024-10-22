@@ -3,13 +3,13 @@ import { User } from '../../orm/entities/User';
 import { BadRequestError, NotFoundError } from "../../errors/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
 class UserService{
-
-    public async getMe(id:number):Promise<any>{
-        return await connection.getRepository(User).findOne({where:{id}})
+    private userRepository = connection.getRepository(User)
+    public async getMe(id:number):Promise<User | null>{
+        return await this.userRepository.findOne({where:{id}})
     }
 
-    public async getAll():Promise<any>{
-        const users = await connection.getRepository(User).find({select:{
+    public async getAll():Promise<User[]>{
+        const users = this.userRepository.find({select:{
             username:true,
             fullName:true,
             email:true,
@@ -21,8 +21,8 @@ class UserService{
         return users
     }
 
-    public async getOneUserById(id:number,):Promise<any>{
-        const user = await connection.getRepository(User).findOne(
+    public async getOneUserById(id:number,):Promise<User | null>{
+        const user = await this.userRepository.findOne(
             {where:{id}, 
             select: {
                 username:true,
@@ -38,19 +38,19 @@ class UserService{
     }
 
     public async updateOneUserById(id:number, updateUserDto:UpdateUserDto):Promise<void>{
-        const user = await connection.getRepository(User).findOne({ where: { id } })
+        const user = await this.userRepository.findOne({ where: { id } })
         if(!user){
             throw new BadRequestError('Not found user')
         }
-        await connection.getRepository(User).update({id},{fullName:updateUserDto.fullName})
+        await this.userRepository.update({id},{fullName:updateUserDto.fullName})
     }
 
     public async deleteUserById(id:number):Promise<void>{
-        const user = await connection.getRepository(User).findOne({where: {id}})
+        const user = await this.userRepository.findOne({where: {id}})
         if(!user){
             throw new NotFoundError('User not found')
         }
-        await connection.getRepository(User).softDelete({id})
+        await this.userRepository.delete({id})
     }
 }
 

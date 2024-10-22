@@ -20,7 +20,6 @@ class CacheUtil {
     }
 
     async getOneUser(userId : number) : Promise<Permission[]> {
-        console.log('get cache for user id:',userId)
         const userCache = await instance.get(`user:${userId}`)
         if(userCache){
             return JSON.parse(userCache)

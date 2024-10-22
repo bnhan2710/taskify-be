@@ -1,5 +1,5 @@
 import Joi from 'joi'
-
+import { Gender } from '../../../common/enums/gender';
 export const loginValidation = Joi.object({
     username: Joi.string().min(3).max(255).required().messages({
         'string.base': 'Username must be a string',
@@ -25,12 +25,5 @@ export const registerValidation = Joi.object({
     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required().messages({
         'string.email': 'Email is invalid',
         'any.required': 'Email is required',
-    }),
-    fullName: Joi.string().min(10).max(255).messages({
-        'string.min': 'Fullname must be at least 10 characters',
-    }),
-    age: Joi.number().min(1).max(200).messages({
-        'number.min': 'Age must be at least 1',
-        'number.max': 'Age must be at most 200',
     }),
 });

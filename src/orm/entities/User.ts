@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from './Role';
-
+import { Gender } from "../../common/enums/gender";
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -23,6 +23,12 @@ export class User {
 
   @Column({ type: "date", nullable: true })
   createdAt?: Date;
+
+  @Column({type:"enum", enum: Gender, default: 'unknown'})
+  gender?: Gender
+
+  @Column({ type: "varchar", length: 255, nullable: true })
+  avatar?: string;
 
   @ManyToMany(() => Role, role => role.users)
   @JoinTable({

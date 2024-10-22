@@ -6,7 +6,7 @@ export enum PermissionEnum{
     CanDeleteTask = 'DeleteTask',
     CanCreateTask = 'CreateTask',
     CanUpdateTask = 'UpdateTask',
-//User
+
     CanGetOneUser =  'GetOneUser',
     CanGetAllUser = 'GetAllUser',
     CanUpdateUser = 'UpdateUser',
