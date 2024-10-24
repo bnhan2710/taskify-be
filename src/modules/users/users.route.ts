@@ -3,7 +3,7 @@ const router:Router = Router();
 import validate from '../../middleware/validate';
 import UserController from "./users.controller";
 import asyncHandler from "../../middleware/asyncHandle";
-import { isLoggedIn, canAccessBy } from "../../middleware/auth";
+import { isLoggedIn, canAccessBy } from "../../middleware/auth.middleware";
 import { updateUserValidation } from "./validatior/user.validator";
 import { PermissionEnum } from "../../common/enums/permission";
 

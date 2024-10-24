@@ -1,6 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from './Role';
+import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
+import { Board } from "./Board";
+import { ActivityLog } from "./Activity_Log";
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -21,8 +24,8 @@ export class User {
   @Column({ type: "int", nullable: true })
   age?: number;
 
-  @Column({ type: "date", nullable: true })
-  createdAt?: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt!: Date;
 
   @Column({type:"enum", enum: Gender, default: 'unknown'})
   gender?: Gender
@@ -37,4 +40,17 @@ export class User {
     inverseJoinColumn:{name:'role_id', referencedColumnName: 'id' },
   })
   roles?: Role[];
+
+  @ManyToMany(() => Workspace, workspace => workspace.user)
+  workspaces!: Workspace[];
+
+  @ManyToMany(() => Board, board => board.user)
+  boards!: Board[];
+
+  @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
+
+  activityLogs!: ActivityLog[];
+
+
 }
+

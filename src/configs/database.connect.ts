@@ -2,9 +2,9 @@
 import { DataSource, Entity } from "typeorm";
 import dotenv from 'dotenv';
 dotenv.config();
-import {User} from "../orm/entities/User"
-import {Role} from "../orm/entities/Role"
-import {Permission} from "../orm/entities/Permission"
+import { User } from "../orm/entities/User"
+import { Role } from "../orm/entities/Role"
+import { Permission } from "../orm/entities/Permission"
 
 
 const databaseType = process.env.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
@@ -17,8 +17,8 @@ const connection = new DataSource({
     database: process.env.DB_NAME || 'test',
     synchronize: true,
     logging : false,
-    entities: [User,Role,Permission],
-    migrations: ["src/orm/migrations/*.ts"],
+    entities: [__dirname + "/../orm/entities/*.ts"],
+    migrations: [__dirname + "/../orm/migrations/*.ts"],
 });
 
 const ConnectDB = async (): Promise<void> => {

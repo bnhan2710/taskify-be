@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "migration:generate": "npx ts-node ./node_modules/typeorm/cli.js migration:generate src/orm/migrations/Migration -d src/configs/database.connect.ts",
+    "migration:generate": "npx ts-node ./node_modules/typeorm/cli.js migration:generate src/orm/migrations/Init -d src/configs/database.connect.ts",
     "migration:run": "npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/configs/database.connect.ts",
     "migration:revert":"npx ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/database.connect.ts",
     "start": "node dist/app.js",
