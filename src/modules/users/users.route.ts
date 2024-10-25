@@ -4,7 +4,7 @@ import validate from '../../middleware/validate';
 import UserController from "./users.controller";
 import asyncHandler from "../../middleware/asyncHandle";
 import { isLoggedIn, canAccessBy } from "../../middleware/auth.middleware";
-import { updateUserValidation } from "./validatior/user.validator";
+import { updateUserValidation } from "./validator/user.validator";
 import { PermissionEnum } from "../../common/enums/permission";
 
 //GET ALL USERS

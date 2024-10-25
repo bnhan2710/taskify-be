@@ -1,8 +1,10 @@
-import { BadRequestError, ConflictRequestError, NotFoundError } from '../../errors/error.response';
+import { BadRequestError, ConflictRequestError, NotFoundError } from '../../handler/error.response';
 import connection from '../../configs/database.connect'
 import { Permission } from '../../orm/entities/Permission';
 import { Role } from '../../orm/entities/Role';
 import { User } from '../../orm/entities/User';
+import { Token } from '../../orm/entities/Token';
+import CacheUtil from '../../utils/cache.util';
 import { IRoleDto , IPermissionDto } from './dto';
 
 class RoleService {
@@ -60,6 +62,13 @@ class RoleService {
         if(!role){
             throw new NotFoundError('Role not found')
         }
+        const userIsLoggedIn = await connection.getRepository(Token).createQueryBuilder('tokens')
+            .leftJoinAndSelect('tokens.user', 'user')
+            .where('user.id = :userId', { userId: userId })
+            .getOne()
+        if(userIsLoggedIn){
+            await CacheUtil.setOneUser(userIsLoggedIn.user.id)
+        }
         user.roles = [role]
         await connection.getRepository(User).save(user)
     }
@@ -73,11 +82,24 @@ class RoleService {
         if(!role){
             throw new NotFoundError('Role not found')
         }
+        if(role.permissions && role.permissions.find(p => p.id === permissionId)){
+            throw new BadRequestError('Permission already exists in role')
+
+        }
+        //List user logged in and have role
+        const listUserLogin = await connection.getRepository(Token).createQueryBuilder('tokens')
+            .leftJoinAndSelect('tokens.user', 'user')
+            .leftJoinAndSelect('user.roles', 'roles')
+            .where('roles.id = :roleId', { roleId: roleId })
+            .getMany()
+
+        if(listUserLogin){
+            await CacheUtil.setManyUser(listUserLogin.map(token => token.user))
+        }
+
         await connection.getRepository(Role).createQueryBuilder().relation(Role, 'permissions').of(role).add(permission)
 }
     public async DeletePermissionfromRole(permissionId: number , roleId:number){
-        console.log('permissionId:',permissionId)
-        console.log('roleId:',roleId)
         const permission = await connection.getRepository(Permission).findOne({where: {id: permissionId}})
         if(!permission){
             throw new NotFoundError('Permission not found')

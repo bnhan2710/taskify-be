@@ -2,7 +2,7 @@
 
 import { Request, Response , NextFunction } from 'express'
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
-import { AuthFailError, ForbiddenError } from '../errors/error.response';
+import { AuthFailError, ForbiddenError } from '../handler/error.response';
 import CacheUtil from "../utils/cache.util"
 
 
@@ -11,14 +11,13 @@ const secretKey = process.env.SECRET_KEY as string;
 export function isLoggedIn(req: Request, res: Response, next: NextFunction) : void {
         const token = req.header('Authorization')?.replace('Bearer ','')
         if(!token){
-           return next(new AuthFailError('You need to login to access'));
+           return next(new AuthFailError('You need to login first'));
         }
         jwt.verify(token, secretKey, async (err, decoded) => {
             if (err) {
                 return next(new AuthFailError('Token is invalid'));
             }
             req.user = decoded as JwtPayload
-
             const userCache : any = await CacheUtil.getOneUser(req.user.id)
 
             if(!userCache || !userCache.permission){
@@ -40,8 +39,8 @@ export function canAccessBy(...allowedPermissions: string[]){
                 return next(new AuthFailError('You are not allowed to access'));
             }
 
-            console.log('userCache:',userCache)
-            console.log('allowedPermissions:',allowedPermissions)
+            // console.log('userCache:',userCache)
+            // console.log('allowedPermissions:',allowedPermissions)
 
             const hasPermission = allowedPermissions.some(permission => userCache.permission.includes(permission))
             if(!hasPermission){

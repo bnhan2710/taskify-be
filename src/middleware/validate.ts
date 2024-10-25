@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { BadRequestError } from '../errors/error.response'; 
+import { BadRequestError } from '../handler/error.response'; 
 
 interface Schema<T> {
     validate(value: T): ValidationResult;
@@ -15,4 +15,4 @@ const validate = <T>(schema: Schema<T>) => {
     };
 };
 
-export default validate;
+export default validate

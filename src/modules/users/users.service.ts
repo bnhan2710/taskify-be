@@ -1,6 +1,6 @@
 import connection from "../../configs/database.connect";
 import { User } from '../../orm/entities/User';
-import { BadRequestError, NotFoundError } from "../../errors/error.response";
+import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
 class UserService{
     private userRepository = connection.getRepository(User)

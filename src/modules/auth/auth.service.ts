@@ -1,12 +1,14 @@
 import { LoginDto, RegisterDto} from "./dto";
 import connection from "../../configs/database.connect"
 import { User } from "../../orm/entities/User";
-import { Role } from "../../orm/entities/Role";
-import { generateAccessToken , hashPassword , comparePassword } from '../../utils/auth.util'
-import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../errors/error.response'
+import { Token } from "../../orm/entities/Token";
+import { TokenEnum } from "../../common/enums/token";
+import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken } from '../../utils/auth.util'
+import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
 
 class AuthService {
     private userRepository = connection.getRepository(User)
+    private tokenRepository = connection.getRepository(Token)
 
     public async login(loginDto: LoginDto):Promise<{accessToken: string} | undefined>{
         const user = await this.userRepository.findOne({where:{username: loginDto.username }})
@@ -21,8 +23,20 @@ class AuthService {
                 id: user.id,
                 username: user.username
             }
+            const refreshToken = await generateRefreshToken(payloadData)
+            const accessToken = await generateAccessToken(payloadData)
+            await this.tokenRepository.find({where:{user: user}})
+            if(user){
+                await this.tokenRepository.delete({user: user})
+            }
+            await this.tokenRepository.save({
+                token: refreshToken,
+                type: TokenEnum.REFRESH,
+                expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
+                user: user
+            })
             return {
-                accessToken : await generateAccessToken(payloadData)
+                accessToken
             }
     }
 
@@ -43,6 +57,13 @@ class AuthService {
             })
             
        }
+    public async logout(userId: number):Promise<void>{
+        const user = await this.userRepository.findOne({where:{id: userId}})
+        if(!user){
+            throw new NotFoundError('User not found!')
+        }
+        await this.tokenRepository.delete({user: user})
+    }
 }
 
 

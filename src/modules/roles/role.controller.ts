@@ -3,7 +3,6 @@ import roleService from "./role.service"
 import { CreateRoleDTO , CreatePermissionDTO } from "./dto"
 import { StatusCodes } from 'http-status-codes';
 import setOneUser from "../../utils/cache.util"
-import { isLoggedIn } from '../../middleware/auth';
 class RoleController {
     
     public async GetRoleofUser(req: Request , res: Response ,next: NextFunction){
@@ -32,9 +31,7 @@ class RoleController {
 
     public async AssignRoletoUser(req: Request , res: Response ,next: NextFunction){
         const {userId , roleId} = req.body
-        await roleService.AssignRoletoUser(userId,roleId)
-        const isLoggedIn = req.user.id
-        
+        await roleService.AssignRoletoUser(userId,roleId)        
         res.status(StatusCodes.OK).send({message: 'Assign role to user succesfully'})
     }
 

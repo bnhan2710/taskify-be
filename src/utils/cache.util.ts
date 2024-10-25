@@ -7,6 +7,7 @@ const expTime = 60 * 60 * 24 * 30 ;
 
 class CacheUtil {
     async setOneUser(userId : number) : Promise<void> {
+        console.log(`Set cache for user ${userId}`)
         const permissionOfUser = await connection.getRepository(User).createQueryBuilder('users')
             .leftJoinAndSelect('users.roles', 'roles')
             .leftJoinAndSelect('roles.permissions', 'permissions')
@@ -19,6 +20,12 @@ class CacheUtil {
         await instance.setEx(`user:${userId}`,expTime,JSON.stringify({permission: permissionList , role: roleName}))
     }
 
+    async setManyUser(userArray : User[]) : Promise<void> {
+        for(const user of userArray){
+            await this.setOneUser(user.id)
+        }
+    }
+
     async getOneUser(userId : number) : Promise<Permission[]> {
         const userCache = await instance.get(`user:${userId}`)
         if(userCache){
@@ -28,5 +35,4 @@ class CacheUtil {
         return JSON.parse(await instance.get(`user:${userId}`) || '[]')
     }
 }
-
 export default new CacheUtil

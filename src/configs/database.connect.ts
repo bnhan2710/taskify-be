@@ -15,7 +15,7 @@ const connection = new DataSource({
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || '',
     database: process.env.DB_NAME || 'test',
-    synchronize: true,
+    synchronize: false,
     logging : false,
     entities: [__dirname + "/../orm/entities/*.ts"],
     migrations: [__dirname + "/../orm/migrations/*.ts"],

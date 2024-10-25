@@ -4,6 +4,7 @@ import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
 import { Board } from "./Board";
 import { ActivityLog } from "./Activity_Log";
+import { Token } from "./Token";
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -41,16 +42,16 @@ export class User {
   })
   roles?: Role[];
 
-  @ManyToMany(() => Workspace, workspace => workspace.user)
+  @ManyToMany(() => Workspace, workspace => workspace.owner)
   workspaces!: Workspace[];
 
   @ManyToMany(() => Board, board => board.user)
   boards!: Board[];
 
   @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
-
   activityLogs!: ActivityLog[];
 
-
+  @OneToMany(() => Token, token => token.user)
+  tokens!: Token[];
 }
 

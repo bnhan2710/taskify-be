@@ -1,5 +1,6 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
+import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from "typeorm";
 import { User } from "./User";
+import { Board } from "./Board";
 @Entity('workspaces')
 export class Workspace {
     @PrimaryGeneratedColumn()
@@ -8,10 +9,12 @@ export class Workspace {
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
-    @OneToOne(() => User)
-    @JoinTable({ name: 'owner_id' })
-     user!: User;
- 
+    @OneToOne(() => User, user => user.workspaces)
+    owner!: User;
+
+    @OneToMany(() => Board, board => board.workspace)
+    boards!: Board[];
+
     @ManyToMany(() => User, user =>user.workspaces)
     @JoinTable(
         { name: 'workspace_members',
