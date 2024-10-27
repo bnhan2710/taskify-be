@@ -34,7 +34,7 @@ export class User {
   @Column({ type: "varchar", length: 255, nullable: true })
   avatar?: string;
 
-  @ManyToMany(() => Role, role => role.users)
+  @ManyToMany(() => Role, role => role.users , {onDelete:'CASCADE'})
   @JoinTable({
     name: 'user_roles',
     joinColumn:{name: 'user_id' , referencedColumnName: 'id' },
@@ -42,8 +42,11 @@ export class User {
   })
   roles?: Role[];
 
-  @ManyToMany(() => Workspace, workspace => workspace.owner)
+  @OneToMany(() => Workspace, workspace => workspace.owner)
   workspaces!: Workspace[];
+
+  @ManyToMany(() => Workspace, workspace => workspace.users)
+  joinedWorkspaces!: Workspace[];
 
   @ManyToMany(() => Board, board => board.user)
   boards!: Board[];

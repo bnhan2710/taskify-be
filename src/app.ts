@@ -39,3 +39,4 @@ app.use('*', (req : Request, res : Response) => res.status(NOT_FOUND).json({
 app.listen(PORT, () => {  
     console.log(`Server is running on http://localhost:${PORT}`);
 })
+

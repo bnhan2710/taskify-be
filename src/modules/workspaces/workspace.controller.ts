@@ -1,16 +1,34 @@
 import { NextFunction, Request , Response } from "express";
 import WorkspaceService from "./workspace.service";
-import { NewWorkspaceDTO } from "./dto/create-workspace.dto";
-import { OK } from "../../handler/success.reponse";
+import { NewWorkspaceDTO , UpdateWorkspaceDTO } from "./dto";
+import { OK ,CREATED } from "../../handler/success.reponse";
 class WorkspaceController{ 
-    public async NewWorkSpace(req: Request, res: Response , next: NextFunction): Promise<void> {
+    public async newWorkspace(req: Request, res: Response , next: NextFunction): Promise<void> {
         const newWorkSpaceDto = NewWorkspaceDTO(req.body)
         const ownerId = req.user.id
-        await WorkspaceService.NewWorkSpace(newWorkSpaceDto, ownerId)
-        new OK({
+        await WorkspaceService.newWorkspace(newWorkSpaceDto, ownerId)
+        new CREATED({
             message: 'Create Workspace successfully',
         }).send(res)
     }
+
+    public async updateWorkspace(req:Request, res: Response, next: NextFunction): Promise<void> {
+        const updateWorkspaceDto = UpdateWorkspaceDTO(req.body)
+        const workspaceId = parseInt(req.params.id)
+        await WorkspaceService.updateWorkspace(updateWorkspaceDto, workspaceId)
+        new OK({
+            message:'Update Workspace succesfully'
+        }).send(res)
+    }
+    
+    public async getMyworkpspace(req:Request, res: Response, next: NextFunction): Promise<void> {
+        const userId = parseInt(req.user.id)
+        new OK({
+            message: 'Get workspace successfully',
+            data: await WorkspaceService.getMyworkspace(userId)
+        }).send(res)
+    }
+
 }
 
 export default new WorkspaceController

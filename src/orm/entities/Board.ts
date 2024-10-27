@@ -24,11 +24,11 @@ export class Board{
  
     @ManyToMany(() => User, user => user.boards)
     @JoinTable({
-        name: 'board_members',
+        name: 'board_users',
         joinColumn: { name: 'board_id', referencedColumnName: 'id' },
         inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
     })
-    members!: User[];
+    users!: User[];
 
     @OneToMany(() => List, list => list.board )
     lists!:List[];

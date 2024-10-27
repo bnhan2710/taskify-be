@@ -1,24 +1,30 @@
-import { User } from "../../orm/entities/User";
 import connection from "../../configs/database.connect";
-
 import { Workspace } from "../../orm/entities/Workspace";
-import { INewWorkSpace } from "./dto";
-
+import { INewWorkSpace, IUpdateWorkspace } from "./dto";
+import { NotFoundError } from "../../handler/error.response";
+import WorkspaceRepository from "./workspace.repository";
 class WorkSpaceService{
-    private workSpaceRepository = connection.getRepository(Workspace)
-    private userRepository = connection.getRepository(User)
 
-    public async NewWorkSpace(createWorkspaceDto : INewWorkSpace , ownerId : number) : Promise<void> { 
-            const user = await this.userRepository.findOne({where:{id: ownerId}})
-            
-            if(user){
-            await this.workSpaceRepository.save({
-                name: createWorkspaceDto.name,
-                description: createWorkspaceDto.description,
-                user: user
-            })   
-        }    
+    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:number): Promise<Workspace> {
+        return await WorkspaceRepository.newWorkspace(createWorkspaceDto, ownerId);
     }
+
+    public async updateWorkspace(updateWorkspaceDto: IUpdateWorkspace, workspaceId: number): Promise<void> {
+        const workspace = await WorkspaceRepository.findWorkspaceById(workspaceId);
+        if (!workspace) {
+            throw new NotFoundError("Workspace not found");
+        }
+        await WorkspaceRepository.updateWorkspace(workspaceId, updateWorkspaceDto);
+    }
+    
+    public async getMyworkspace(userId:number):Promise<any> {
+        const workspaces = await WorkspaceRepository.getMyWorkspaces(userId)
+        if(!workspaces){
+            throw new NotFoundError('Not found any workspace')
+        }
+        return workspaces
+    }   
+
 }
 
 export default new WorkSpaceService

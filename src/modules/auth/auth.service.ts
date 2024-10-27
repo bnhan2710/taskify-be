@@ -7,8 +7,8 @@ import { generateAccessToken , hashPassword , comparePassword, generateRefreshTo
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
 
 class AuthService {
-    private userRepository = connection.getRepository(User)
-    private tokenRepository = connection.getRepository(Token)
+    private readonly userRepository = connection.getRepository(User)
+    private readonly tokenRepository = connection.getRepository(Token)
 
     public async login(loginDto: LoginDto):Promise<{accessToken: string} | undefined>{
         const user = await this.userRepository.findOne({where:{username: loginDto.username }})
