@@ -84,9 +84,8 @@ class RoleService {
         }
         if(role.permissions && role.permissions.find(p => p.id === permissionId)){
             throw new BadRequestError('Permission already exists in role')
-
         }
-        //List user logged in and have role
+
         const listUserLogin = await connection.getRepository(Token).createQueryBuilder('tokens')
             .leftJoinAndSelect('tokens.user', 'user')
             .leftJoinAndSelect('user.roles', 'roles')
@@ -131,6 +130,5 @@ class RoleService {
     }
     
 }
-
 
 export default new RoleService

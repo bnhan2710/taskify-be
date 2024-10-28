@@ -13,5 +13,7 @@ router.post('/', isLoggedIn, validate(NewWorkspaceValidation), asyncHandler(Work
 router.put('/:id', isLoggedIn,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
 //GET MY WORKSPACE 
 router.get('/',isLoggedIn, asyncHandler(workspaceController.getMyworkpspace))
+//ADD USER TO WORKSPACE
+router.post('/:id/add' ,isLoggedIn, asyncHandler(workspaceController.addUser))
 
 export default router

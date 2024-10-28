@@ -3,7 +3,7 @@ import connection from "../../configs/database.connect"
 import { User } from "../../orm/entities/User";
 import { Token } from "../../orm/entities/Token";
 import { TokenEnum } from "../../common/enums/token";
-import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken } from '../../utils/auth.util'
+import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken } from './auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
 
 class AuthService {

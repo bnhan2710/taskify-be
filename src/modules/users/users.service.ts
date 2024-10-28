@@ -1,57 +1,45 @@
-import connection from "../../configs/database.connect";
+// src/services/user.service.ts
 import { User } from '../../orm/entities/User';
 import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
-class UserService{
-    private userRepository = connection.getRepository(User)
-    public async getMe(id:number):Promise<User | null>{
-        return await this.userRepository.findOne({where:{id}})
+import userRepository from './user.repository';
+
+class UserService {
+    public async getMe(id: number): Promise<User | null> {
+        return await userRepository.findOneById(id);
     }
 
-    public async getAll():Promise<User[]>{
-        const users = this.userRepository.find({select:{
-            username:true,
-            fullName:true,
-            email:true,
-            age:true
-        }}) 
-        if(!users){
-            throw new NotFoundError('Not found any user')
+    public async getAll(): Promise<User[]> {
+        const users = await userRepository.findAll();
+        if (!users.length) {
+            throw new NotFoundError('No users found');
         }
-        return users
+        return users;
     }
 
-    public async getOneUserById(id:number,):Promise<User | null>{
-        const user = await this.userRepository.findOne(
-            {where:{id}, 
-            select: {
-                username:true,
-                fullName:true,
-                email:true,
-                age:true
-            }
-        })
-        if(!user){
-            throw new NotFoundError(`Not found user with id = ${id}`)
+    public async getOneUserById(id: number): Promise<User | null> {
+        const user = await userRepository.findOneById(id);
+        if (!user) {
+            throw new NotFoundError(`User with ID ${id} not found`);
         }
-        return user
+        return user;
     }
 
-    public async updateOneUserById(id:number, updateUserDto:UpdateUserDto):Promise<void>{
-        const user = await this.userRepository.findOne({ where: { id } })
-        if(!user){
-            throw new BadRequestError('Not found user')
+    public async updateOneUserById(id: number, updateUserDto: UpdateUserDto): Promise<void> {
+        const user = await userRepository.findOneById(id);
+        if (!user) {
+            throw new BadRequestError('User not found');
         }
-        await this.userRepository.update({id},{fullName:updateUserDto.fullName})
+        await userRepository.updateById(id, { fullName: updateUserDto.fullName });
     }
 
-    public async deleteUserById(id:number):Promise<void>{
-        const user = await this.userRepository.findOne({where: {id}})
-        if(!user){
-            throw new NotFoundError('User not found')
+    public async deleteUserById(id: number): Promise<void> {
+        const user = await userRepository.findOneById(id);
+        if (!user) {
+            throw new NotFoundError('User not found');
         }
-        await this.userRepository.delete({id})
+        await userRepository.deleteById(id);
     }
 }
 
-export default new UserService
+export default new UserService();

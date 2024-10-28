@@ -39,8 +39,8 @@ export function canAccessBy(...allowedPermissions: string[]){
                 return next(new AuthFailError('You are not allowed to access'));
             }
 
-            // console.log('userCache:',userCache)
-            // console.log('allowedPermissions:',allowedPermissions)
+            console.log('userCache:',userCache)
+            console.log('allowedPermissions:',allowedPermissions)
 
             const hasPermission = allowedPermissions.some(permission => userCache.permission.includes(permission))
             if(!hasPermission){

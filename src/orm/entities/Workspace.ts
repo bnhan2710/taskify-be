@@ -9,7 +9,7 @@ export class Workspace {
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
-    @OneToOne(() => User, user => user.workspaces)
+    @ManyToOne(() => User, user => user.workspaces)
     @JoinColumn({ name: 'user_id'})
     owner!: User;
 

@@ -4,20 +4,14 @@ import { Workspace } from "../../orm/entities/Workspace";
 import { User } from "../../orm/entities/User";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
 import { NotFoundError } from "../../handler/error.response";
+import userRepository from "../users/user.repository";
 
 class WorkspaceRepository {
     private readonly workSpaceRepository: Repository<Workspace>;
-    private readonly userRepository: Repository<User>
     constructor() {
         this.workSpaceRepository = connection.getRepository(Workspace);
-        this.userRepository = connection.getRepository(User)
     }
-    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId: number): Promise<Workspace> {
-        const owner = await this.userRepository.findOne({ where: { id: ownerId } });
-        if (!owner) {
-            throw new Error('User not found');
-        }
-    
+    public async newWorkspace(createWorkspaceDto: INewWorkSpace, owner: User): Promise<Workspace> {
         const newWorkspace = this.workSpaceRepository.create({
             name: createWorkspaceDto.name,
             description: createWorkspaceDto.description,
@@ -31,6 +25,14 @@ class WorkspaceRepository {
         return await this.workSpaceRepository.findOne({ where: { id: workspaceId } });
     }
 
+    public async findWorkspaceUsers(workspaceId: number): Promise<Workspace> {
+        const workspace = await this.workSpaceRepository.findOne({ where: { id: workspaceId }, relations: ["users"] });
+        if (!workspace) {
+            throw new NotFoundError("Workspace not found");
+        }
+        return workspace;
+    }
+
    public async updateWorkspace(workspaceId: number, updateWorkspaceDto: IUpdateWorkspace): Promise<void> {
         await this.workSpaceRepository.update(
             { id: workspaceId },
@@ -41,15 +43,21 @@ class WorkspaceRepository {
         );
     }
 
-    public async getMyWorkspaces(userId: number): Promise<[Workspace[], Workspace[]]> {
-        const myWorkspaces = await this.workSpaceRepository.createQueryBuilder("workspace")
-            .where("workspace.user_id = :userId", { userId })
-            .getMany();
+    public async addUser(workspace: Workspace, user: User):Promise<void> {
+        workspace.users.push(user);
+        await this.workSpaceRepository.save(workspace);
+    }
 
-        const memberWorkspaces = await this.workSpaceRepository.createQueryBuilder("workspace")
-            .innerJoin("workspace.users", "users")
-            .where("users.id = :userId", { userId })
-            .getMany();
+    public async getMyWorkspaces(userId: number): Promise<[Workspace[], Workspace[]]> {
+        const myWorkspaces = await this.workSpaceRepository.find({
+            where: { owner: { id: userId } },
+        });
+        
+        const memberWorkspaces = await this.workSpaceRepository.find({
+            where: {
+                users: { id: userId },
+            },
+        });
         return [myWorkspaces, memberWorkspaces];
     }
 }

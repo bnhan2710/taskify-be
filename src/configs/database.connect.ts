@@ -2,10 +2,6 @@
 import { DataSource, Entity } from "typeorm";
 import dotenv from 'dotenv';
 dotenv.config();
-import { User } from "../orm/entities/User"
-import { Role } from "../orm/entities/Role"
-import { Permission } from "../orm/entities/Permission"
-
 
 const databaseType = process.env.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
 const connection = new DataSource({
