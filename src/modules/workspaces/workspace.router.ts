@@ -1,5 +1,5 @@
 import { Router } from "express";
-const router:Router = Router()
+const WorkspaceRoute:Router = Router()
 import WorkspaceController from "./workspace.controller";
 import { isLoggedIn } from "../../middleware/auth.middleware";
 import validate from "../../middleware/validate";
@@ -8,12 +8,12 @@ import asyncHandler from "../../middleware/asyncHandle";
 import workspaceController from "./workspace.controller";
 
 //CREATE WORKSPACE
-router.post('/', isLoggedIn, validate(NewWorkspaceValidation), asyncHandler(WorkspaceController.newWorkspace))
-//UPDATE WORKSPACE
-router.put('/:id', isLoggedIn,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
+WorkspaceRoute.post('/', isLoggedIn, validate(NewWorkspaceValidation), asyncHandler(WorkspaceController.newWorkspace))
 //GET MY WORKSPACE 
-router.get('/',isLoggedIn, asyncHandler(workspaceController.getMyworkpspace))
+WorkspaceRoute.get('/',isLoggedIn, asyncHandler(workspaceController.getMyworkpspace))
+//UPDATE WORKSPACE
+WorkspaceRoute.put('/:id/', isLoggedIn,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
 //ADD USER TO WORKSPACE
-router.post('/:id/add' ,isLoggedIn, asyncHandler(workspaceController.addUser))
+WorkspaceRoute.post('/:id/add' ,isLoggedIn, asyncHandler(workspaceController.addUser))
 
-export default router
+export default WorkspaceRoute

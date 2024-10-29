@@ -14,6 +14,5 @@ const ConnectRedis = async (): Promise<void> => {
     }
 }
 
-ConnectRedis();
-                                        
+ConnectRedis();                            
 export default instance

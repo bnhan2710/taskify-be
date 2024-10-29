@@ -7,8 +7,8 @@ import { INewBoard, IUpdateBoard } from "./dto";
 
 class BoardService{
 
-    public async newBoard (newBoardDto: INewBoard , workspaceId: number): Promise<Board>{
-        const workspace = await workspaceRepository.findWorkspaceById(workspaceId)
+    public async newBoard (newBoardDto: INewBoard): Promise<Board>{
+        const workspace = await workspaceRepository.findWorkspaceById(newBoardDto.workspaceId)
         if(!workspace){
             throw new NotFoundError('Workspace not found')
         }
@@ -36,7 +36,7 @@ class BoardService{
         if(!workspace){
             throw new NotFoundError('Workspace not found')
         }
-        
+        return await boardRepository.getBoardbyWorkspace(workspaceId)
     }
 }
 

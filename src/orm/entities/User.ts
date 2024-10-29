@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Role } from './Role';
 import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
@@ -25,14 +25,17 @@ export class User {
   @Column({ type: "int", nullable: true })
   age?: number;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
-
   @Column({type:"enum", enum: Gender, default: 'unknown'})
   gender?: Gender
 
   @Column({ type: "varchar", length: 255, nullable: true })
   avatar?: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt!: Date
 
   @ManyToMany(() => Role, role => role.users , {onDelete:'CASCADE'})
   @JoinTable({

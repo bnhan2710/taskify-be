@@ -15,7 +15,7 @@ class WorkspaceController{
 
     public async updateWorkspace(req:Request, res: Response, next: NextFunction): Promise<void> {
         const updateWorkspaceDto = UpdateWorkspaceDTO(req.body)
-        const workspaceId = parseInt(req.params.id)
+        const workspaceId = parseInt(req.params.workspaceId)
         await WorkspaceService.updateWorkspace(updateWorkspaceDto, workspaceId)
         new OK({
             message:'Update Workspace succesfully'
@@ -24,7 +24,7 @@ class WorkspaceController{
     
     public async addUser(req:Request, res: Response, next: NextFunction){
         const userId = parseInt(req.body.userId)
-        const workspaceId= parseInt(req.params.id)
+        const workspaceId= parseInt(req.params.workspaceId)
         await WorkspaceService.addUser( userId, workspaceId)
         new OK({
             message: 'Add user to workspace succesfully'
@@ -37,7 +37,8 @@ class WorkspaceController{
             message: 'Get workspace successfully',
             data: await WorkspaceService.getMyworkspace(userId)
         }).send(res)
-    }
+    }   
+
 
 }
 

@@ -13,4 +13,7 @@ export class Comment {
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
+  
+  @UpdateDateColumn({ type: 'timestamp' })
+  updatedAt!: Date  
 }

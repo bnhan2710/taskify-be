@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, OneToMany, CreateDateColumn, ManyToOne, UpdateDateColumn, JoinColumn } from "typeorm";
 import { User } from "./User";
 import { List } from './List';
 import { ActivityLog } from './Activity_Log';
@@ -18,8 +18,11 @@ export class Board{
     @CreateDateColumn({ type: 'timestamp' })
      createdAt!: Date;
 
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt!: Date  
+
     @ManyToOne(() => Workspace, workspace => workspace.boards)
-    @JoinTable({ name: 'workspace_id' })
+    @JoinColumn({ name: 'workspace_id' })
     workspace!: Workspace;
  
     @ManyToMany(() => User, user => user.boards)

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne, JoinColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./User";
 import { Board } from "./Board";
 @Entity('workspaces')
@@ -31,4 +31,7 @@ export class Workspace {
 
     @CreateDateColumn({ type: 'timestamp' })
     createdAt!: Date
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt!: Date
 }
