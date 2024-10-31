@@ -37,6 +37,14 @@ class BoardController{
         new OK({
             message: "Remove Board Successfully"
         }).send(res)
+   }
+
+    public async getBoardById(req:Request, res: Response, next: NextFunction){
+        const boardId = parseInt(req.params.id)
+        new OK({
+            message: "Get Board Successfully",
+            data: await BoardService.getBoardById(boardId)
+        }).send(res)
     }
 
 }

@@ -1,6 +1,7 @@
 import { Repository } from "typeorm";
 import { List } from "../../orm/entities/List";
 import connection from "../../configs/database.connect";
+import { Board } from "../../orm/entities/Board";
 import { INewList ,IUpdateList } from "./dto";
 class ListRepository {
     private readonly listRepository: Repository<List>
@@ -12,10 +13,10 @@ class ListRepository {
         return await this.listRepository.findOne({ where: { id: listId } });
     }
 
-    public async newList (name: string, boardId:number): Promise<List>{
+    public async newList (newListDto:INewList, board:Board): Promise<List>{
         const newList = this.listRepository.create({
-            name: name,
-            board: {id: boardId}
+            name: newListDto.name,
+            board
         })
         return await this.listRepository.save(newList)
     }   

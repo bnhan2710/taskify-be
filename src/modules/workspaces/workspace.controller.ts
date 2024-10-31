@@ -39,6 +39,14 @@ class WorkspaceController{
         }).send(res)
     }   
 
+    public async getWorkspaceById(req:Request, res: Response, next: NextFunction): Promise<void> {
+        const workspaceId = parseInt(req.params.workspaceId)
+        new OK({
+            message: 'Get workspace successfully',
+            data: await WorkspaceService.getWorkspaceById(workspaceId)
+        }).send(res)
+    }
+
 
 }
 

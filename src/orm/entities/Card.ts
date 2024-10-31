@@ -1,8 +1,9 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm";
 import { List } from "./List";
 import { Attachment } from "./Attachment";
 import { Comment } from "./Comment";
 import { ActivityLog } from "./Activity_Log";
+import { Checklist } from "./Checklist";
 @Entity('cards')
 export class Card {
   @PrimaryGeneratedColumn()
@@ -15,6 +16,7 @@ export class Card {
   description!: string;
 
   @ManyToOne(() => List, (list) => list.cards)
+  @JoinColumn({ name: 'list_id' })
   list!: List;
 
   @CreateDateColumn({ type: 'timestamp' })
@@ -22,6 +24,9 @@ export class Card {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
+
+  @OneToMany(()=> Checklist , checklist => checklist.card)
+  checklists!:Checklist[]
 
   @OneToMany(() => Comment, comment => comment.card)
   comments!: Comment[];

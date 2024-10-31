@@ -45,6 +45,13 @@ class WorkSpaceService{
         return workspaces
     }   
 
+    public async getWorkspaceById(workspaceId: number): Promise<Workspace> {
+        const workspace = await WorkspaceRepository.findWorkspaceById(workspaceId);
+        if (!workspace) {
+            throw new NotFoundError("Workspace not found");
+        }
+        return workspace;
+    }
 }
 
 export default new WorkSpaceService

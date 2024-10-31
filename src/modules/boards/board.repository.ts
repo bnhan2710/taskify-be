@@ -39,6 +39,10 @@ class BoardRepository{
     public async removeBoard( board:Board ){
             await this.boardRepository.remove(board)
     }
+
+    public async getBoardrelationList(boardId:number){
+        return await this.boardRepository.findOne({where: {id: boardId}, relations: ['lists']})
+    }
 }
 
 export default new BoardRepository()

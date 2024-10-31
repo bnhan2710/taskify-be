@@ -9,7 +9,9 @@ import { newListValidation , updateListValidation } from "./validator";
 //CREATE LIST
 ListRoute.post('/', isLoggedIn, validate(newListValidation),asyncHandler(ListController.newList))
 //GET LIST
-ListRoute.get('/',isLoggedIn,asyncHandler(ListController.getList))
+ListRoute.get('/',isLoggedIn, asyncHandler(ListController.getList))
+//GET LIST BY ID
+ListRoute.get('/:id',isLoggedIn, asyncHandler(ListController.getListById))
 //UPDATE LIST
 ListRoute.put('/:id', isLoggedIn , validate(updateListValidation), asyncHandler(ListController.updateList))
 //REMOVRE LIST

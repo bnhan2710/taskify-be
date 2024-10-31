@@ -11,6 +11,8 @@ import workspaceController from "./workspace.controller";
 WorkspaceRoute.post('/', isLoggedIn, validate(NewWorkspaceValidation), asyncHandler(WorkspaceController.newWorkspace))
 //GET MY WORKSPACE 
 WorkspaceRoute.get('/',isLoggedIn, asyncHandler(workspaceController.getMyworkpspace))
+//GET WORKSPACE BY ID
+WorkspaceRoute.get('/:id',isLoggedIn, asyncHandler(workspaceController.getWorkspaceById))
 //UPDATE WORKSPACE
 WorkspaceRoute.put('/:id/', isLoggedIn,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
 //ADD USER TO WORKSPACE

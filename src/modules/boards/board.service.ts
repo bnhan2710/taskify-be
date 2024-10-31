@@ -1,6 +1,5 @@
 import { NotFoundError } from "../../handler/error.response";
 import { Board } from "../../orm/entities/Board";
-import { Workspace } from "../../orm/entities/Workspace";
 import boardRepository from "./board.repository";
 import workspaceRepository from "../workspaces/workspace.repository";
 import { INewBoard, IUpdateBoard } from "./dto";
@@ -37,6 +36,14 @@ class BoardService{
             throw new NotFoundError('Workspace not found')
         }
         return await boardRepository.getBoardbyWorkspace(workspaceId)
+    }
+
+    public async getBoardById(boardId: number){
+        const board = await boardRepository.findBoardById(boardId)
+        if(!board){
+            throw new NotFoundError('Board not found')
+        }
+        return board
     }
 }
 

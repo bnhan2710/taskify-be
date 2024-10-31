@@ -35,6 +35,14 @@ class ListController {
             data: await ListService.getListsByBoard(boardId)
         }).send(res)
     }
+
+    public async getListById(req: Request, res: Response, next: NextFunction){
+        const listId = parseInt(req.params.id);
+        new OK({
+            message: "Get List Successfully",
+            data: await ListService.getListById(listId)
+        }).send(res)
+    }
 }
 
 export default new ListController();
