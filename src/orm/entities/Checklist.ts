@@ -13,7 +13,7 @@ export class Checklist {
     @JoinColumn({name: 'card_id'})
     card!: Card;
 
-    @Column({ type: 'timestamp' })
+    @Column({ type: 'timestamp', nullable: true })
     dueDate?: Date;
 
     @Column({ type: 'boolean', default: false })

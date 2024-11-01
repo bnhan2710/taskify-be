@@ -18,3 +18,4 @@ ListRoute.put('/:id', isLoggedIn , validate(updateListValidation), asyncHandler(
 ListRoute.delete('/:id' , isLoggedIn , asyncHandler(ListController.removeList))
 
 export default ListRoute
+

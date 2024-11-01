@@ -20,7 +20,7 @@
   "exclude": [
     "public",
     "dist",
-    "__tests__",
+    "test",
     "jest.config.ts",
     "coverage"
   ]
