@@ -7,6 +7,7 @@ import BoardRoute from '../modules/boards/board.route'
 import ListRoute from '../modules/lists/list.route'
 import CardRoute from '../modules/cards/card.route'
 import ChecklistRoute from '../modules/checklists/checklist.route'
+import AttachmentRoute from '../modules/attachment/attachment.route'
 const router :Router = Router()
 
 router.use('/users',UserRoute)
@@ -17,5 +18,6 @@ router.use('/boards',BoardRoute)
 router.use('/lists',ListRoute)
 router.use('/cards',CardRoute)
 router.use('/checklists',ChecklistRoute)
+router.use('/attachments',AttachmentRoute)
 
 export default router

@@ -15,7 +15,7 @@ export class Workspace {
 
     @OneToMany(() => Board, board => board.workspace)
     boards!: Board[];
-
+    
     @ManyToMany(() => User, user =>user.workspaces ,{onDelete:'CASCADE'})
     @JoinTable(
         { 

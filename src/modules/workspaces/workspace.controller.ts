@@ -23,7 +23,7 @@ class WorkspaceController{
     }
     
     public async addUser(req:Request, res: Response, next: NextFunction){
-        const userId = parseInt(req.body.userId)
+        const userId = parseInt(req.body.id)
         const workspaceId= parseInt(req.params.workspaceId)
         await WorkspaceService.addUser( userId, workspaceId)
         new OK({
