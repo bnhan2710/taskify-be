@@ -4,29 +4,29 @@ import { Card } from "../../orm/entities/Card";
 import { List } from "../../orm/entities/List";
 import { INewCard, IUpdateCard } from "./dto";
 class CardRepository{
-    private readonly cardRepository: Repository<Card>
+    private readonly repository: Repository<Card>
     constructor(){
-        this.cardRepository = connection.getRepository(Card)
+        this.repository = connection.getRepository(Card)
     }
 
-    public async newCard(newCardDto: INewCard, list: any){
-        const newCard = this.cardRepository.create({
+    public async insert(newCardDto: INewCard, list: any){
+        const newCard = this.repository.create({
             title: newCardDto.title,
             list
         })
-        return await this.cardRepository.save(newCard)
+        return await this.repository.save(newCard)
     }
 
     public async getCardByList(listId:number){
-        return await this.cardRepository.find({where:{list:{id:listId}}})
+        return await this.repository.find({where:{list:{id:listId}}})
     }
 
-    public async getCardById(cardId:number){
-        return await this.cardRepository.findOne({where:{id:cardId}})
+    public async findById(cardId:number){
+        return await this.repository.findOne({where:{id:cardId}})
     }
 
-    public async updateCard(updateCardDto: IUpdateCard, cardId:number){
-        await this.cardRepository.update(
+    public async update(updateCardDto: IUpdateCard, cardId:number){
+        await this.repository.update(
             {id:cardId},
             {
                 title: updateCardDto.title,
@@ -34,8 +34,8 @@ class CardRepository{
             }
         )
     }
-    public async removeCard(card:Card){
-        await this.cardRepository.remove(card)
+    public async remove(card:Card){
+        await this.repository.remove(card)
     }
 
 }

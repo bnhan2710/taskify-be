@@ -6,15 +6,15 @@ import listRepository from "../lists/list.repository";
 
 class CardService{
     public async newCard(newCardDto: INewCard): Promise<Card> {
-        const list = await listRepository.findListById(newCardDto.listId)
+        const list = await listRepository.findById(newCardDto.listId)
         if(!list){
             throw new NotFoundError('List not found')
         }
-        return await cardRepository.newCard(newCardDto, list)
+        return await cardRepository.insert(newCardDto, list)
     }
 
     public async getCardByList(listId: number): Promise<Card[]> {
-        const list = await listRepository.findListById(listId)
+        const list = await listRepository.findById(listId)
         if(!list){
             throw new NotFoundError('List not found')
         }
@@ -22,7 +22,7 @@ class CardService{
     }
 
     public async getCardById(cardId: number): Promise<Card> {
-        const card = await cardRepository.getCardById(cardId)
+        const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }
@@ -30,19 +30,19 @@ class CardService{
     }
 
     public async updateCard(cardId: number, newCardDto: IUpdateCard): Promise<void> {
-        const card = await cardRepository.getCardById
+        const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }
-        await cardRepository.updateCard(newCardDto, cardId)
+        await cardRepository.update(newCardDto, cardId)
     }
 
     public async removeCard(cardId: number): Promise<void> {
-        const card = await cardRepository.getCardById(cardId)
+        const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }
-        await cardRepository.removeCard(card)
+        await cardRepository.remove(card)
     }
 
 }

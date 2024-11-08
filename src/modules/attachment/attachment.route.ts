@@ -5,5 +5,5 @@ import asyncHandler from "../../middleware/asyncHandle";
 const router = Router();
 
 router.post('/upload', upload.single('file'), asyncHandler(AttachmentController.uploadAttachment));
-
+router.post('/delete', asyncHandler(AttachmentController.removeAttachment));
 export default router;

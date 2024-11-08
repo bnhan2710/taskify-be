@@ -6,7 +6,6 @@ import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../orm/entities/Attachment";
 import connection from "../../configs/database.connect";
 import cardRepository from "../cards/card.repository";
-import fs from 'fs'
 
 class AttachmentService {
     public async uploadAttachment(file: Express.Multer.File | undefined, cardId: number): Promise<{url: string, public_id: string} | undefined> {
@@ -17,7 +16,7 @@ class AttachmentService {
         if (error) {
             throw new BadRequestError(error.message);
         }
-        const card = await cardRepository.getCardById(cardId);
+        const card = await cardRepository.findById(cardId);
         if (!card) {
             throw new NotFoundError('Card not found');
         }
@@ -46,6 +45,19 @@ class AttachmentService {
             console.log('Error uploading file:', error);
             throw new BadRequestError('Upload failed');
         }
+    }
+
+    public async removeAttachment(id: number): Promise<void> {
+        const attachment = await connection.getRepository(Attachment).findOne({ where: { id } });
+        if (!attachment) {
+            throw new NotFoundError('Attachment not found');
+        }
+        try {
+            await cloudinary.uploader.destroy(attachment.cloudinaryPublicId);
+        } catch (error) {
+            throw new BadRequestError('Delete failed');
+        }
+        await connection.getRepository(Attachment).remove(attachment);
     }
 }
     

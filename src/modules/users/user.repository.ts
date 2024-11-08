@@ -2,17 +2,17 @@ import connection from "../../configs/database.connect";
 import { User } from '../../orm/entities/User';
 import { Repository } from "typeorm";
 class UserRepository {
-    private readonly userRepository: Repository<User>;
+    private readonly repository: Repository<User>;
     constructor() {
-        this.userRepository = connection.getRepository(User);
+        this.repository = connection.getRepository(User);
     }
 
     public async findOneById(id: number): Promise<User | null> {
-        return await this.userRepository.findOne({ where: { id } });
+        return await this.repository.findOne({ where: { id } });
     }
 
     public async findAll(): Promise<User[]> {
-        return await this.userRepository.find({
+        return await this.repository.find({
             select: {
                 username: true,
                 fullName: true,
@@ -23,11 +23,11 @@ class UserRepository {
     }
 
     public async updateById(id: number, updateData: Partial<User>): Promise<void> {
-        await this.userRepository.update({ id }, updateData);
+        await this.repository.update({ id }, updateData);
     }
 
     public async deleteById(id: number): Promise<void> {
-        await this.userRepository.delete({ id });
+        await this.repository.delete({ id });
     }
 }
 

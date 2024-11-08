@@ -17,5 +17,6 @@ WorkspaceRoute.get('/:id',isLoggedIn, asyncHandler(workspaceController.getWorksp
 WorkspaceRoute.put('/:id/', isLoggedIn,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
 //ADD USER TO WORKSPACE
 WorkspaceRoute.post('/:id/add' ,isLoggedIn, asyncHandler(workspaceController.addUser))
-
+//REMOVE WORKSPACE
+WorkspaceRoute.delete('/:id',isLoggedIn, asyncHandler(workspaceController.removeWorkspace))
 export default WorkspaceRoute

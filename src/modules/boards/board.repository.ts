@@ -5,26 +5,34 @@ import connection from "../../configs/database.connect";
 import { INewBoard, IUpdateBoard } from "./dto";
 
 class BoardRepository{
-    private readonly boardRepository: Repository<Board>
+    private readonly reposiotry: Repository<Board>
     constructor(){
-        this.boardRepository = connection.getRepository(Board)
+        this.reposiotry = connection.getRepository(Board)
     }
     
-    public async findBoardById(boardId: number): Promise<Board | null> {
-        return await this.boardRepository.findOne({ where: { id: boardId } });
-    }
-
-    public async newBoard (newBoardDto: INewBoard , workspace: Workspace): Promise<Board>{
-
-        const newBoard = this.boardRepository.create({
+    public async insert(newBoardDto: INewBoard , workspace: Workspace): Promise<Board>{
+        
+        const newBoard = this.reposiotry.create({
             name: newBoardDto.name,
             workspace: workspace
         })
-        return await this.boardRepository.save(newBoard)
+        return await this.reposiotry.save(newBoard)
     }   
+    
+    public async findById(boardId: number): Promise<Board | null> {
+        return await this.reposiotry.findOne({ where: { id: boardId } });
+    }
+    
+    public async getBoardbyWorkspace(workspaceId:number){
+        await this.reposiotry.find({where: {workspace: {id: workspaceId}}})
+    }
 
-    public async updateBoard(updateBoardDto:IUpdateBoard, boardId:number){
-        await this.boardRepository.update(
+    public async getBoardrelationList(boardId:number){
+        return await this.reposiotry.findOne({where: {id: boardId}, relations: ['lists']})
+    }
+
+    public async update(updateBoardDto:IUpdateBoard, boardId:number){
+        await this.reposiotry.update(
             { id:boardId }, 
             {
                 name: updateBoardDto.name
@@ -32,16 +40,9 @@ class BoardRepository{
         )
     }
 
-    public async getBoardbyWorkspace(workspaceId:number){
-        await this.boardRepository.find({where: {workspace: {id: workspaceId}}})
-    }
 
-    public async removeBoard( board:Board ){
-            await this.boardRepository.remove(board)
-    }
-
-    public async getBoardrelationList(boardId:number){
-        return await this.boardRepository.findOne({where: {id: boardId}, relations: ['lists']})
+    public async detele( board:Board ){
+            await this.reposiotry.remove(board)
     }
 }
 

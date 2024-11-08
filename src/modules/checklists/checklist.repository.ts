@@ -4,29 +4,29 @@ import { Checklist } from '../../orm/entities/Checklist';
 import { Card } from "../../orm/entities/Card";
 import { INewChecklist,IUpdateChecklist } from "./dto";
 class ChecklistRepository {
-    private readonly checkListRepository: Repository<Checklist>
+    private readonly repository: Repository<Checklist>
     constructor() {
-        this.checkListRepository = connection.getRepository(Checklist)
+        this.repository = connection.getRepository(Checklist)
     }
 
     public async newChecklist(newChecklistDto: INewChecklist,  card: Card): Promise<void> {
-        const checklist = this.checkListRepository.create({
+        const checklist = this.repository.create({
             description: newChecklistDto.description,
             card
         })
-        await this.checkListRepository.save(checklist)
+        await this.repository.save(checklist)
     }
 
     public async getChecklistById(checklistid: number): Promise<Checklist | null> {
-        return await this.checkListRepository.findOne({where: {id: checklistid}})
+        return await this.repository.findOne({where: {id: checklistid}})
     }
 
     public async getCheckListByCard(cardId: number): Promise<Checklist[]> {
-        return await this.checkListRepository.find({where: {card: { id: cardId }}})
+        return await this.repository.find({where: {card: { id: cardId }}})
     }
 
     public async updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId:number):Promise<void>{
-        await this.checkListRepository.update(
+        await this.repository.update(
             {id:checklistId},
             {
                 description: updateChecklistDto.description,
@@ -36,7 +36,7 @@ class ChecklistRepository {
     }
 
     public async removeChecklist(checklist:Checklist):Promise<void>{
-            await this.checkListRepository.remove(checklist)
+            await this.repository.remove(checklist)
     }
 }
 

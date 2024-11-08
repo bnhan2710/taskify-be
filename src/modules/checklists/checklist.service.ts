@@ -6,7 +6,7 @@ import { INewChecklist,IUpdateChecklist } from './dto';
 
 class ChecklistService{
     public async newChecklist(newChecklistDto: INewChecklist): Promise<void> {
-        const card = await cardRepository.getCardById(newChecklistDto.cardId)
+        const card = await cardRepository.findById(newChecklistDto.cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }
@@ -15,7 +15,7 @@ class ChecklistService{
     }   
 
     public async getChecklistbyCard(cardId:number):Promise<Checklist[]>{
-        const card = await cardRepository.getCardById(cardId)
+        const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }

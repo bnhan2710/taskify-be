@@ -4,25 +4,29 @@ import connection from "../../configs/database.connect";
 import { Board } from "../../orm/entities/Board";
 import { INewList ,IUpdateList } from "./dto";
 class ListRepository {
-    private readonly listRepository: Repository<List>
+    private readonly repository: Repository<List>
     constructor(){
-        this.listRepository = connection.getRepository(List)
+        this.repository = connection.getRepository(List)
     }
-
-    public async findListById(listId: number): Promise<List | null> {
-        return await this.listRepository.findOne({ where: { id: listId } });
-    }
-
-    public async newList (newListDto:INewList, board:Board): Promise<List>{
-        const newList = this.listRepository.create({
-            name: newListDto.name,
-            board
+    
+    public async insert(newListDto:INewList, board:Board): Promise<List>{
+        const newList = this.repository.create({
+                name: newListDto.name,
+                board
         })
-        return await this.listRepository.save(newList)
+        return await this.repository.save(newList)
     }   
 
+    public async findById(listId: number): Promise<List | null> {
+        return await this.repository.findOne({ where: { id: listId } });
+    }
+
+    
+    public async getByBoard(boardId:number):Promise<List[]>{
+            return await this.repository.find({where: {board:{id:boardId} }})
+    }
     public async updateList(updateListDto: IUpdateList, listId:number):Promise<void>{
-        await this.listRepository.update(
+        await this.repository.update(
             { id:listId }, 
             {
                 name: updateListDto.name
@@ -30,12 +34,8 @@ class ListRepository {
         )
     }
 
-    public async removeList( list:List ):Promise<void>{
-            await this.listRepository.remove(list)
-    }
-
-    public async getListsByBoard(boardId:number):Promise<List[]>{
-        return await this.listRepository.find({where: {board:{id:boardId} }})
+    public async remove( list:List ):Promise<void>{
+            await this.repository.remove(list)
     }
 }
 

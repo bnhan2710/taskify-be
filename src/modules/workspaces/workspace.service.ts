@@ -10,16 +10,33 @@ class WorkSpaceService{
         if (!owner) {
             throw new NotFoundError("User not found");
         }
-        return await WorkspaceRepository.newWorkspace(createWorkspaceDto, owner);
+        return await WorkspaceRepository.insert(createWorkspaceDto, owner);
     }
 
-    public async updateWorkspace(updateWorkspaceDto: IUpdateWorkspace, workspaceId: number): Promise<void> {
-        const workspace = await WorkspaceRepository.findWorkspaceById(workspaceId);
+    public async getMyworkspace(userId:number):Promise<[Workspace[],Workspace[]]> {
+        const workspaces = await WorkspaceRepository.getMy(userId)
+        if(!workspaces){
+            throw new NotFoundError('Not found any workspace')
+        }
+        return workspaces
+    }   
+
+    public async getWorkspaceById(workspaceId: number): Promise<Workspace> {
+        const workspace = await WorkspaceRepository.findbyId(workspaceId);
         if (!workspace) {
             throw new NotFoundError("Workspace not found");
         }
-        await WorkspaceRepository.updateWorkspace(workspaceId, updateWorkspaceDto);
+        return workspace;
     }
+
+    public async updateWorkspace(updateWorkspaceDto: IUpdateWorkspace, workspaceId: number): Promise<void> {
+        const workspace = await WorkspaceRepository.findbyId(workspaceId);
+        if (!workspace) {
+            throw new NotFoundError("Workspace not found");
+        }
+        await WorkspaceRepository.update(workspaceId, updateWorkspaceDto);
+    }
+    
 
     public async addUser(userId: number, workspaceId: number){
         const user = await UserRepository.findOneById(userId)
@@ -37,20 +54,12 @@ class WorkSpaceService{
         await WorkspaceRepository.addUser(workspace, user)
     }
     
-    public async getMyworkspace(userId:number):Promise<[Workspace[],Workspace[]]> {
-        const workspaces = await WorkspaceRepository.getMyWorkspaces(userId)
-        if(!workspaces){
-            throw new NotFoundError('Not found any workspace')
-        }
-        return workspaces
-    }   
-
-    public async getWorkspaceById(workspaceId: number): Promise<Workspace> {
-        const workspace = await WorkspaceRepository.findWorkspaceById(workspaceId);
+    public async removeWorkspace(workspaceId: number): Promise<void> {
+        const workspace = await WorkspaceRepository.findbyId(workspaceId);
         if (!workspace) {
             throw new NotFoundError("Workspace not found");
         }
-        return workspace;
+        await WorkspaceRepository.remove(workspace);
     }
 }
 
