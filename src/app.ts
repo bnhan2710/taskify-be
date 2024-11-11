@@ -1,5 +1,4 @@
-
-import express , {Express , Request , Response} from 'express';
+import express, {Express , Request , Response} from 'express';
 import 'reflect-metadata'
 import morgan from 'morgan';
 import cors from 'cors';
@@ -13,7 +12,7 @@ const PORT : string | undefined = process.env.PORT || '8000';
 
 const app:Express = express();
 
-//Connection to database
+//Connection to database`
 import './configs/database.connect';
 //Connection to redis
 import './configs/redis.config';
@@ -29,7 +28,6 @@ app.use('/api/v1',v1Api);
 
 //Error Handler
 app.use(errorHandler);
-
 
 app.use('*', (req : Request, res : Response) => res.status(NOT_FOUND).json({
     status: NOT_FOUND,

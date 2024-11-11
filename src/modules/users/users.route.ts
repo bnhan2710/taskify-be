@@ -8,7 +8,7 @@ import { updateUserValidation } from "./validator/user.validator";
 import { PermissionEnum } from "../../common/enums/permission";
 
 //GET ALL USERS
-router.get('/', isLoggedIn , canAccessBy(PermissionEnum.CanGetAllUser,PermissionEnum.Test), asyncHandler(UserController.getAllUser));
+router.get('/', isLoggedIn , canAccessBy(PermissionEnum.CanGetAllUser,PermissionEnum.TEST), asyncHandler(UserController.getAllUser));
 //GET USER BY ID
 router.get('/:id', isLoggedIn ,canAccessBy(PermissionEnum.CanGetOneUser) , asyncHandler(UserController.getUserById));
 //UPDATE USER

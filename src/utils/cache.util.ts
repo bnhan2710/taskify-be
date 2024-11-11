@@ -7,26 +7,28 @@ const expTime = 60 * 60 * 24 * 30 ;
 
 class CacheUtil {
     async setOneUser(userId : number) : Promise<void> {
-        console.log(`Set cache for user ${userId}`)
-        const permissionOfUser = await connection.getRepository(User).createQueryBuilder('users')
-            .leftJoinAndSelect('users.roles', 'roles')
-            .leftJoinAndSelect('roles.permissions', 'permissions')
-            .where('users.id = :userId', { userId: userId })
-            .getOne()
-        const role = permissionOfUser?.roles
-        const permission = role?.map((role: Role) => role.permissions).flat()
-        const permissionList = permission?.map(p => p?.name)       
-        const roleName = role?.map(r => r?.name)
-        await instance.setEx(`user:${userId}`,expTime,JSON.stringify({permission: permissionList , role: roleName}))
+        // console.log(`Set cache for user ${userId}`)
+        const user = await connection.getRepository(User).findOne({ where: { id: userId }, relations: ['roles'] });
+        if(!user || !user.roles){
+            return
+        }
+        if(user.roles.length === 0){
+            return
+        }
+        const permission = await connection.getRepository(Permission).find({ where: { roles: user.roles } });
+        const permissionList = permission.map(p => p.name);
+        const roleName = user.roles.map(r => r.name).join(',');
+        await instance.set(`user:${userId}`, JSON.stringify({permission: permissionList, role: roleName}), { EX: expTime })
     }
 
-    async setManyUser(userArray : User[]) : Promise<void> {
-        for(const user of userArray){
-            await this.setOneUser(user.id)
+    async setManyUser(userArray : number[]) : Promise<void> {
+        for (const userId of userArray) {
+            await this.setOneUser(userId)
         }
     }
 
     async getOneUser(userId : number) : Promise<Permission[]> {
+        // console.log(`Get cache for user ${userId}`)
         const userCache = await instance.get(`user:${userId}`)
         if(userCache){
             return JSON.parse(userCache)
@@ -35,4 +37,5 @@ class CacheUtil {
         return JSON.parse(await instance.get(`user:${userId}`) || '[]')
     }
 }
+
 export default new CacheUtil

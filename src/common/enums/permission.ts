@@ -11,6 +11,6 @@ export enum PermissionEnum{
     CanGetAllUser = 'GetAllUser',
     CanUpdateUser = 'UpdateUser',
     CanDeleteUser = 'DeleteUser',
-    Test = 'test'
+    TEST = 'Test',
 }
 

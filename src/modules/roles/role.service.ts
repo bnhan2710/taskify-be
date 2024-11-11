@@ -3,8 +3,7 @@ import connection from '../../configs/database.connect'
 import { Permission } from '../../orm/entities/Permission';
 import { Role } from '../../orm/entities/Role';
 import { User } from '../../orm/entities/User';
-import { Token } from '../../orm/entities/Token';
-import CacheUtil from '../../utils/cache.util';
+import {updatePermission, updateRole} from './helper/update.helper'
 import { IRoleDto , IPermissionDto } from './dto';
 
 class RoleService {
@@ -62,15 +61,9 @@ class RoleService {
         if(!role){
             throw new NotFoundError('Role not found')
         }
-        const userIsLoggedIn = await connection.getRepository(Token).createQueryBuilder('tokens')
-            .leftJoinAndSelect('tokens.user', 'user')
-            .where('user.id = :userId', { userId: userId })
-            .getOne()
-        if(userIsLoggedIn){
-            await CacheUtil.setOneUser(userIsLoggedIn.user.id)
-        }
         user.roles = [role]
         await connection.getRepository(User).save(user)
+        await updateRole(userId)
     }
     
     public async AssignPermissiontoRole(permissionId: number , roleId:number){
@@ -86,17 +79,9 @@ class RoleService {
             throw new BadRequestError('Permission already exists in role')
         }
 
-        const listUserLogin = await connection.getRepository(Token).createQueryBuilder('tokens')
-            .leftJoinAndSelect('tokens.user', 'user')
-            .leftJoinAndSelect('user.roles', 'roles')
-            .where('roles.id = :roleId', { roleId: roleId })
-            .getMany()
-
-        if(listUserLogin){
-            await CacheUtil.setManyUser(listUserLogin.map(token => token.user))
-        }
-
         await connection.getRepository(Role).createQueryBuilder().relation(Role, 'permissions').of(role).add(permission)
+        await updatePermission(roleId)
+            
 }
     public async DeletePermissionfromRole(permissionId: number , roleId:number){
         const permission = await connection.getRepository(Permission).findOne({where: {id: permissionId}})
@@ -110,7 +95,9 @@ class RoleService {
         if(!rolePermission){
             throw new NotFoundError('Role not found')
         }
+        
         await connection.getRepository(Role).createQueryBuilder().relation(Role, 'permissions').of(rolePermission).remove(permission)
+        await updatePermission(roleId)
     }
 
     public async DeletePermission(permissionId:number){
