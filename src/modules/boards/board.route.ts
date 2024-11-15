@@ -11,7 +11,8 @@ BoardRoute.post('/',isLoggedIn, validate(NewBoardValidation) ,asyncHandler(Board
 //GET BOARD BY WORKSPACE
 BoardRoute.get('/',isLoggedIn, asyncHandler(BoardController.getBoardByWorkspace))
 //GET BOARD BY ID
-BoardRoute.get('/:id',isLoggedIn, asyncHandler(BoardController.getBoardById))
+// BoardRoute.get('/:id',isLoggedIn, asyncHandler(BoardController.getBoardById))
+BoardRoute.get('/:id', asyncHandler(BoardController.getBoardById))
 //UPDATE BOARD
 BoardRoute.put('/:id', isLoggedIn,validate(updateBoardValidation) , asyncHandler(BoardController.updateBoard))
 //REMOVE BOARD

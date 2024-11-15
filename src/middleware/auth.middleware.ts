@@ -1,12 +1,11 @@
-
-
 import { Request, Response , NextFunction } from 'express'
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import { AuthFailError, ForbiddenError } from '../handler/error.response';
 import CacheUtil from "../utils/cache.util"
+import { env } from '../configs/env.config';
 
 
-const secretKey = process.env.SECRET_KEY as string;
+const secretKey = env.SECRET_KEY as string;
 
 export function isLoggedIn(req: Request, res: Response, next: NextFunction) : void {
         const token = req.header('Authorization')?.replace('Bearer ','')

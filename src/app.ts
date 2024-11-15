@@ -2,13 +2,13 @@ import express, {Express , Request , Response} from 'express';
 import 'reflect-metadata'
 import morgan from 'morgan';
 import cors from 'cors';
+import { corsOptions } from './configs/cors.config';
 import helmet from 'helmet';
 import { NOT_FOUND } from 'http-status';
-import { config } from 'dotenv';
-config();
+import { env } from './configs/env.config';
 import { errorHandler } from './handler/errorHandle';
 import v1Api from './routes/v1.route'
-const PORT : string | undefined = process.env.PORT || '8000';
+const PORT : string | number = env.PORT || '8000';
 
 const app:Express = express();
 
@@ -18,7 +18,7 @@ import './configs/database.connect';
 import './configs/redis.config';
 //Middlewware
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));

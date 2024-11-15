@@ -21,7 +21,7 @@ class UserRepository {
             }
         });
     }
-
+    
     public async updateById(id: number, updateData: Partial<User>): Promise<void> {
         await this.repository.update({ id }, updateData);
     }

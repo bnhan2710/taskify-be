@@ -17,5 +17,3 @@ router.put('/:id', isLoggedIn ,canAccessBy(PermissionEnum.CanUpdateUser) ,valida
 router.delete('/:id', isLoggedIn , canAccessBy(PermissionEnum.CanDeleteUser) , asyncHandler(UserController.deleteUserById));
 
 export default router;
-
-

@@ -1,16 +1,14 @@
 
 import { DataSource, Entity } from "typeorm";
-import dotenv from 'dotenv';
-dotenv.config();
-
+import { env } from './env.config';
 const databaseType = process.env.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
 const connection = new DataSource({
     type: databaseType,
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '3306'),
-    username: process.env.DB_USER || 'root',
-    password: process.env.DB_PASS || '',
-    database: process.env.DB_NAME || 'test',
+    host: env.DB_HOST || 'localhost',
+    port: parseInt(env.DB_PORT || '3306'),
+    username: env.DB_USER || 'root',
+    password: env.DB_PASS || '',
+    database: env.DB_NAME || 'test',
     synchronize: false,
     logging : false,
     entities: [__dirname + "/../orm/entities/*.ts"],
