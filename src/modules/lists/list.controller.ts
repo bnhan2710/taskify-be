@@ -29,7 +29,7 @@ class ListController {
     }
 
     public async getList(req: Request, res: Response, next: NextFunction){
-        const {boardId} = req.body 
+        const boardId = parseInt(req.query.boardId as string);
         new OK({
             message: "Get List Successfully",
             data: await ListService.getListsByBoard(boardId)

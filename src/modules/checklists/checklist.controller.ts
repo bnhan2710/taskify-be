@@ -14,7 +14,7 @@ class ChecklistController{
     }
 
     public async getCheckListbyCard(req:Request, res: Response,next: NextFunction):Promise<void>{
-        const {cardId} = req.body
+        const cardId = parseInt(req.query.cardId as string)
         new OK({
            message: 'Get checklist successfully',
            data: await ChecklistService.getChecklistbyCard(cardId)

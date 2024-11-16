@@ -8,8 +8,9 @@ export const corsOptions = {
         if (!origin && env.BUILD_MODE === 'development') {
            return callback(null, true);
         } 
-        if (origin && Object.values(WHITELIST_DOMAIN).includes(origin as WHITELIST_DOMAIN)) {
-           return callback(null, true);
+        console.log('origin', origin);
+        if (WHITELIST_DOMAIN.FE === origin) {
+            return callback(null, true);
         }
         return callback(new ForbiddenError('Not allowed by CORS'));
     },

@@ -1,9 +1,11 @@
 export interface IUpdateBoard{
-    name:string
+    title?: string
+    description?: string
 }
 
 export function UpdateBoardDTO(body:any): IUpdateBoard{
     return {
-        name: body.name
+        title: body.title,
+        description: body.description
     }
 }

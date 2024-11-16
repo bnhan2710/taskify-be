@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-console.log(process.env.BUILD_MODE);
 export const env = {
     BUILD_MODE: process.env.BUILD_MODE,
     PORT : process.env.PORT || 8000, 

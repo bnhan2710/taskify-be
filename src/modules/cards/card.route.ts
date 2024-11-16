@@ -9,7 +9,8 @@ import { createCardValidation, updateCardValidation } from './validator';
 //CREATE CARD
 CardRoute.post('/', isLoggedIn,validate(createCardValidation) ,asyncHandler(CardController.newCard))
 //GET CARD BY LIST
-CardRoute.get('/',isLoggedIn ,asyncHandler(CardController.getCardByList))
+// CardRoute.get('/',isLoggedIn ,asyncHandler(CardController.getCardByList))
+CardRoute.get('/' ,asyncHandler(CardController.getCardByList))
 //GET CARD BY ID
 CardRoute.get('/:id',isLoggedIn ,asyncHandler(CardController.getCardById))
 //UPDATE CARD

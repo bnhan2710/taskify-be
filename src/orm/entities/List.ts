@@ -7,7 +7,7 @@ export class List {
     id!: number;
 
     @Column({ type: "varchar", length: 255 })
-    name!: string;
+    title!: string;
 
     @ManyToOne(() => Board, board => board.lists)
     @JoinColumn({name: 'board_id'})

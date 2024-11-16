@@ -13,7 +13,8 @@ class BoardRepository{
     public async insert(newBoardDto: INewBoard , workspace: Workspace): Promise<Board>{
         
         const newBoard = this.reposiotry.create({
-            name: newBoardDto.name,
+            title: newBoardDto.title,
+            description: newBoardDto.description,
             workspace: workspace
         })
         return await this.reposiotry.save(newBoard)
@@ -35,7 +36,8 @@ class BoardRepository{
         await this.reposiotry.update(
             { id:boardId }, 
             {
-                name: updateBoardDto.name
+                title: updateBoardDto.title,
+                description: updateBoardDto.description
             }
         )
     }

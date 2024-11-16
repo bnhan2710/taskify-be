@@ -1,12 +1,14 @@
 
 export interface INewBoard{
-    name:string,
+    title: string,
+    description?: string,
     workspaceId: number
 }
 
 export function NewBoardDTO(body:any): INewBoard{
     return {
-        name: body.name,
+        title: body.title,
+        description: body.description,
         workspaceId: body.workspaceId
     }
 }

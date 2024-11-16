@@ -1,11 +1,11 @@
 export interface INewList {
-    name: string;
+    title:string,
     boardId: number;
 }
 
 export function NewListDTO(body: any): INewList {
     return {
-        name: body.name,
+        title: body.title,
         boardId: body.boardId
     }
 }

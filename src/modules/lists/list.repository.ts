@@ -11,7 +11,7 @@ class ListRepository {
     
     public async insert(newListDto:INewList, board:Board): Promise<List>{
         const newList = this.repository.create({
-                name: newListDto.name,
+                title: newListDto.title,
                 board
         })
         return await this.repository.save(newList)
@@ -29,7 +29,7 @@ class ListRepository {
         await this.repository.update(
             { id:listId }, 
             {
-                name: updateListDto.name
+                title: updateListDto.title
             }
         )
     }

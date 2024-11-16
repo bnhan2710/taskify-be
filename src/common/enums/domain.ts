@@ -1,3 +1,3 @@
 export enum WHITELIST_DOMAIN{
-   FE =  'http://localhost:3000'
+   FE =  'http://localhost:5173'
 }

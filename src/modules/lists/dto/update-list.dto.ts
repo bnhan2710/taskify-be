@@ -1,10 +1,10 @@
 export interface IUpdateList {
-    name: string,
+    title: string;
 }
 
 export function UpdateListDTO(body: any): IUpdateList {
     return {
-        name: body.name,
+        title: body.title
     }
 }
 

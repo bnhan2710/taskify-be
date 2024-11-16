@@ -24,7 +24,7 @@ class BoardController{
     }
 
     public async getBoardByWorkspace(req:Request, res: Response, next: NextFunction){
-        const workspaceId = req.body.workspaceId
+        const workspaceId = parseInt(req.query.workspaceId as string)
         new OK({
             message: "Get Board Successfully",
             data: await BoardService.getBoardByWorkspace(workspaceId)
