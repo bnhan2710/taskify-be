@@ -8,6 +8,7 @@ import ListRoute from '../modules/lists/list.route'
 import CardRoute from '../modules/cards/card.route'
 import ChecklistRoute from '../modules/checklists/checklist.route'
 import AttachmentRoute from '../modules/attachment/attachment.route'
+import NotificationRouter from '../modules/notification/sse.router'
 const router :Router = Router()
 
 router.use('/users',UserRoute)
@@ -19,5 +20,5 @@ router.use('/lists',ListRoute)
 router.use('/cards',CardRoute)
 router.use('/checklists',ChecklistRoute)
 router.use('/attachments',AttachmentRoute)
-
+router.use('/notifications',NotificationRouter)
 export default router

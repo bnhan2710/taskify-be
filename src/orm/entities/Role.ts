@@ -3,6 +3,7 @@ import { User } from "./User";
 import { Permission } from "./Permission";
 @Entity('roles')
 export class Role{
+  
   @PrimaryGeneratedColumn()
   id!: number;
 
