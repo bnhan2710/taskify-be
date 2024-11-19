@@ -39,7 +39,7 @@ class BoardService{
     }
 
     public async getBoardById(boardId: number){
-        const board = await boardRepository.findById(boardId)
+        const board = await boardRepository.getBoardDetail(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
         }

@@ -5,12 +5,12 @@ import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import listRepository from "../lists/list.repository";
 
 class CardService{
-    public async newCard(newCardDto: INewCard): Promise<Card> {
+    public async newCard(newCardDto: INewCard): Promise<void> {
         const list = await listRepository.findById(newCardDto.listId)
         if(!list){
             throw new NotFoundError('List not found')
         }
-        return await cardRepository.insert(newCardDto, list)
+         await cardRepository.insert(newCardDto, list)
     }
 
     public async getCardByList(listId: number): Promise<Card[]> {

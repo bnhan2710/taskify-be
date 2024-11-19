@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import {OK, CREATED} from '../../handler/success.reponse';
 import AttachmentService from './attachment.service';
+import { AttachmentDTO } from './dto/attachment.dto';
 class AttachmentController{
 
   public async uploadAttachment(req: Request, res: Response, next: NextFunction){
@@ -10,6 +11,14 @@ class AttachmentController{
     new CREATED({
       message: 'Upload successfully',
       data: result
+    }).send(res)
+  }
+
+  public async linkAttachment (req: Request, res: Response, next: NextFunction){
+    const attachDto = AttachmentDTO(req.body);
+    await AttachmentService.linkAttachment(attachDto);
+    new CREATED({
+      message: 'add Link successfully',
     }).send(res)
   }
 

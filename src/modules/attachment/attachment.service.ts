@@ -6,7 +6,7 @@ import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../orm/entities/Attachment";
 import connection from "../../configs/database.connect";
 import cardRepository from "../cards/card.repository";
-
+import { AttachmentDto } from "./dto/attachment.dto";
 class AttachmentService {
     public async uploadAttachment(file: Express.Multer.File | undefined, cardId: number): Promise<{url: string, public_id: string} | undefined> {
         if (!file) {
@@ -31,10 +31,11 @@ class AttachmentService {
                 console.log('Error deleting file:', err);
             }
             await connection.getRepository(Attachment).save({
-                fileName: file.originalname,
+                attachName: file.originalname,
                 fileType: file.mimetype,
-                cloudinaryUrl: result.secure_url,
+                URL: result.secure_url,
                 cloudinaryPublicId: result.public_id,
+                isLink: false,
                 card: card,
             });
             return {
@@ -47,17 +48,37 @@ class AttachmentService {
         }
     }
 
+    public async linkAttachment(attachDto: AttachmentDto ): Promise<void> {
+        const card = await cardRepository.findById(attachDto.cardId);
+        if (!card) {
+            throw new NotFoundError('Card not found');
+        }
+
+        await connection.getRepository(Attachment).save({
+            attachName: attachDto.attachName,
+            URL: attachDto.url,
+            isLink: true,
+            card: card,
+        });
+    }
+
     public async removeAttachment(id: number): Promise<void> {
         const attachment = await connection.getRepository(Attachment).findOne({ where: { id } });
         if (!attachment) {
             throw new NotFoundError('Attachment not found');
         }
+        if (attachment.isLink) {
+           await connection.getRepository(Attachment).delete(id);
+        }else{
         try {
+            if(attachment.cloudinaryPublicId)
             await cloudinary.uploader.destroy(attachment.cloudinaryPublicId);
+            await connection.getRepository(Attachment).delete(id);
         } catch (error) {
+            console.log('Error deleting attachment:', error);
             throw new BadRequestError('Delete failed');
         }
-        await connection.getRepository(Attachment).remove(attachment);
+        }
     }
 }
     

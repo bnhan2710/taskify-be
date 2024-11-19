@@ -5,3 +5,11 @@ export const attachmentValidation = Joi.object({
       'number.max': 'File size must not exceed 10MB',
     }),
   });
+
+export const attachmentLinkValidation = Joi.object({
+    cardId: Joi.number().required(),  
+    url: Joi.string().uri().required().messages({
+      'string.uri': 'Invalid URL',
+    }),
+    attachName: Joi.string().allow(null, ''),
+  });

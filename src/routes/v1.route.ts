@@ -21,4 +21,5 @@ router.use('/cards',CardRoute)
 router.use('/checklists',ChecklistRoute)
 router.use('/attachments',AttachmentRoute)
 router.use('/notifications',NotificationRouter)
+
 export default router

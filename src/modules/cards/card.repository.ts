@@ -9,12 +9,15 @@ class CardRepository{
         this.repository = connection.getRepository(Card)
     }
 
-    public async insert(newCardDto: INewCard, list: any){
+    public async insert(newCardDto: INewCard, list: List){
+        let cardOrderIds = list.cardOrderIds || [];
         const newCard = this.repository.create({
             title: newCardDto.title,
             list
         })
-        return await this.repository.save(newCard)
+        const savedCard = await this.repository.save(newCard)
+        cardOrderIds.push(savedCard.id.toString())
+        await connection.getRepository(List).update(list.id, {cardOrderIds})
     }
 
     public async getCardByList(listId:number){

@@ -16,6 +16,9 @@ export class List {
     @OneToMany(() => Card, card => card.list)
     cards!: Card[];
 
+    @Column("simple-array", { nullable: true })
+    cardOrderIds!: string[];  
+
     @CreateDateColumn({ type: 'timestamp' })
     createdAt!: Date;
 

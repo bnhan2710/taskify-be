@@ -23,15 +23,14 @@ class BoardRepository{
     public async findById(boardId: number): Promise<Board | null> {
         return await this.reposiotry.findOne({ where: { id: boardId } });
     }
-    
+
     public async getBoardbyWorkspace(workspaceId:number){
         await this.reposiotry.find({where: {workspace: {id: workspaceId}}})
     }
 
-    public async getBoardrelationList(boardId:number){
-        return await this.reposiotry.findOne({where: {id: boardId}, relations: ['lists']})
+    public async getBoardDetail(boardId:number){
+        return await this.reposiotry.findOne({where: {id: boardId}, relations:['lists', 'lists.cards']})
     }
-
     public async update(updateBoardDto:IUpdateBoard, boardId:number){
         await this.reposiotry.update(
             { id:boardId }, 

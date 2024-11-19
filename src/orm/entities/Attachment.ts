@@ -9,17 +9,20 @@ export class Attachment {
   @ManyToOne(() => Card, (card) => card.attachments)
   card!: Card;
 
-  @Column({ type: 'varchar', length: 255 })
-  fileName!: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  attachName?: string;
 
   @Column({ type: 'varchar', length: 255 })
-  cloudinaryUrl!: string;
+  URL!: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  cloudinaryPublicId!: string;
+  @Column({ type: 'varchar', length: 255,nullable: true })
+  cloudinaryPublicId?: string;
 
-  @Column({ type: 'varchar', length: 50 })
-  fileType!: string;
+  @Column({ type: 'varchar', length: 50,nullable: true })
+  fileType?: string;
+
+  @Column({type: Boolean})
+  isLink!: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })
   uploadAt!: Date;
