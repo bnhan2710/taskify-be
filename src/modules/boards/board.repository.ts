@@ -36,7 +36,8 @@ class BoardRepository{
             { id:boardId }, 
             {
                 title: updateBoardDto.title,
-                description: updateBoardDto.description
+                description: updateBoardDto.description,
+                listOrderIds: updateBoardDto.listOrderIds
             }
         )
     }

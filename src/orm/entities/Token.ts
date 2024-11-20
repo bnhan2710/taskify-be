@@ -7,7 +7,7 @@ export class Token {
     @PrimaryGeneratedColumn()
     id!: number;
     
-    @ManyToOne(() => User, user => user.tokens , { onDelete: 'CASCADE' })
+    @ManyToOne(() => User, user => user.tokens , { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user!: User;
 

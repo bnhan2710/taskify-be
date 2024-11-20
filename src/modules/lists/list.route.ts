@@ -7,7 +7,8 @@ import asyncHandler from "../../middleware/asyncHandle"
 import { newListValidation , updateListValidation } from "./validator";
 
 //CREATE LIST
-ListRoute.post('/', isLoggedIn, validate(newListValidation),asyncHandler(ListController.newList))
+// ListRoute.post('/', isLoggedIn, validate(newListValidation),asyncHandler(ListController.newList))
+ListRoute.post('/',validate(newListValidation),asyncHandler(ListController.newList))
 //GET LIST
 ListRoute.get('/', asyncHandler(ListController.getList))
 // ListRoute.get('/',isLoggedIn, asyncHandler(ListController.getList))

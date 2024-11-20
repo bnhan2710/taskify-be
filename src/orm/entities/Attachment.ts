@@ -6,7 +6,7 @@ export class Attachment {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => Card, (card) => card.attachments)
+  @ManyToOne(() => Card, (card) => card.attachments,{ onDelete: 'CASCADE' })
   card!: Card;
 
   @Column({ type: 'varchar', length: 255, nullable: true })

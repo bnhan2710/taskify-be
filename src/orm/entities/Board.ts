@@ -27,7 +27,7 @@ import {
     @Column({ type: "text", nullable: true })
     description!: string;
 
-    @ManyToOne(() => User, user => user.boards)
+    @ManyToOne(() => User, user => user.boards,{ onDelete: 'CASCADE' })
     @JoinColumn({ name: 'owner_id' }) 
     user!: User;
   
@@ -37,7 +37,7 @@ import {
     @UpdateDateColumn({ type: 'timestamp' })
     updatedAt!: Date;
   
-    @ManyToOne(() => Workspace, workspace => workspace.boards)
+    @ManyToOne(() => Workspace, workspace => workspace.boards,{ onDelete: 'CASCADE' })
     @JoinColumn({ name: 'workspace_id' }) 
     workspace!: Workspace;
     
@@ -52,10 +52,10 @@ import {
     })
     users!: User[];
   
-    @OneToMany(() => List, list => list.board)
+    @OneToMany(() => List, list => list.board, { cascade: true, onDelete: 'CASCADE' })
     lists!: List[];
   
-    @OneToMany(() => ActivityLog, activityLog => activityLog.board)
+    @OneToMany(() => ActivityLog, activityLog => activityLog.board , { cascade: true, onDelete: 'CASCADE' })
     activityLogs!: ActivityLog[];
   }
   

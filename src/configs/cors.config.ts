@@ -8,7 +8,6 @@ export const corsOptions = {
         if (!origin && env.BUILD_MODE === 'development') {
            return callback(null, true);
         } 
-        console.log('origin', origin);
         if (WHITELIST_DOMAIN.FE === origin) {
             return callback(null, true);
         }

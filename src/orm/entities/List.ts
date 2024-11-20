@@ -9,11 +9,11 @@ export class List {
     @Column({ type: "varchar", length: 255 })
     title!: string;
 
-    @ManyToOne(() => Board, board => board.lists)
+    @ManyToOne(() => Board, board => board.lists,{ onDelete: 'CASCADE' })
     @JoinColumn({name: 'board_id'})
     board!: Board
     
-    @OneToMany(() => Card, card => card.list)
+    @OneToMany(() => Card, card => card.list , { cascade: true, onDelete: 'CASCADE' })
     cards!: Card[];
 
     @Column("simple-array", { nullable: true })

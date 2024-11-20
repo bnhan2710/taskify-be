@@ -9,7 +9,7 @@ export class Checklist {
     @Column({ type: "varchar", length: 255 })
     description!: string;
 
-    @ManyToOne(() => Card, card => card.checklists)
+    @ManyToOne(() => Card, card => card.checklists,{ onDelete: 'CASCADE' })
     @JoinColumn({name: 'card_id'})
     card!: Card;
 

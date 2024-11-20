@@ -41,8 +41,7 @@ class ListRepository {
     }
 
     public async remove( list:List ):Promise<void>{
-            await this.repository.remove(list)
-    }
+        await this.repository.remove(list)
 }
-
+}
 export default new ListRepository()

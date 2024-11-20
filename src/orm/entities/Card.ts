@@ -15,7 +15,7 @@ export class Card {
   @Column({ type: 'text', nullable: true })
   description!: string;
 
-  @ManyToOne(() => List, (list) => list.cards)
+  @ManyToOne(() => List, (list) => list.cards,{ onDelete: 'CASCADE' })
   @JoinColumn({ name: 'list_id' })
   list!: List;
 
@@ -25,15 +25,15 @@ export class Card {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date;
 
-  @OneToMany(()=> Checklist , checklist => checklist.card)
+  @OneToMany(()=> Checklist , checklist => checklist.card, { cascade: true, onDelete: 'CASCADE' })
   checklists!:Checklist[]
 
-  @OneToMany(() => Comment, comment => comment.card)
+  @OneToMany(() => Comment, comment => comment.card ,{ cascade: true, onDelete: 'CASCADE' })
   comments!: Comment[];
 
-  @OneToMany(() => Attachment, attachment => attachment.card)
+  @OneToMany(() => Attachment, attachment => attachment.card ,{ cascade: true, onDelete: 'CASCADE' })
   attachments!: Attachment[];
 
-  @OneToMany(() => ActivityLog , activity_logs => activity_logs.card)
+  @OneToMany(() => ActivityLog , activity_logs => activity_logs.card, { cascade: true, onDelete: 'CASCADE' })
   ativityLogs!:ActivityLog[]
 }

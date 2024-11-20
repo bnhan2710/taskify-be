@@ -13,10 +13,10 @@ export class ActivityLog {
   @Column({ type: 'varchar', length: 255 })
   description!: string;
 
-  @ManyToOne(() => Board, (board) => board.activityLogs)
+  @ManyToOne(() => Board, (board) => board.activityLogs,{ onDelete: 'CASCADE' })
   board!: Board;
     
-  @ManyToOne(() => Card, (card) => card.ativityLogs, { nullable: true })
+  @ManyToOne(() => Card, (card) => card.ativityLogs, { nullable: true, onDelete: 'CASCADE' })
   card!: Card;
 
   @CreateDateColumn({ type: 'timestamp' })

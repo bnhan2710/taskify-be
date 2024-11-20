@@ -5,6 +5,7 @@ import { Gender } from "../../common/enums/gender";
 import { Board } from "./Board";
 import { ActivityLog } from "./Activity_Log";
 import { Token } from "./Token";
+import { Comment } from "./Comment";
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
@@ -37,7 +38,7 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date
 
-  @ManyToMany(() => Role, role => role.users , {onDelete:'CASCADE'})
+  @ManyToMany(() => Role, role => role.users)
   @JoinTable({
     name: 'user_roles',
     joinColumn:{name: 'user_id' , referencedColumnName: 'id' },
@@ -56,6 +57,9 @@ export class User {
 
   @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
   activityLogs!: ActivityLog[];
+
+  @OneToMany(() => Comment, comment => comment.user)
+  comments!: Comment[];
 
   @OneToMany(() => Token, token => token.user)
   tokens!: Token[];
