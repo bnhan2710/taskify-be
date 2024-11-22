@@ -16,8 +16,8 @@ export function isLoggedIn(req: Request, res: Response, next: NextFunction) : vo
             if (err) {
                 return next(new AuthFailError('Token is invalid'));
             }
-            req.user = decoded as JwtPayload
-            const userCache : any = await CacheUtil.getOneUser(req.user.id)
+            req.userJwt = decoded as JwtPayload
+            const userCache : any = await CacheUtil.getOneUser(req.userJwt.id)
 
             if(!userCache || !userCache.permission){
                 return next(new AuthFailError('You are not allowed to access'));
@@ -28,10 +28,10 @@ export function isLoggedIn(req: Request, res: Response, next: NextFunction) : vo
 
 export function canAccessBy(...allowedPermissions: string[]){
     return async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
-           if(!req.user || !req.user.id){
+           if(!req.user || !req.userJwt.id){
                 return next(new AuthFailError('You need to login to access'));
         }
-        const userId = req.user.id
+        const userId = req.userJwt.id
             const userCache : any = await CacheUtil.getOneUser(userId)
         
             if(!userCache || !userCache.permission){

@@ -40,6 +40,31 @@ class AuthService {
             }
     }
 
+    public async googleLogin(user: User):Promise<{accessToken: string} | undefined>{
+        if(!user){
+            throw new BadRequestError('User does not valid');
+        }
+        const payloadData = {
+            id: user.id,
+            username: user.username
+        }
+        console.log(user)
+        const refreshToken = await generateRefreshToken(payloadData)
+        const accessToken = await generateAccessToken(payloadData)
+        await this.tokenRepository.find({where:{user: user}})
+        if(user){
+            await this.tokenRepository.delete({user: user})
+        }
+        await this.tokenRepository.save({
+            token: refreshToken,
+            type: TokenEnum.REFRESH,
+            expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
+            user: user
+        })
+        return {
+            accessToken
+        }
+    }
     public async register(registerDto: RegisterDto):Promise<void>{
             const ExitsUser = await this.userRepository.findOne({ where: { username: registerDto.username } });
             if(ExitsUser){
@@ -64,6 +89,7 @@ class AuthService {
         }
         await this.tokenRepository.delete({user: user})
     }
+
 }
 
 

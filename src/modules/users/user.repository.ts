@@ -1,14 +1,25 @@
 import connection from "../../configs/database.connect";
 import { User } from '../../orm/entities/User';
 import { Repository } from "typeorm";
+import { IUserDTO } from "./dto";
 class UserRepository {
     private readonly repository: Repository<User>;
     constructor() {
         this.repository = connection.getRepository(User);
     }
 
+    public async create(user: IUserDTO): Promise<void> {
+        const newUser = this.repository.create(user);
+        await this.repository.save(newUser);
+        
+    }
+
     public async findOneById(id: number): Promise<User | null> {
         return await this.repository.findOne({ where: { id } });
+    }
+
+    public async findOnebyEmail(email: string): Promise<User | null> {
+        return await this.repository.findOne({ where: { email } });
     }
 
     public async findAll(): Promise<User[]> {

@@ -9,4 +9,5 @@ const router = Router();
 router.post('/upload', upload.single('file'), asyncHandler(AttachmentController.uploadAttachment));
 router.post('/link', validate(attachmentLinkValidation), asyncHandler(AttachmentController.linkAttachment));
 router.delete('/delete/:id', asyncHandler(AttachmentController.removeAttachment));
+
 export default router;

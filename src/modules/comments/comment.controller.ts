@@ -5,7 +5,7 @@ import { commentDTO, commentUpdateDTO } from "./dto";
 class CommentController{
     public async newComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentDto = commentDTO(req.body);
-        const userId = req.user.id;
+        const userId = req.userJwt.id;
         await CommentService.newComment(commentDto,userId);
         new CREATED({
             message: 'Comment created successfully'
@@ -29,7 +29,7 @@ class CommentController{
 
     public async updateComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentId = parseInt(req.params.id);
-        const userId = req.user.id;
+        const userId = req.userJwt.id;
         const updateCommentDto = commentUpdateDTO(req.body);
         await CommentService.updateComment(updateCommentDto, commentId,userId);
         new OK({
@@ -39,7 +39,7 @@ class CommentController{
 
     public async removeComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentId = parseInt(req.params.id);
-        const userId = req.user.id;
+        const userId = req.userJwt.id;
         await CommentService.removeComment(commentId,userId);
         new OK({
             message: 'Comment removed successfully'

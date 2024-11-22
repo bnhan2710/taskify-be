@@ -6,7 +6,9 @@ import { UpdateUserDTO } from "./dto/index";
 
 class UserController {
     public async getMe(req:Request, res: Response, next:NextFunction){
-      const id = parseInt(req.user.id)
+      
+      const id = req.userJwt.id 
+
       const user = await UserService.getMe(id)
       res.status(StatusCodes.OK).json(user)
     }

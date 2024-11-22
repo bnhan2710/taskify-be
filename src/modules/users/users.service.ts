@@ -3,12 +3,15 @@ import { User } from '../../orm/entities/User';
 import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
 import userRepository from './user.repository';
+import { IUserDTO } from './dto';
 
 class UserService {
+
+    
     public async getMe(id: number): Promise<User | null> {
         return await userRepository.findOneById(id);
     }
-
+    
     public async getAll(): Promise<User[]> {
         const users = await userRepository.findAll();
         if (!users.length) {
@@ -16,7 +19,7 @@ class UserService {
         }
         return users;
     }
-
+    
     public async getOneUserById(id: number): Promise<User | null> {
         const user = await userRepository.findOneById(id);
         if (!user) {
@@ -24,7 +27,16 @@ class UserService {
         }
         return user;
     }
-
+    
+    public async getUserByEmail(email: string): Promise<User | null> {
+        const user = await userRepository.findOnebyEmail(email);
+        return user;
+    }
+    
+    public async create(newUser: IUserDTO): Promise<void> {
+        await userRepository.create(newUser);
+    }
+    
     public async updateOneUserById(id: number, updateUserDto: UpdateUserDto): Promise<void> {
         const user = await userRepository.findOneById(id);
         if (!user) {

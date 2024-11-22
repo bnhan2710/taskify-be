@@ -22,9 +22,16 @@ class AuthController {
         }).send(res);
     }
     public async logout(req:Request, res:Response, next: NextFunction){
-        const userId = req.user.id
+        const userId = req.userJwt.id
         await AuthService.logout(userId)
         res.send({message: 'Logout successfully'})
+    }
+
+    public async googleLogin(req: Request, res: Response, next: NextFunction){
+        new OK({
+            message: 'Login successfully',
+            data: await AuthService.googleLogin(req.user as any)
+        }).send(res);
     }
 }
 

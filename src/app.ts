@@ -9,7 +9,8 @@ import { env } from './configs/env.config';
 import { errorHandler } from './handler/errorHandle';
 import v1Api from './routes/v1.route'
 const PORT : string | number = env.PORT || '8000';
-
+import session from 'express-session';
+import passport from 'passport';
 const app:Express = express();
 
 //Connection to database`
@@ -17,7 +18,16 @@ import './configs/database.connect';
 //Connection to redis
 import './configs/redis.config';
 //Middlewware
+
 app.use(express.json())
+app.use(session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  }));
+  
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(morgan('dev'));

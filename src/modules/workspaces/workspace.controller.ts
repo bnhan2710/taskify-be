@@ -6,7 +6,7 @@ import { Workspace } from '../../orm/entities/Workspace';
 class WorkspaceController{ 
     public async newWorkspace(req: Request, res: Response , next: NextFunction): Promise<void> {
         const newWorkSpaceDto = NewWorkspaceDTO(req.body)
-        const ownerId = req.user.id
+        const ownerId = req.userJwt.id
         await WorkspaceService.newWorkspace(newWorkSpaceDto, ownerId)
         new CREATED({
             message: 'Create Workspace successfully',
@@ -32,7 +32,7 @@ class WorkspaceController{
     }
     
     public async getMyworkpspace(req:Request, res: Response, next: NextFunction): Promise<void> {
-        const userId = parseInt(req.user.id)
+        const userId = parseInt(req.userJwt.id)
         new OK({
             message: 'Get workspace successfully',
             data: await WorkspaceService.getMyworkspace(userId)
