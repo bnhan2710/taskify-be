@@ -6,7 +6,7 @@ import userRepository from "../users/user.repository";
 import { NotFoundError, BadRequestError, ForbiddenError } from "../../handler/error.response";
 
 class CommentService {
-    public async newComment(commentDto: IComment, userId:number): Promise<void> {
+    public async newComment(commentDto: IComment, userId:string): Promise<void> {
         const card = await cardRepository.findById(commentDto.cardId);
         if (!card) {
             throw new NotFoundError('Card not found');
@@ -22,7 +22,7 @@ class CommentService {
         return await commentRepository.ListAllComments();
     }
 
-    public async getCommentById(commentId: number): Promise<Comment> {
+    public async getCommentById(commentId: string): Promise<Comment> {
         const comment = await commentRepository.findById(commentId);
         if (!comment) {
             throw new NotFoundError('Comment not found');
@@ -30,7 +30,7 @@ class CommentService {
         return comment;
     }
 
-    public async updateComment(updateCommentDto: ICommentUpdate, commentId: number ,userId: number): Promise<void> {
+    public async updateComment(updateCommentDto: ICommentUpdate, commentId: string ,userId: string): Promise<void> {
         const comment = await commentRepository.findById(commentId);
         if (!comment) {
             throw new NotFoundError('Comment not found');
@@ -41,7 +41,7 @@ class CommentService {
         await commentRepository.update(updateCommentDto, commentId);
     }
 
-    public async removeComment(commentId: number, userId:number): Promise<void> {
+    public async removeComment(commentId: string, userId:string): Promise<void> {
         const comment = await commentRepository.findById(commentId);
         if (!comment) {
             throw new NotFoundError('Comment not found');

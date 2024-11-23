@@ -15,7 +15,7 @@ class WorkspaceController{
 
     public async updateWorkspace(req:Request, res: Response, next: NextFunction): Promise<void> {
         const updateWorkspaceDto = UpdateWorkspaceDTO(req.body)
-        const workspaceId = parseInt(req.params.id)
+        const workspaceId = req.params.id
         await WorkspaceService.updateWorkspace(updateWorkspaceDto, workspaceId)
         new OK({
             message:'Update Workspace succesfully'
@@ -23,8 +23,8 @@ class WorkspaceController{
     }
     
     public async addUser(req:Request, res: Response, next: NextFunction){
-        const userId = parseInt(req.body.id)
-        const workspaceId= parseInt(req.params.id)
+        const userId = req.body.id
+        const workspaceId = req.params.id
         await WorkspaceService.addUser( userId, workspaceId)
         new OK({
             message: 'Add user to workspace succesfully'
@@ -32,7 +32,7 @@ class WorkspaceController{
     }
     
     public async getMyworkpspace(req:Request, res: Response, next: NextFunction): Promise<void> {
-        const userId = parseInt(req.userJwt.id)
+        const userId = req.userJwt.id
         new OK({
             message: 'Get workspace successfully',
             data: await WorkspaceService.getMyworkspace(userId)
@@ -40,7 +40,7 @@ class WorkspaceController{
     }   
 
     public async getWorkspaceById(req:Request, res: Response, next: NextFunction): Promise<void> {
-        const workspaceId = parseInt(req.params.id)
+        const workspaceId = req.params.id
         new OK({
             message: 'Get workspace successfully',
             data: await WorkspaceService.getWorkspaceById(workspaceId)
@@ -48,7 +48,7 @@ class WorkspaceController{
     }
 
     public async removeWorkspace(req:Request, res: Response, next: NextFunction): Promise<void> {
-        const workspaceId = parseInt(req.params.id)
+        const workspaceId = req.params.id
         await WorkspaceService.removeWorkspace(workspaceId)
         new OK({
             message: 'Remove workspace successfully'

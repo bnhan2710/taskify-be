@@ -6,13 +6,13 @@ import setOneUser from "../../utils/cache.util"
 class RoleController {
     
     public async GetRoleofUser(req: Request , res: Response ,next: NextFunction){
-        const userId = parseInt(req.params.id)
+        const userId = req.params.id
         const role = await roleService.GetRoleofUser(userId)
         res.send(role)
     }
 
     public async GetPermissionofRole(req: Request , res: Response ,next: NextFunction){
-        const roleId  = parseInt(req.params.id)
+        const roleId  = req.params.id
         const permissions = await roleService.GetPermissionofRole(roleId)
         res.send(permissions)
     }

@@ -3,8 +3,8 @@ import { User } from "./User";
 import { Board } from "./Board";
 @Entity('workspaces')
 export class Workspace {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: "varchar", length: 255 })
     name!: string;

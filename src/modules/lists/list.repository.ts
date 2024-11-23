@@ -23,19 +23,20 @@ class ListRepository {
     
         return savedList;
     }
-    public async findById(listId: number): Promise<List | null> {
+    public async findById(listId: string): Promise<List | null> {
         return await this.repository.findOne({ where: { id: listId } });
     }
 
     
-    public async getByBoard(boardId:number):Promise<List[]>{
+    public async getByBoard(boardId:string):Promise<List[]>{
             return await this.repository.find({where: {board:{id:boardId} }})
     }
-    public async updateList(updateListDto: IUpdateList, listId:number):Promise<void>{
+    public async updateList(updateListDto: IUpdateList, listId:string):Promise<void>{
         await this.repository.update(
             { id:listId }, 
             {
-                title: updateListDto.title
+                title: updateListDto.title,
+                cardOrderIds: updateListDto.cardOrderIds
             }
         )
     }

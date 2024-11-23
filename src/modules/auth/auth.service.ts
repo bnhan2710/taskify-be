@@ -82,7 +82,7 @@ class AuthService {
             })
             
        }
-    public async logout(userId: number):Promise<void>{
+    public async logout(userId: string):Promise<void>{
         const user = await this.userRepository.findOne({where:{id: userId}})
         if(!user){
             throw new NotFoundError('User not found!')

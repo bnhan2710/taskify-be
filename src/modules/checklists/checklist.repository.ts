@@ -17,15 +17,15 @@ class ChecklistRepository {
         await this.repository.save(checklist)
     }
 
-    public async getChecklistById(checklistid: number): Promise<Checklist | null> {
+    public async getChecklistById(checklistid: string): Promise<Checklist | null> {
         return await this.repository.findOne({where: {id: checklistid}})
     }
 
-    public async getCheckListByCard(cardId: number): Promise<Checklist[]> {
+    public async getCheckListByCard(cardId: string): Promise<Checklist[]> {
         return await this.repository.find({where: {card: { id: cardId }}})
     }
 
-    public async updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId:number):Promise<void>{
+    public async updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId:string):Promise<void>{
         await this.repository.update(
             {id:checklistId},
             {

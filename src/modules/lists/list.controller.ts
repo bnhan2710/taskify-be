@@ -12,7 +12,7 @@ class ListController {
     }
 
     public async updateList(req: Request, res: Response, next: NextFunction) {
-        const listId = parseInt(req.params.id);
+        const listId = req.params.id
         const updateListDto = UpdateListDTO(req.body);
         await ListService.updateList(updateListDto ,listId);
         new OK({
@@ -21,7 +21,7 @@ class ListController {
     }
 
     public async removeList(req: Request, res: Response, next: NextFunction) {
-        const listId = parseInt(req.params.id);
+        const listId = req.params.id
         await ListService.removeList(listId);
         new OK({
             message: "Remove List Successfully"
@@ -29,7 +29,7 @@ class ListController {
     }
 
     public async getList(req: Request, res: Response, next: NextFunction){
-        const boardId = parseInt(req.query.boardId as string);
+        const boardId = req.query.boardId as string;
         new OK({
             message: "Get List Successfully",
             data: await ListService.getListsByBoard(boardId)
@@ -37,7 +37,7 @@ class ListController {
     }
 
     public async getListById(req: Request, res: Response, next: NextFunction){
-        const listId = parseInt(req.params.id);
+        const listId = req.params.id
         new OK({
             message: "Get List Successfully",
             data: await ListService.getListById(listId)

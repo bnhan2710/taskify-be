@@ -10,7 +10,7 @@ class CommentRepository {
         this.repository = connection.getRepository(Comment);
     }
 
-    public async findById(id: number): Promise<Comment | null> {
+    public async findById(id: string): Promise<Comment | null> {
         return await this.repository.findOne({where: {id}, relations: ['user']});
     }
 
@@ -27,7 +27,7 @@ class CommentRepository {
         await this.repository.save(newComment);
     }
 
-    public async update(updateCommentDto: ICommentUpdate, commentId:number ): Promise<void> {
+    public async update(updateCommentDto: ICommentUpdate, commentId:string ): Promise<void> {
         await this.repository.update({id: commentId}, {text: updateCommentDto.text});
     }
 

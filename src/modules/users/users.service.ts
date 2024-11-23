@@ -8,7 +8,7 @@ import { IUserDTO } from './dto';
 class UserService {
 
     
-    public async getMe(id: number): Promise<User | null> {
+    public async getMe(id: string): Promise<User | null> {
         return await userRepository.findOneById(id);
     }
     
@@ -20,7 +20,7 @@ class UserService {
         return users;
     }
     
-    public async getOneUserById(id: number): Promise<User | null> {
+    public async getOneUserById(id: string): Promise<User | null> {
         const user = await userRepository.findOneById(id);
         if (!user) {
             throw new NotFoundError(`User with ID ${id} not found`);
@@ -37,7 +37,7 @@ class UserService {
         await userRepository.create(newUser);
     }
     
-    public async updateOneUserById(id: number, updateUserDto: UpdateUserDto): Promise<void> {
+    public async updateOneUserById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
         const user = await userRepository.findOneById(id);
         if (!user) {
             throw new BadRequestError('User not found');
@@ -45,7 +45,7 @@ class UserService {
         await userRepository.updateById(id, { fullName: updateUserDto.fullName });
     }
 
-    public async deleteUserById(id: number): Promise<void> {
+    public async deleteUserById(id: string): Promise<void> {
         const user = await userRepository.findOneById(id);
         if (!user) {
             throw new NotFoundError('User not found');

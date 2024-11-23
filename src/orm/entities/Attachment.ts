@@ -3,8 +3,8 @@ import { Card } from "./Card";
 
 @Entity('attachments')
 export class Attachment {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @ManyToOne(() => Card, (card) => card.attachments,{ onDelete: 'CASCADE' })
   card!: Card;

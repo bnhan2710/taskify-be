@@ -24,7 +24,7 @@ class AttachmentController{
 
   public async removeAttachment(req: Request, res: Response, next: NextFunction){
     const {id} = req.params
-    await AttachmentService.removeAttachment(parseInt(id))
+    await AttachmentService.removeAttachment(id)
     new OK({
       message: 'Delete successfully'
     }).send(res)

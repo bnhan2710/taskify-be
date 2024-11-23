@@ -1,7 +1,7 @@
 export interface INewCard{
     title: string;       
     description: string;
-    listId: number;
+    listId: string;
 }
 
 export function NewCardDTO(body: any): INewCard {

@@ -20,11 +20,11 @@ class WorkspaceRepository {
         return await this.repository.save(newWorkspace);
     }
 
-    public async findbyId(workspaceId: number): Promise<Workspace | null> {
+    public async findbyId(workspaceId: string): Promise<Workspace | null> {
         return await this.repository.findOne({ where: { id: workspaceId } });
     }
 
-    public async findWorkspaceUsers(workspaceId: number): Promise<Workspace> {
+    public async findWorkspaceUsers(workspaceId: string): Promise<Workspace> {
         const workspace = await this.repository.findOne({ where: { id: workspaceId }, relations: ["users"] });
         if (!workspace) {
             throw new NotFoundError("Workspace not found");
@@ -32,9 +32,9 @@ class WorkspaceRepository {
         return workspace;
     }
 
-   public async update(workspaceId: number, updateWorkspaceDto: IUpdateWorkspace): Promise<void> {
+   public async update(workspaceId: string, updateWorkspaceDto: IUpdateWorkspace): Promise<void> {
         await this.repository.update(
-            { id: workspaceId },
+            { id: workspaceId } ,
             {
                 name: updateWorkspaceDto.name,
                 description: updateWorkspaceDto.description,
@@ -47,7 +47,7 @@ class WorkspaceRepository {
         await this.repository.save(workspace);
     }
 
-    public async getMy(userId: number): Promise<[Workspace[], Workspace[]]> {
+    public async getMy(userId: string): Promise<[Workspace[], Workspace[]]> {
         const myWorkspaces = await this.repository.find({
             where: { owner: { id: userId } },
         });

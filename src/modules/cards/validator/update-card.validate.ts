@@ -7,8 +7,8 @@ export const updateCardValidation = Joi.object({
     description: Joi.string().min(1).max(255).messages({
         "string.base": "Description must be a string",
     }),
-    listId: Joi.number().required().messages({
-        "number.base": "ListId must be a number",
+    listId: Joi.string().required().messages({
+        "string.base": "ListId must be a string",
         "any.required": "ListId is required",
     }),
 });

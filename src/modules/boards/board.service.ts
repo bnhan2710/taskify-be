@@ -14,7 +14,7 @@ class BoardService{
         return await boardRepository.insert(newBoardDto, workspace)
     }   
 
-    public async updateBoard(updateBoardDto:IUpdateBoard, boardId:number){
+    public async updateBoard(updateBoardDto:IUpdateBoard, boardId:string){
         const board = await boardRepository.findById(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
@@ -22,7 +22,7 @@ class BoardService{
         return await boardRepository.update(updateBoardDto , boardId)
     }
 
-    public async removeBoard(boardId:number){
+    public async removeBoard(boardId:string){
         const board = await boardRepository.findById(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
@@ -30,7 +30,7 @@ class BoardService{
         return await boardRepository.detele(board)
     }
 
-    public async getBoardByWorkspace(workspaceId: number){
+    public async getBoardByWorkspace(workspaceId: string){
         const workspace = await workspaceRepository.findbyId(workspaceId)
         if(!workspace){
             throw new NotFoundError('Workspace not found')
@@ -38,7 +38,7 @@ class BoardService{
         return await boardRepository.getBoardbyWorkspace(workspaceId)
     }
 
-    public async getBoardById(boardId: number){
+    public async getBoardById(boardId: string){
         const board = await boardRepository.getBoardDetail(boardId)
         if(!board){
             throw new NotFoundError('Board not found')

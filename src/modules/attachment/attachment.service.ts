@@ -8,7 +8,7 @@ import connection from "../../configs/database.connect";
 import cardRepository from "../cards/card.repository";
 import { AttachmentDto } from "./dto/attachment.dto";
 class AttachmentService {
-    public async uploadAttachment(file: Express.Multer.File | undefined, cardId: number): Promise<{url: string, public_id: string} | undefined> {
+    public async uploadAttachment(file: Express.Multer.File | undefined, cardId: string): Promise<{url: string, public_id: string} | undefined> {
         if (!file) {
             throw new BadRequestError('No file uploaded');
         }
@@ -62,7 +62,7 @@ class AttachmentService {
         });
     }
 
-    public async removeAttachment(id: number): Promise<void> {
+    public async removeAttachment(id: string): Promise<void> {
         const attachment = await connection.getRepository(Attachment).findOne({ where: { id } });
         if (!attachment) {
             throw new NotFoundError('Attachment not found');

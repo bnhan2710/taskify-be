@@ -3,8 +3,8 @@ import { Board } from "./Board"
 import { Card } from "./Card";
 @Entity('lists')
 export class List {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: "varchar", length: 255 })
     title!: string;

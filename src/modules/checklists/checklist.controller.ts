@@ -14,7 +14,7 @@ class ChecklistController{
     }
 
     public async getCheckListbyCard(req:Request, res: Response,next: NextFunction):Promise<void>{
-        const cardId = parseInt(req.query.cardId as string)
+        const cardId = req.query.cardId as string
         new OK({
            message: 'Get checklist successfully',
            data: await ChecklistService.getChecklistbyCard(cardId)
@@ -22,7 +22,7 @@ class ChecklistController{
     }
 
     public async getChecklistbyId(req: Request, res: Response, next: NextFunction):Promise<void>{
-        const checklistId = parseInt(req.params.id)
+        const checklistId = req.params.id
         new OK({
             message: 'Get checklist successfully',
             data: await ChecklistService.getChecklistbyId(checklistId)
@@ -30,7 +30,7 @@ class ChecklistController{
     }
 
     public async updateChecklist(req:Request, res:Response, next:NextFunction):Promise<void>{
-        const checklistId = parseInt(req.params.id)
+        const checklistId = req.params.id
         const updateChecklistDto = UpdateChecklistDTO(req.body)
         await checklistService.updateChecklist(updateChecklistDto, checklistId)
         new OK({
@@ -40,7 +40,7 @@ class ChecklistController{
     }
 
     public async removeChecklist(req:Request, res: Response , next:NextFunction ):Promise<void>{
-        const checklistId = parseInt(req.params.id)
+        const checklistId = req.params.id
         await checklistService.removeChecklist(checklistId)
         new OK({
             message:'Delete checklist successfully'

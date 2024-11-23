@@ -15,7 +15,8 @@ ListRoute.get('/', asyncHandler(ListController.getList))
 //GET LIST BY ID
 ListRoute.get('/:id',isLoggedIn, asyncHandler(ListController.getListById))
 //UPDATE LIST
-ListRoute.put('/:id', isLoggedIn , validate(updateListValidation), asyncHandler(ListController.updateList))
+ListRoute.put('/:id' , validate(updateListValidation), asyncHandler(ListController.updateList))
+// ListRoute.put('/:id', isLoggedIn , validate(updateListValidation), asyncHandler(ListController.updateList))
 //REMOVRE LIST
 ListRoute.delete('/:id' , isLoggedIn , asyncHandler(ListController.removeList))
 

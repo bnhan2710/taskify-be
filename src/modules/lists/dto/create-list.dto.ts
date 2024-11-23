@@ -1,6 +1,6 @@
 export interface INewList {
     title:string,
-    boardId: number;
+    boardId: string;
 }
 
 export function NewListDTO(body: any): INewList {

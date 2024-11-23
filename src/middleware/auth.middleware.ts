@@ -18,10 +18,10 @@ export function isLoggedIn(req: Request, res: Response, next: NextFunction) : vo
             }
             req.userJwt = decoded as JwtPayload
             const userCache : any = await CacheUtil.getOneUser(req.userJwt.id)
-
-            if(!userCache || !userCache.permission){
-                return next(new AuthFailError('You are not allowed to access'));
-            }
+            // console.log('userCache:',userCache)
+            // if(!userCache || !userCache.permission){
+            //     return next(new AuthFailError('You are not allowed to access'));
+            // }
             next();
         });
 }

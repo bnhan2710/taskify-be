@@ -15,7 +15,8 @@ CardRoute.get('/' ,asyncHandler(CardController.getCardByList))
 //GET CARD BY ID
 CardRoute.get('/:id',isLoggedIn ,asyncHandler(CardController.getCardById))
 //UPDATE CARD
-CardRoute.put('/:id',isLoggedIn,validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
+// CardRoute.put('/:id',isLoggedIn,validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
+CardRoute.put('/:id',validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
 //REMOVE CARD
 CardRoute.delete('/:id',isLoggedIn ,asyncHandler(CardController.removeCard))
 

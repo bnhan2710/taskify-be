@@ -2,7 +2,7 @@
 export interface INewBoard{
     title: string,
     description?: string,
-    workspaceId: number
+    workspaceId: string
 }
 
 export function NewBoardDTO(body:any): INewBoard{

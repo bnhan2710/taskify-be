@@ -3,8 +3,8 @@ import { Card } from "./Card";
 
 @Entity('checklists')
 export class Checklist {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
 
     @Column({ type: "varchar", length: 255 })
     description!: string;

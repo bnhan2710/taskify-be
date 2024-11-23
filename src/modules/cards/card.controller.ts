@@ -13,7 +13,7 @@ class CardController {
     }
 
     public async getCardByList(req: Request, res: Response, next: NextFunction) {
-        const listId = parseInt(req.query.listId as string);
+        const listId = req.query.listId as string
         new OK({
             message: "Get Card Successfully",
             data: await CardService.getCardByList(listId)
@@ -21,7 +21,7 @@ class CardController {
     }
 
     public async getCardById(req: Request, res: Response, next: NextFunction) {
-        const cardId = parseInt(req.params.id);
+        const cardId = req.params.id
         new OK({
             message: "Get Card Successfully",
             data: await CardService.getCardById(cardId)
@@ -30,7 +30,7 @@ class CardController {
 
     public async updateCard(req: Request, res: Response, next: NextFunction) {
         const updateCardDto = UpdateCardDTO(req.body);
-        const cardId = parseInt(req.params.id);
+        const cardId = req.params.id
         await CardService.updateCard(cardId, updateCardDto);
         new OK({
             message: "Update Card Successfully"
@@ -38,7 +38,7 @@ class CardController {
     }
 
     public async removeCard(req: Request, res: Response, next: NextFunction) {
-        const cardId = parseInt(req.params.id);
+        const cardId = req.params.id
         await CardService.removeCard(cardId);
         new OK({
             message: "Remove Card Successfully"

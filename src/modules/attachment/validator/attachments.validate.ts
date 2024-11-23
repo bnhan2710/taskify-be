@@ -7,7 +7,7 @@ export const attachmentValidation = Joi.object({
   });
 
 export const attachmentLinkValidation = Joi.object({
-    cardId: Joi.number().required(),  
+    cardId: Joi.string().required(),  
     url: Joi.string().uri().required().messages({
       'string.uri': 'Invalid URL',
     }),

@@ -1,6 +1,6 @@
 export interface IComment{
     text: string
-    cardId: number
+    cardId: string
 }
 
 export function commentDTO(comment: IComment){

@@ -5,7 +5,7 @@ import WorkspaceRepository from "./workspace.repository";
 import UserRepository from "../users/user.repository";
 class WorkSpaceService{
 
-    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:number): Promise<Workspace> {
+    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:string): Promise<Workspace> {
         const owner = await UserRepository.findOneById(ownerId);
         if (!owner) {
             throw new NotFoundError("User not found");
@@ -13,7 +13,7 @@ class WorkSpaceService{
         return await WorkspaceRepository.insert(createWorkspaceDto, owner);
     }
 
-    public async getMyworkspace(userId:number):Promise<[Workspace[],Workspace[]]> {
+    public async getMyworkspace(userId:string):Promise<[Workspace[],Workspace[]]> {
         const workspaces = await WorkspaceRepository.getMy(userId)
         if(!workspaces){
             throw new NotFoundError('Not found any workspace')
@@ -21,7 +21,7 @@ class WorkSpaceService{
         return workspaces
     }   
 
-    public async getWorkspaceById(workspaceId: number): Promise<Workspace> {
+    public async getWorkspaceById(workspaceId: string): Promise<Workspace> {
         const workspace = await WorkspaceRepository.findbyId(workspaceId);
         if (!workspace) {
             throw new NotFoundError("Workspace not found");
@@ -29,7 +29,7 @@ class WorkSpaceService{
         return workspace;
     }
 
-    public async updateWorkspace(updateWorkspaceDto: IUpdateWorkspace, workspaceId: number): Promise<void> {
+    public async updateWorkspace(updateWorkspaceDto: IUpdateWorkspace, workspaceId: string): Promise<void> {
         const workspace = await WorkspaceRepository.findbyId(workspaceId);
         if (!workspace) {
             throw new NotFoundError("Workspace not found");
@@ -38,7 +38,7 @@ class WorkSpaceService{
     }
     
 
-    public async addUser(userId: number, workspaceId: number){
+    public async addUser(userId: string, workspaceId: string){
         const user = await UserRepository.findOneById(userId)
         if(!user){
             throw new NotFoundError('User not found')
@@ -54,7 +54,7 @@ class WorkSpaceService{
         await WorkspaceRepository.addUser(workspace, user)
     }
     
-    public async removeWorkspace(workspaceId: number): Promise<void> {
+    public async removeWorkspace(workspaceId: string): Promise<void> {
         const workspace = await WorkspaceRepository.findbyId(workspaceId);
         if (!workspace) {
             throw new NotFoundError("Workspace not found");

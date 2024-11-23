@@ -1,5 +1,5 @@
 export interface AttachmentDto {
-    cardId: number;
+    cardId: string;
     attachName?: string;
     url: string;
 }

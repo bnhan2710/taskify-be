@@ -4,8 +4,8 @@ export const newListValidation = Joi.object({
         'string.base': 'Title must be a string',
         'any.required': 'Title is required'
     }),
-    boardId: Joi.number().required().messages({
-        'number.base': 'BoardId must be a number',
+    boardId: Joi.string().required().messages({
+        'string.base': 'BoardId must be a string',
         'any.required': 'BoardId is required'
     })
 });

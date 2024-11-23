@@ -20,18 +20,18 @@ class BoardRepository{
         return await this.reposiotry.save(newBoard)
     }   
     
-    public async findById(boardId: number): Promise<Board | null> {
+    public async findById(boardId: string): Promise<Board | null> {
         return await this.reposiotry.findOne({ where: { id: boardId } });
     }
 
-    public async getBoardbyWorkspace(workspaceId:number){
+    public async getBoardbyWorkspace(workspaceId:string){
         await this.reposiotry.find({where: {workspace: {id: workspaceId}}})
     }
 
-    public async getBoardDetail(boardId:number){
+    public async getBoardDetail(boardId:string){
         return await this.reposiotry.findOne({where: {id: boardId}, relations:['lists', 'lists.cards']})
     }
-    public async update(updateBoardDto:IUpdateBoard, boardId:number){
+    public async update(updateBoardDto:IUpdateBoard, boardId:string){
         await this.reposiotry.update(
             { id:boardId }, 
             {

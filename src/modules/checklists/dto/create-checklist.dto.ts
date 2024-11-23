@@ -1,6 +1,6 @@
 export interface INewChecklist {
     description: string;
-    cardId: number;
+    cardId: string;
 }
 
 export function CreateChecklistDTO(body:any): INewChecklist {

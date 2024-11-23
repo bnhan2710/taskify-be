@@ -16,7 +16,7 @@ class BoardController{
 
     public async updateBoard(req:Request, res: Response, next: NextFunction){
         const updateBoardDto = UpdateBoardDTO(req.body)
-        const boardId = parseInt(req.params.id)
+        const boardId = req.params.id
         await BoardService.updateBoard(updateBoardDto, boardId)
         new OK({
             message: "Update Board Successfully"
@@ -24,7 +24,7 @@ class BoardController{
     }
 
     public async getBoardByWorkspace(req:Request, res: Response, next: NextFunction){
-        const workspaceId = parseInt(req.query.workspaceId as string)
+        const workspaceId = req.query.workspaceId as string
         new OK({
             message: "Get Board Successfully",
             data: await BoardService.getBoardByWorkspace(workspaceId)
@@ -32,7 +32,7 @@ class BoardController{
     }
 
     public async removeBoard(req:Request, res: Response, next: NextFunction){
-        const boardId = parseInt(req.params.id)
+        const boardId = req.params.id
         await BoardService.removeBoard(boardId)
         new OK({
             message: "Remove Board Successfully"
@@ -40,7 +40,7 @@ class BoardController{
    }
 
     public async getBoardById(req:Request, res: Response, next: NextFunction){
-        const boardId = parseInt(req.params.id)
+        const boardId = req.params.id
         new OK({
             message: "Get Board Successfully",
             data: await BoardService.getBoardById(boardId)

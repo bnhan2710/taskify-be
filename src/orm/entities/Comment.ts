@@ -3,8 +3,8 @@ import { Card } from "./Card";
 import { User } from "./User";
 @Entity('comments')
 export class Comment {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @ManyToOne(() => Card, (card) => card.comments,{ onDelete: 'CASCADE' })
   @JoinColumn({name: 'card_id'})

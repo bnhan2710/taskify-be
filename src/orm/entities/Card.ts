@@ -6,8 +6,8 @@ import { ActivityLog } from "./Activity_Log";
 import { Checklist } from "./Checklist";
 @Entity('cards')
 export class Card {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column({ type: 'varchar', length: 255 })
   title!: string;

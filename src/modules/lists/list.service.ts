@@ -14,7 +14,7 @@ class ListService {
         return await listRepository.insert(newListDto, board);
     }
     
-    public async getListsByBoard(boardId: number): Promise<List[]> {
+    public async getListsByBoard(boardId: string): Promise<List[]> {
         const board = boardRepository.findById(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
@@ -22,7 +22,7 @@ class ListService {
         return await listRepository.getByBoard(boardId);
     }
 
-    public async getListById(listId: number): Promise<List> {
+    public async getListById(listId: string): Promise<List> {
         const list = await listRepository.findById(listId);
         if (!list) {
             throw new NotFoundError('List not found');
@@ -30,7 +30,7 @@ class ListService {
         return list;
     }
     
-    public async updateList(updateListDto:IUpdateList , listId: number): Promise<void> {
+    public async updateList(updateListDto:IUpdateList , listId: string): Promise<void> {
         const list = await listRepository.findById(listId);
         if (!list) {
             throw new NotFoundError('List not found');
@@ -38,7 +38,7 @@ class ListService {
         await listRepository.updateList(updateListDto, listId);
     }
 
-    public async removeList(listId: number): Promise<void> {
+    public async removeList(listId: string): Promise<void> {
         const list = await listRepository.findById(listId);
         if (!list) {
             throw new NotFoundError('List not found');

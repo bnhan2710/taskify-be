@@ -4,8 +4,8 @@ import { User } from "./User";
 import { Board } from "./Board";
 @Entity('activity_logs')
 export class ActivityLog {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @ManyToOne(() => User, (user) => user.activityLogs)
   user!: User;

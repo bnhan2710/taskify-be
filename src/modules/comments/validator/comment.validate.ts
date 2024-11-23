@@ -6,9 +6,9 @@ export const commentSchema = Joi.object({
         'string.empty': `text cannot be an empty field`,
         'any.required': `text is a required field`,
     }),
-    cardId: Joi.number().required().messages({
-        'number.base': `cardId should be a type of 'number'`,
-        'number.empty': `cardId cannot be an empty field`,
+    cardId: Joi.string().required().messages({
+        'string.base': `cardId should be a type string'`,
+        'string.empty': `cardId cannot be an empty field`,
         'any.required': `cardId is a required field`,
     }),
 });

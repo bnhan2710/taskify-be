@@ -20,20 +20,21 @@ class CardRepository{
         await connection.getRepository(List).update(list.id, {cardOrderIds})
     }
 
-    public async getCardByList(listId:number){
+    public async getCardByList(listId:string){
         return await this.repository.find({where:{list:{id:listId}}})
     }
 
-    public async findById(cardId:number){
+    public async findById(cardId:string){
         return await this.repository.findOne({where:{id:cardId}})
     }
 
-    public async update(updateCardDto: IUpdateCard, cardId:number){
+    public async update(updateCardDto: IUpdateCard, cardId:string){
         await this.repository.update(
             {id:cardId},
             {
                 title: updateCardDto.title,
-                description: updateCardDto.description
+                description: updateCardDto.description,
+                list: { id: updateCardDto.listId}
             }
         )
     }

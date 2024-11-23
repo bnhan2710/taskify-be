@@ -14,7 +14,7 @@ class UserRepository {
         
     }
 
-    public async findOneById(id: number): Promise<User | null> {
+    public async findOneById(id: string): Promise<User | null> {
         return await this.repository.findOne({ where: { id } });
     }
 
@@ -33,11 +33,11 @@ class UserRepository {
         });
     }
     
-    public async updateById(id: number, updateData: Partial<User>): Promise<void> {
+    public async updateById(id: string, updateData: Partial<User>): Promise<void> {
         await this.repository.update({ id }, updateData);
     }
 
-    public async deleteById(id: number): Promise<void> {
+    public async deleteById(id: string): Promise<void> {
         await this.repository.delete({ id });
     }
 }

@@ -4,8 +4,8 @@ export const createChecklistValidation = Joi.object({
         "string.base": "Description must be a string",
         "string.max": "Description must be less than 255 characters",
     }),
-    cardId: Joi.number().required().messages({
-        "number.base": "ListId must be a number",
+    cardId: Joi.string().required().messages({
+        "string.base": "CardId must be a string",
         "any.required": "ListId is required",
     }),
 });

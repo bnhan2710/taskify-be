@@ -14,7 +14,7 @@ class ChecklistService{
 
     }   
 
-    public async getChecklistbyCard(cardId:number):Promise<Checklist[]>{
+    public async getChecklistbyCard(cardId:string):Promise<Checklist[]>{
         const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
@@ -22,7 +22,7 @@ class ChecklistService{
         return await checklistRepository.getCheckListByCard(cardId)
     }
 
-    public async getChecklistbyId(checklistId:number):Promise<Checklist>{
+    public async getChecklistbyId(checklistId:string):Promise<Checklist>{
         const checklist = await checklistRepository.getChecklistById(checklistId)
         if(!checklist){
             throw new NotFoundError('Checklist not found')
@@ -30,7 +30,7 @@ class ChecklistService{
         return checklist
     }
 
-    public async updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId:number):Promise<void>{
+    public async updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId:string):Promise<void>{
         const checklist = await checklistRepository.getChecklistById(checklistId)
         if(!checklist){
             throw new NotFoundError('Checklist not found')
@@ -38,7 +38,7 @@ class ChecklistService{
         await checklistRepository.updateChecklist(updateChecklistDto,checklistId)
     }
 
-    public async removeChecklist(checklistId:number):Promise<void>{
+    public async removeChecklist(checklistId:string):Promise<void>{
         const checklist = await checklistRepository.getChecklistById(checklistId)
         if(!checklist){
             throw new NotFoundError('Checklist not found')

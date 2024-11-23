@@ -4,8 +4,8 @@ import { TokenEnum } from "../../common/enums/token";
 
 @Entity('tokens')
 export class Token {
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    id!: string;
     
     @ManyToOne(() => User, user => user.tokens , { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })

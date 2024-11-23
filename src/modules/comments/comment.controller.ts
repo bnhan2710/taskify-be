@@ -20,7 +20,7 @@ class CommentController{
     }
 
     public async getCommentDetail(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const commentId = parseInt(req.params.id);
+        const commentId = req.params.id
         new OK({
             message: 'Get comment detail successfully',
             data: await CommentService.getCommentById(commentId)
@@ -28,7 +28,7 @@ class CommentController{
     }
 
     public async updateComment(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const commentId = parseInt(req.params.id);
+        const commentId =req.params.id
         const userId = req.userJwt.id;
         const updateCommentDto = commentUpdateDTO(req.body);
         await CommentService.updateComment(updateCommentDto, commentId,userId);
@@ -38,7 +38,7 @@ class CommentController{
     }
 
     public async removeComment(req: Request, res: Response, next: NextFunction): Promise<void> {
-        const commentId = parseInt(req.params.id);
+        const commentId = req.params.id;
         const userId = req.userJwt.id;
         await CommentService.removeComment(commentId,userId);
         new OK({

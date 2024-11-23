@@ -8,8 +8,8 @@ import { Token } from "./Token";
 import { Comment } from "./Comment";
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn('uuid')
+  id!: string;
 
   @Column({ type: "varchar", length: 50, unique: true })
   username!: string;
