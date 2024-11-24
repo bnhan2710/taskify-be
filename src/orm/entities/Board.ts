@@ -5,7 +5,7 @@ import {
     ManyToOne, 
     JoinColumn 
   } from "typeorm";
-  import { BaseEntity } from "../../common/base/base-entity";
+  import { BaseEntity } from '../base-entity';
   import { List } from './List';
   import { ActivityLog } from './Activity_Log';
   import { Workspace } from "./Workspace";

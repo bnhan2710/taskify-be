@@ -1,0 +1,61 @@
+import { Role } from "../entities/Role";
+import { Permission } from "../entities/Permission";
+import { RoleEnum } from "../../common/enums/role";
+import { PermissionEnum } from "../../common/enums/permission";
+import  connection  from "../../configs/database.connect";
+
+export async function seedRBAC(): Promise<void>  {
+    if (!connection.isInitialized) {
+        await connection.initialize(); 
+      }
+    const roleRepo = connection.getRepository(Role)
+    const permissionRepo = connection.getRepository(Permission)
+
+    const checkSeederExist = await roleRepo.findOne({where: {name: RoleEnum.OWNER}})
+    if(checkSeederExist){
+        return
+    }
+
+    const roles = [
+        {name: RoleEnum.ADMIN},
+        {name: RoleEnum.OWNER},
+        {name: RoleEnum.GUEST},
+        {name: RoleEnum.MEMBER}
+    ]
+    const permissions = [
+        {name: PermissionEnum.CanViewBoard},
+        {name: PermissionEnum.CanEditBoard},
+        {name: PermissionEnum.CanViewCard},
+        {name: PermissionEnum.CanEditCard},
+        {name: PermissionEnum.ManageUser}
+    ]
+   await roleRepo.save(roles)
+   await permissionRepo.save(permissions)
+    const adminRole = await roleRepo.findOne({where: {name: RoleEnum.ADMIN}})
+    const ownerRole = await roleRepo.findOne({where: {name: RoleEnum.OWNER}})
+    const memberRole = await roleRepo.findOne({where: {name: RoleEnum.MEMBER}})
+    const guestRole = await roleRepo.findOne({where: {name: RoleEnum.GUEST}})
+    const canViewBoard = await permissionRepo.findOne({where: {name: PermissionEnum.CanViewBoard}})
+    const canEditBoard = await permissionRepo.findOne({where: {name: PermissionEnum.CanEditBoard}})
+    const canViewCard = await permissionRepo.findOne({where: {name: PermissionEnum.CanViewCard}})
+    const canEditCard = await permissionRepo.findOne({where: {name: PermissionEnum.CanEditCard}})
+    const manageUser = await permissionRepo.findOne({where: {name: PermissionEnum.ManageUser}})
+    if(!adminRole || !ownerRole || !memberRole || !guestRole || !canViewBoard || !canEditBoard || !canViewCard || !canEditCard || !manageUser){
+        throw new Error('Role or Permission not found')
+    }
+    adminRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard, manageUser]
+    ownerRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard]
+    memberRole.permissions = [canViewBoard, canViewCard]
+    guestRole.permissions = [canViewBoard]
+    await roleRepo.save([adminRole, ownerRole, memberRole, guestRole])
+}
+
+seedRBAC().then(() => {
+    console.log('Authorization seeder executed')
+    process.exit(0)
+}).catch((err) => {
+    console.error(err)
+    process.exit(1)
+})
+
+

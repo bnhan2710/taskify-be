@@ -19,7 +19,7 @@ class ActivitiesRepository {
     return this.repository.find({ where: { board: {id:boardId} } });
     }
 
-    public async getActivityByCard(cardId: string): Promise<ActivityLog[]> {
+  public async getActivityByCard(cardId: string): Promise<ActivityLog[]> {
         return this.repository.find({ where: { card: { id:cardId} } });
     }
 

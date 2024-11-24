@@ -5,35 +5,25 @@ import { StatusCodes } from 'http-status-codes';
 import setOneUser from "../../utils/cache.util"
 class RoleController {
     
-    public async GetRoleofUser(req: Request , res: Response ,next: NextFunction){
-        const userId = req.params.id
-        const role = await roleService.GetRoleofUser(userId)
-        res.send(role)
+    
+    public async CreateRole(req: Request , res: Response ,next: NextFunction){
+        const CreateRoleDto = CreateRoleDTO(req.body)
+        await roleService.CreateRole(CreateRoleDto)
+        res.status(StatusCodes.CREATED).json({message: 'Create role succesfully'})
     }
-
+    
+    public async CreatePermission(req: Request , res: Response ,next: NextFunction){
+        const CreatePermissionDto = CreatePermissionDTO(req.body)
+        await roleService.CreatePermission(CreatePermissionDto)
+        res.status(StatusCodes.CREATED).json({message: 'Create permission succesfully'})
+    }
+    
     public async GetPermissionofRole(req: Request , res: Response ,next: NextFunction){
         const roleId  = req.params.id
         const permissions = await roleService.GetPermissionofRole(roleId)
         res.send(permissions)
     }
 
-    public async CreateRole(req: Request , res: Response ,next: NextFunction){
-        const CreateRoleDto = CreateRoleDTO(req.body)
-        await roleService.CreateRole(CreateRoleDto)
-        res.status(StatusCodes.CREATED).json({message: 'Create role succesfully'})
-    }
-
-    public async CreatePermission(req: Request , res: Response ,next: NextFunction){
-        const CreatePermissionDto = CreatePermissionDTO(req.body)
-        await roleService.CreatePermission(CreatePermissionDto)
-        res.status(StatusCodes.CREATED).json({message: 'Create permission succesfully'})
-    }
-
-    public async AssignRoletoUser(req: Request , res: Response ,next: NextFunction){
-        const {userId , roleId} = req.body
-        await roleService.AssignRoletoUser(userId,roleId)        
-        res.status(StatusCodes.OK).send({message: 'Assign role to user succesfully'})
-    }
 
     public async AssignPermissiontoRole(req: Request , res: Response ,next: NextFunction){
         const {roleId , permissionId} = req.body

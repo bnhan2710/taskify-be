@@ -4,7 +4,7 @@ import asyncHandler from '../../middleware/asyncHandle';
 import validate from '../../middleware/validate';
 import AuthController from '../auth/auth.controller'
 import { loginValidation, registerValidation } from "./validator/auth.validate";
-import { isLoggedIn } from "../../middleware/auth.middleware";
+import { checkAuth } from "../../middleware/checkAuth";
 import passport from 'passport';
 import { useGoogleStrategy } from './passport/googleStrategy';
 useGoogleStrategy()
@@ -17,6 +17,6 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 // GOOGLE CALLBACK
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), asyncHandler(AuthController.googleLogin));
 // LOG OUT 
-router.post('/logout', isLoggedIn , asyncHandler(AuthController.logout))
+router.post('/logout', checkAuth , asyncHandler(AuthController.logout))
 
 export default router

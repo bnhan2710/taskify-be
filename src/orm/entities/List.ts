@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany,  JoinColumn } from "typeorm";
-import { BaseEntity } from "../../common/base/base-entity"; 
+import { BaseEntity } from '../base-entity';
 import { Board } from "./Board"
 import { Card } from "./Card";
 @Entity('lists')

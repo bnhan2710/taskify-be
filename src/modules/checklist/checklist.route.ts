@@ -4,15 +4,15 @@ import ChecklistController from "./checklist.controller";
 import { createChecklistValidation,updateChecklistValidation } from "./validator";
 import validate from "../../middleware/validate";
 import asyncHandler from '../../middleware/asyncHandle';
-import { isLoggedIn } from "../../middleware/auth.middleware";
+import { checkAuth } from "../../middleware/checkAuth";
 //CREATE CHECKLIST
-ChecklistRoute.post('/',isLoggedIn,validate(createChecklistValidation), asyncHandler(ChecklistController.newChecklist))
+ChecklistRoute.post('/',checkAuth,validate(createChecklistValidation), asyncHandler(ChecklistController.newChecklist))
 //GET CHECKLIST BY CARD
-ChecklistRoute.get('/',isLoggedIn,asyncHandler(ChecklistController.getCheckListbyCard))
+ChecklistRoute.get('/',checkAuth,asyncHandler(ChecklistController.getCheckListbyCard))
 //GET CHECKLIST BY ID
-ChecklistRoute.get('/:id',isLoggedIn, asyncHandler(ChecklistController.getChecklistbyId))
-//UPDATE CHECKLIST
-ChecklistRoute.put('/:id', isLoggedIn, validate(updateChecklistValidation),asyncHandler(ChecklistController.updateChecklist))
-//DELETE CHECKLIST
-ChecklistRoute.delete('/:id', isLoggedIn, asyncHandler(ChecklistController.removeChecklist))
+ChecklistRoute.get('/:id',checkAuth, asyncHandler(ChecklistController.getChecklistbyId))
+//UPDATE checkAuth
+ChecklistRoute.put('/:id', checkAuth, validate(updateChecklistValidation),asyncHandler(ChecklistController.updateChecklist))
+//DELETE checkAuth
+ChecklistRoute.delete('/:id', checkAuth, asyncHandler(ChecklistController.removeChecklist))
 export default ChecklistRoute

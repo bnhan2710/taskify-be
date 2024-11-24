@@ -15,7 +15,7 @@ const connection = new DataSource({
     migrations: [__dirname + "/../orm/migrations/*.ts"],
 });
 
-const ConnectDB = async (): Promise<void> => {
+export const ConnectDB = async (): Promise<void> => {
   try {
     await connection.initialize();
     console.log(`Database connected: ${connection.options.database}`);
@@ -23,7 +23,5 @@ const ConnectDB = async (): Promise<void> => {
     console.error('Error connecting to the database:', error);
   }
 };
-
-ConnectDB();
 
 export default connection;

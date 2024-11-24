@@ -1,5 +1,5 @@
 import { Column,  Entity,  ManyToMany, OneToMany } from "typeorm";
-import { BaseEntity } from "../../common/base/base-entity";
+import { BaseEntity } from '../base-entity';
 import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
 import { ActivityLog } from "./Activity_Log";

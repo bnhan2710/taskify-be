@@ -14,7 +14,7 @@ const router :Router = Router()
 
 router.use('/users',UserRoute)
 router.use('/auth',AuthRoute)
-// router.use('/roles' ,RoleRoute)
+router.use('/roles' ,RoleRoute)
 router.use('/workspaces',WorkspaceRoute)
 router.use('/boards',BoardRoute)
 router.use('/lists',ListRoute)

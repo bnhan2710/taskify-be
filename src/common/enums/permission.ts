@@ -1,11 +1,7 @@
-export enum PermissionEnum{
-//Task 
-    CanViewBoard = 'CanViewBoard',
-    CanUpdateBoard = 'CanUpdateBoard',
-    CanDeleteBoard = 'CanDeleteBoard',
-    CanViewList = 'CanViewList',
-    CanCreateList = 'CanCreateList',
-    CanUpdateList = 'CanUpdateList',
-    CanDeleteList = 'CanDeleteList',
+export enum PermissionEnum {
+    'CanViewBoard' = 'CanViewBoard',
+    'CanEditBoard' = 'CanEditBoard',
+    'CanViewCard' = 'CanViewCard',
+    'CanEditCard' = 'CanEditCard',
+    'ManageUser' = 'ManageUser',
 }
-

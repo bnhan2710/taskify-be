@@ -3,13 +3,13 @@ import CommentController from "./comment.controller";
 import  validate from "../../middleware/validate";
 import { commentSchema, commentUpdateSchema } from "./validator/comment.validate";
 import asyncHandler from "../../middleware/asyncHandle";
-import { isLoggedIn } from "../../middleware/auth.middleware";
+import { checkAuth } from "../../middleware/checkAuth";
 const router = Router();
 
-router.post("/",isLoggedIn, validate(commentSchema), asyncHandler(CommentController.newComment));
-router.get("/",isLoggedIn, asyncHandler(CommentController.listAllComments));
-router.get("/:id",isLoggedIn, asyncHandler(CommentController.getCommentDetail));
-router.put("/:id",isLoggedIn, validate(commentUpdateSchema), asyncHandler(CommentController.updateComment));
-router.delete("/:id",isLoggedIn, asyncHandler(CommentController.removeComment));
+router.post("/",checkAuth, validate(commentSchema), asyncHandler(CommentController.newComment));
+router.get("/",checkAuth, asyncHandler(CommentController.listAllComments));
+router.get("/:id",checkAuth, asyncHandler(CommentController.getCommentDetail));
+router.put("/:id",checkAuth, validate(commentUpdateSchema), asyncHandler(CommentController.updateComment));
+router.delete("/:id",checkAuth, asyncHandler(CommentController.removeComment));
 
 export default router;

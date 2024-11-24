@@ -6,7 +6,7 @@ const instance = createClient({
 })
 
 
-const ConnectRedis = async (): Promise<void> => {
+export const ConnectRedis = async (): Promise<void> => {
     try {
         await instance.connect();
         console.log('Redis connected');
