@@ -1,8 +1,8 @@
 import commentRepository from "./comment.repository";
 import { IComment, ICommentUpdate } from "./dto";
 import { Comment } from "../../orm/entities/Comment";
-import cardRepository from "../cards/card.repository";
-import userRepository from "../users/user.repository";
+import cardRepository from "../card/card.repository";
+import userRepository from "../user/user.repository";
 import { NotFoundError, BadRequestError, ForbiddenError } from "../../handler/error.response";
 
 class CommentService {

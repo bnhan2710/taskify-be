@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm";
 import { Card } from "./Card";
 import { User } from "./User";
 import { Board } from "./Board";
@@ -8,6 +8,7 @@ export class ActivityLog {
   id!: string;
 
   @ManyToOne(() => User, (user) => user.activityLogs)
+  @JoinColumn({name: 'user_id'})
   user!: User;
 
   @Column({ type: 'varchar', length: 255 })

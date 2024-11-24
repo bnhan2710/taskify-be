@@ -1,16 +1,13 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Role } from './Role';
+import { Column,  Entity,  ManyToMany, OneToMany } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity";
 import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
-import { Board } from "./Board";
 import { ActivityLog } from "./Activity_Log";
 import { Token } from "./Token";
 import { Comment } from "./Comment";
+import { BoardUserRole } from "./BoardUserRole";
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
+export class User extends BaseEntity {
   @Column({ type: "varchar", length: 50, unique: true })
   username!: string;
 
@@ -32,28 +29,14 @@ export class User {
   @Column({ type: "varchar", length: 255, nullable: true })
   avatar?: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
-
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date
-
-  @ManyToMany(() => Role, role => role.users)
-  @JoinTable({
-    name: 'user_roles',
-    joinColumn:{name: 'user_id' , referencedColumnName: 'id' },
-    inverseJoinColumn:{name:'role_id', referencedColumnName: 'id' },
-  })
-  roles?: Role[];
-
   @OneToMany(() => Workspace, workspace => workspace.owner)
   workspaces!: Workspace[];
 
   @ManyToMany(() => Workspace, workspace => workspace.users)
   joinedWorkspaces!: Workspace[];
 
-  @ManyToMany(() => Board, board => board.user)
-  boards!: Board[];
+  @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.user, { cascade: true, onDelete: 'CASCADE' })
+  boardUserRoles!: BoardUserRole[];
 
   @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
   activityLogs!: ActivityLog[];

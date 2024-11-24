@@ -1,12 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { User } from "./User";
 import { TokenEnum } from "../../common/enums/token";
 
 @Entity('tokens')
-export class Token {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-    
+export class Token extends BaseEntity {
     @ManyToOne(() => User, user => user.tokens , { cascade: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' })
     user!: User;

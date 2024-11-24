@@ -1,11 +1,9 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, JoinColumn } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { Card } from "./Card";
 
 @Entity('checklists')
-export class Checklist {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-
+export class Checklist extends BaseEntity{
     @Column({ type: "varchar", length: 255 })
     description!: string;
 
@@ -18,10 +16,4 @@ export class Checklist {
 
     @Column({ type: 'boolean', default: false })
     isDone!: boolean;
-
-    @CreateDateColumn({ type: 'timestamp' })
-    createdAt!: Date;
-
-    @UpdateDateColumn({ type: 'timestamp' })
-    updatedAt!: Date  
 }

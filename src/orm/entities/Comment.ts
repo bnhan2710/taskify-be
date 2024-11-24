@@ -1,10 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne,  JoinColumn } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { Card } from "./Card";
 import { User } from "./User";
 @Entity('comments')
-export class Comment {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+export class Comment extends BaseEntity{
 
   @ManyToOne(() => Card, (card) => card.comments,{ onDelete: 'CASCADE' })
   @JoinColumn({name: 'card_id'})
@@ -16,10 +15,4 @@ export class Comment {
 
   @Column({ type: 'varchar', length: 255 })
   text!: string;
-
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
-  
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date  
 }

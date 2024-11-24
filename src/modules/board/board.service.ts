@@ -1,7 +1,7 @@
 import { NotFoundError } from "../../handler/error.response";
 import { Board } from "../../orm/entities/Board";
 import boardRepository from "./board.repository";
-import workspaceRepository from "../workspaces/workspace.repository";
+import workspaceRepository from "../workspace/workspace.repository";
 import { INewBoard, IUpdateBoard } from "./dto";
 
 class BoardService{

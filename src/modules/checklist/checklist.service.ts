@@ -1,7 +1,7 @@
 import checklistRepository from './checklist.repository';
 import { BadRequestError, NotFoundError } from '../../handler/error.response';
 import { Checklist } from '../../orm/entities/Checklist';
-import cardRepository from '../cards/card.repository';
+import cardRepository from '../card/card.repository';
 import { INewChecklist,IUpdateChecklist } from './dto';
 
 class ChecklistService{

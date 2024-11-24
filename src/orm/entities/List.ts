@@ -1,11 +1,9 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany,  JoinColumn } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { Board } from "./Board"
 import { Card } from "./Card";
 @Entity('lists')
-export class List {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-
+export class List extends BaseEntity{
     @Column({ type: "varchar", length: 255 })
     title!: string;
 
@@ -18,10 +16,4 @@ export class List {
 
     @Column("simple-array", { nullable: true })
     cardOrderIds!: string[];  
-
-    @CreateDateColumn({ type: 'timestamp' })
-    createdAt!: Date;
-
-    @UpdateDateColumn({ type: 'timestamp' })
-    updatedAt!: Date  
 }

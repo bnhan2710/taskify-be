@@ -1,16 +1,11 @@
 export enum PermissionEnum{
 //Task 
-    CanGetTask = 'GetTask',
-    CanViewTag = 'ViewTag',
-    CanSetDoneTask = 'SetDoneTask',
-    CanDeleteTask = 'DeleteTask',
-    CanCreateTask = 'CreateTask',
-    CanUpdateTask = 'UpdateTask',
-
-    CanGetOneUser =  'GetOneUser',
-    CanGetAllUser = 'GetAllUser',
-    CanUpdateUser = 'UpdateUser',
-    CanDeleteUser = 'DeleteUser',
-    TEST = 'Test',
+    CanViewBoard = 'CanViewBoard',
+    CanUpdateBoard = 'CanUpdateBoard',
+    CanDeleteBoard = 'CanDeleteBoard',
+    CanViewList = 'CanViewList',
+    CanCreateList = 'CanCreateList',
+    CanUpdateList = 'CanUpdateList',
+    CanDeleteList = 'CanDeleteList',
 }
 

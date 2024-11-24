@@ -1,12 +1,9 @@
-import { Column, Entity,  PrimaryGeneratedColumn,  ManyToMany, JoinTable } from "typeorm";
-import { User } from "./User";
+import { Column, Entity,  ManyToMany, JoinTable, OneToMany } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { Permission } from "./Permission";
+import { BoardUserRole } from "./BoardUserRole";
 @Entity('roles')
-export class Role{
-  
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
+export class Role extends BaseEntity {
   @Column({type: "varchar" , length : 100 , unique: true})
   name!: string   
 
@@ -18,9 +15,8 @@ export class Role{
   })  
   permissions?: Permission[];
 
-  @ManyToMany(() => User, user => user.roles)
-  users?: User[];
-  
+  @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.role, { cascade: true, onDelete: 'CASCADE' })
+  boardUserRoles!: BoardUserRole[];
 }
 
 

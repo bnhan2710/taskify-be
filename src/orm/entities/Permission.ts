@@ -1,11 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, Column, ManyToMany } from 'typeorm';
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { Role } from './Role';
 
 @Entity('permissions')
-export class Permission {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
+export class Permission extends BaseEntity{
   @Column({type: "varchar", length: 100 , unique: true })
   name!: string; 
 

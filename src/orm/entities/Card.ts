@@ -1,14 +1,12 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, JoinColumn } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity";
 import { List } from "./List";
 import { Attachment } from "./Attachment";
 import { Comment } from "./Comment";
 import { ActivityLog } from "./Activity_Log";
 import { Checklist } from "./Checklist";
 @Entity('cards')
-export class Card {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
+export class Card extends BaseEntity{
   @Column({ type: 'varchar', length: 255 })
   title!: string;
 
@@ -18,12 +16,6 @@ export class Card {
   @ManyToOne(() => List, (list) => list.cards,{ onDelete: 'CASCADE' })
   @JoinColumn({ name: 'list_id' })
   list!: List;
-
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt!: Date;
-
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt!: Date;
 
   @OneToMany(()=> Checklist , checklist => checklist.card, { cascade: true, onDelete: 'CASCADE' })
   checklists!:Checklist[]

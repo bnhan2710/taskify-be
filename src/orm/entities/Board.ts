@@ -1,56 +1,34 @@
 import { 
     Column, 
     Entity, 
-    JoinTable, 
-    OneToOne, 
-    ManyToMany, 
-    PrimaryGeneratedColumn, 
     OneToMany, 
-    CreateDateColumn, 
     ManyToOne, 
-    UpdateDateColumn, 
     JoinColumn 
   } from "typeorm";
-  import { User } from "./User";
+  import { BaseEntity } from "../../common/base/base-entity";
   import { List } from './List';
   import { ActivityLog } from './Activity_Log';
   import { Workspace } from "./Workspace";
-  
+  import { BoardUserRole } from './BoardUserRole';
+
   @Entity('boards')
-  export class Board {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-  
+  export class Board extends BaseEntity{
+
     @Column({ type: "varchar", length: 255})
     title!: string;
   
     @Column({ type: "text", nullable: true })
     description!: string;
 
-    @ManyToOne(() => User, user => user.boards,{ onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'owner_id' }) 
-    user!: User;
-  
-    @CreateDateColumn({ type: 'timestamp' })
-    createdAt!: Date;
-  
-    @UpdateDateColumn({ type: 'timestamp' })
-    updatedAt!: Date;
-  
     @ManyToOne(() => Workspace, workspace => workspace.boards,{ onDelete: 'CASCADE' })
     @JoinColumn({ name: 'workspace_id' }) 
     workspace!: Workspace;
     
+    @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.board, { cascade: true, onDelete: 'CASCADE' })
+    boardUserRoles!: BoardUserRole[];
+
     @Column("simple-array", { nullable: true })
     listOrderIds!: string[];  
-  
-    @ManyToMany(() => User, user => user.boards)
-    @JoinTable({
-      name: 'board_users',  
-      joinColumn: { name: 'board_id', referencedColumnName: 'id' },
-      inverseJoinColumn: { name: 'user_id', referencedColumnName: 'id' }
-    })
-    users!: User[];
   
     @OneToMany(() => List, list => list.board, { cascade: true, onDelete: 'CASCADE' })
     lists!: List[];

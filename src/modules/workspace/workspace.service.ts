@@ -2,7 +2,7 @@ import { Workspace } from "../../orm/entities/Workspace";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
 import { NotFoundError,ConflictRequestError } from "../../handler/error.response";
 import WorkspaceRepository from "./workspace.repository";
-import UserRepository from "../users/user.repository";
+import UserRepository from "../user/user.repository";
 class WorkSpaceService{
 
     public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:string): Promise<Workspace> {

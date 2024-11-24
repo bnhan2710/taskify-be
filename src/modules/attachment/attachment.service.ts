@@ -5,7 +5,7 @@ import { BadRequestError,NotFoundError, } from "../../handler/error.response";
 import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../orm/entities/Attachment";
 import connection from "../../configs/database.connect";
-import cardRepository from "../cards/card.repository";
+import cardRepository from "../card/card.repository";
 import { AttachmentDto } from "./dto/attachment.dto";
 class AttachmentService {
     public async uploadAttachment(file: Express.Multer.File | undefined, cardId: string): Promise<{url: string, public_id: string} | undefined> {

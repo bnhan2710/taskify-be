@@ -2,7 +2,7 @@ import cardRepository from "./card.repository";
 import { INewCard, IUpdateCard } from "./dto";
 import { Card } from "../../orm/entities/Card";
 import { BadRequestError, NotFoundError } from "../../handler/error.response";
-import listRepository from "../lists/list.repository";
+import listRepository from "../list/list.repository";
 
 class CardService{
     public async newCard(newCardDto: INewCard): Promise<void> {

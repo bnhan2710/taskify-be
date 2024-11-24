@@ -1,7 +1,6 @@
 import passport from 'passport';
 import passportGoogle  from 'passport-google-oauth20'
-import { User } from '../../../orm/entities/User';
-import usersService from '../../../modules/users/users.service';
+import usersService from '../../../modules/user/users.service';
 import { env } from '../../../configs/env.config';
 import { BadRequestError,NotFoundError } from '../../../handler/error.response';
 const GoogleStrategy = passportGoogle.Strategy;
@@ -25,7 +24,7 @@ export function useGoogleStrategy(){ passport.use(new GoogleStrategy({
                     password: '',
                     avatar: profile._json.picture
                 }
-                console.log(newUser);
+                // console.log(newUser);
                 await usersService.create(newUser);
                 return done(null,newUser);
             }

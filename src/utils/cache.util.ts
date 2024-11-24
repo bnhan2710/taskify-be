@@ -8,18 +8,18 @@ const expTime = 60 * 60 * 24 * 30 ;
 class CacheUtil {
     async setOneUser(userId : string) : Promise<void> {
         // console.log(`Set cache for user ${userId}`)
-        const user = await connection.getRepository(User).findOne({ where: { id: userId }, relations: ['roles'] });
-        if(!user || !user.roles){
-            return
-        }
-        if(user.roles.length === 0){
-            return
-        }
-        const permission = await connection.getRepository(Permission).find({ where: { roles: user.roles } });
-        console.log(permission)
-        const permissionList = permission.map(p => p.name);
-        const roleName = user.roles.map(r => r.name).join(',');
-        await instance.set(`user:${userId}`, JSON.stringify({permission: permissionList, role: roleName}), { EX: expTime })
+        // const user = await connection.getRepository(User).findOne({ where: { id: userId }, relations: ['roles'] });
+        // if(!user || !user.roles){
+        //     return
+        // }
+        // if(user.roles.length === 0){
+        //     return
+        // }
+        // const permission = await connection.getRepository(Permission).find({ where: { roles: user.roles } });
+        // console.log(permission)
+        // const permissionList = permission.map(p => p.name);
+        // const roleName = user.roles.map(r => r.name).join(',');
+        // await instance.set(`user:${userId}`, JSON.stringify({permission: permissionList, role: roleName}), { EX: expTime })
     }
 
     async setManyUser(userArray : string[]) : Promise<void> {

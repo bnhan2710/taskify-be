@@ -1,11 +1,9 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, CreateDateColumn, OneToMany, ManyToOne, JoinColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany,  OneToMany, ManyToOne, JoinColumn} from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity"; 
 import { User } from "./User";
 import { Board } from "./Board";
 @Entity('workspaces')
-export class Workspace {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-
+export class Workspace extends BaseEntity{
     @Column({ type: "varchar", length: 255 })
     name!: string;
 
@@ -28,10 +26,4 @@ export class Workspace {
 
     @Column({ type: "varchar", length: 255, nullable: true })
     description?: string;
-
-    @CreateDateColumn({ type: 'timestamp' })
-    createdAt!: Date
-
-    @UpdateDateColumn({ type: 'timestamp' })
-    updatedAt!: Date
 }

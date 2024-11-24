@@ -41,6 +41,7 @@ class AuthService {
     }
 
     public async googleLogin(user: User):Promise<{accessToken: string} | undefined>{
+        console.log(user)
         if(!user){
             throw new BadRequestError('User does not valid');
         }
@@ -48,7 +49,7 @@ class AuthService {
             id: user.id,
             username: user.username
         }
-        console.log(user)
+        // console.log(user)
         const refreshToken = await generateRefreshToken(payloadData)
         const accessToken = await generateAccessToken(payloadData)
         await this.tokenRepository.find({where:{user: user}})

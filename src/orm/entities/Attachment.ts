@@ -1,11 +1,9 @@
-import { Column, Entity, JoinTable,OneToOne ,  ManyToMany, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Column, Entity,  PrimaryGeneratedColumn, ManyToOne, CreateDateColumn } from "typeorm";
+import { BaseEntity } from "../../common/base/base-entity";
 import { Card } from "./Card";
 
 @Entity('attachments')
-export class Attachment {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
+export class Attachment extends BaseEntity{
   @ManyToOne(() => Card, (card) => card.attachments,{ onDelete: 'CASCADE' })
   card!: Card;
 
