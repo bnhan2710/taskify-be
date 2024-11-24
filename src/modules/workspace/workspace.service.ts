@@ -5,7 +5,7 @@ import WorkspaceRepository from "./workspace.repository";
 import UserRepository from "../user/user.repository";
 class WorkSpaceService{
 
-    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:string): Promise<Workspace> {
+    public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:string): Promise<string> {
         const owner = await UserRepository.findOneById(ownerId);
         if (!owner) {
             throw new NotFoundError("User not found");

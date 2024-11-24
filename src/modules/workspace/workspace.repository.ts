@@ -10,14 +10,14 @@ class WorkspaceRepository {
     constructor() {
         this.repository = connection.getRepository(Workspace);
     }
-    public async insert(createWorkspaceDto: INewWorkSpace, owner: User): Promise<Workspace> {
+    public async insert(createWorkspaceDto: INewWorkSpace, owner: User): Promise<string> {
         const newWorkspace = this.repository.create({
             name: createWorkspaceDto.name,
             description: createWorkspaceDto.description,
             owner,
         });
-
-        return await this.repository.save(newWorkspace);
+        await this.repository.save(newWorkspace);
+        return newWorkspace.id;
     }
 
     public async findbyId(workspaceId: string): Promise<Workspace | null> {

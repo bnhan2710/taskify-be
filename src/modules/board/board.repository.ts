@@ -3,21 +3,22 @@ import { Board } from "../../orm/entities/Board";
 import { Workspace } from "../../orm/entities/Workspace";
 import connection from "../../configs/database.connect";
 import { INewBoard, IUpdateBoard } from "./dto";
-
+import { BoardUserRole } from "../../orm/entities/BoardUserRole";
 class BoardRepository{
     private readonly reposiotry: Repository<Board>
     constructor(){
         this.reposiotry = connection.getRepository(Board)
     }
     
-    public async insert(newBoardDto: INewBoard , workspace: Workspace): Promise<Board>{
+    public async insert(newBoardDto: INewBoard , workspace: Workspace): Promise<string>{
         
         const newBoard = this.reposiotry.create({
             title: newBoardDto.title,
             description: newBoardDto.description,
             workspace: workspace
         })
-        return await this.reposiotry.save(newBoard)
+         await this.reposiotry.save(newBoard)
+         return newBoard.id
     }   
     
     public async findById(boardId: string): Promise<Board | null> {

@@ -31,7 +31,6 @@ const configureMiddlewares = () => {
     app.use(cors(corsOptions));
     app.use(helmet());
     app.use(morgan('dev'));
-    app.use(errorHandler);
 };
 
 const configureDatabase = async () => {
@@ -46,6 +45,8 @@ const configureRoutes = () => {
         status: NOT_FOUND,
         message: `Can not GET ${req.originalUrl}`,
     }));
+
+    app.use(errorHandler);
 };
 
 const startServer = () => {

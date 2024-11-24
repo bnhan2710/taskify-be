@@ -14,6 +14,5 @@ export const ConnectRedis = async (): Promise<void> => {
         console.error('Error connecting to the redis:', error);
     }
 }
-
-ConnectRedis();                            
+                         
 export default instance

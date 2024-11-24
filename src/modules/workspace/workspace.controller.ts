@@ -7,9 +7,10 @@ class WorkspaceController{
     public async newWorkspace(req: Request, res: Response , next: NextFunction): Promise<void> {
         const newWorkSpaceDto = NewWorkspaceDTO(req.body)
         const ownerId = req.userJwt.id
-        await WorkspaceService.newWorkspace(newWorkSpaceDto, ownerId)
+        const workspaceId = await WorkspaceService.newWorkspace(newWorkSpaceDto, ownerId)
         new CREATED({
             message: 'Create Workspace successfully',
+            data: workspaceId
         }).send(res)
     }
 

@@ -1,4 +1,4 @@
-import { Column,  Entity,  ManyToMany, OneToMany } from "typeorm";
+import { Column,  Entity,  JoinTable,  ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from '../base-entity';
 import { Workspace } from "./Workspace";
 import { Gender } from "../../common/enums/gender";
@@ -6,6 +6,7 @@ import { ActivityLog } from "./Activity_Log";
 import { Token } from "./Token";
 import { Comment } from "./Comment";
 import { BoardUserRole } from "./BoardUserRole";
+import { Role } from "./Role"
 @Entity('users')
 export class User extends BaseEntity {
   @Column({ type: "varchar", length: 50, unique: true })
@@ -37,6 +38,14 @@ export class User extends BaseEntity {
 
   @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.user, { cascade: true, onDelete: 'CASCADE' })
   boardUserRoles!: BoardUserRole[];
+
+  @ManyToMany(() => Role, roles => roles.users)
+  @JoinTable({
+    name: 'user_roles',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' }
+  })
+  roles!: Role[];
 
   @OneToMany(() => ActivityLog, (activityLog) => activityLog.user)
   activityLogs!: ActivityLog[];

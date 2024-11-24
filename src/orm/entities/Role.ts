@@ -1,6 +1,7 @@
 import { Column, Entity,  ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { BaseEntity } from '../base-entity';
 import { Permission } from "./Permission";
+import { User } from "./User";
 import { BoardUserRole } from "./BoardUserRole";
 @Entity('roles')
 export class Role extends BaseEntity {
@@ -14,6 +15,9 @@ export class Role extends BaseEntity {
     inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
   })  
   permissions?: Permission[];
+
+  @ManyToMany(() => User, user => user.roles)
+  users!: User[];
 
   @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.role, { cascade: true, onDelete: 'CASCADE' })
   boardUserRoles!: BoardUserRole[];
