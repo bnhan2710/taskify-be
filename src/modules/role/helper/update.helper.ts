@@ -3,22 +3,9 @@ import CacheUtil from '../../../utils/cache.util';
 import connection from '../../../configs/database.connect'
 
 export async function updatePermission(roleId: string):Promise<void>{
-    const listUserLogin = await connection.getRepository(Token).createQueryBuilder('tokens')
-        .leftJoinAndSelect('tokens.user', 'user')
-        .leftJoinAndSelect('user.roles', 'roles')
-        .where('roles.id = :roleId', { roleId: roleId })
-        .getMany()
-
-    const userIdArr = listUserLogin.map(u => u.user.id)
-    await CacheUtil.setManyUser(userIdArr)
+    //update Permission of Role when assign new permission to role
 }
 
 export async function updateRole(userId: string):Promise<void>{
-    const userIsLoggedIn = await connection.getRepository(Token).createQueryBuilder('tokens')
-    .leftJoinAndSelect('tokens.user', 'user')
-    .where('user.id = :userId', { userId: userId })
-    .getOne()
-    if(userIsLoggedIn){
-    await CacheUtil.setOneUser(userIsLoggedIn.user.id)
-}
+    //update Role of User when assign new role to user
 }

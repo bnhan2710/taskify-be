@@ -10,7 +10,7 @@ const connection = new DataSource({
     password: env.DB_PASS || '',
     database: env.DB_NAME || 'test',
     synchronize: false,
-    logging : false,
+    logging : true,
     entities: [__dirname + "/../orm/entities/*.ts"],
     migrations: [__dirname + "/../orm/migrations/*.ts"],
 });

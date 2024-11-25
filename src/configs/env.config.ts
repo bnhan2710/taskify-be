@@ -11,6 +11,7 @@ export const env = {
     DB_DIALECT : process.env.DB_DIALECT || 'mysql',
     SECRET_KEY : process.env.SECRET_KEY || 'secret',
     REDIS_URL : process.env.REDIS_URL || '',
+    CACHE_EXPIRE : process.env.CACHE_EXPIRE || '',
     REFRESH_TOEN_EXPIRE: process.env.REFRESH_TOEN_EXPIRE || 86400000,
     ACCESS_TOKEN_EXPIRE : process.env.ACCESS_TOKEN_EXPIRE || 900000,
     CLOUDINARY_CLOUD_NAME : process.env.CLOUDINARY_CLOUD_NAME || '',

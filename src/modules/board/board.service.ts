@@ -6,6 +6,7 @@ import { BoardUserRole } from "../../orm/entities/BoardUserRole";
 import { Role } from "../../orm/entities/Role";
 import { RoleEnum } from "../../common/enums/role";
 import connection from "../../configs/database.connect";
+import cacheUtil from "../../utils/cache.util";
 class BoardService{
 
     public async newBoard (newBoardDto: INewBoard, userId: string): Promise<string>{
@@ -92,6 +93,7 @@ class BoardService{
         if(!role){
             throw new NotFoundError('Role not found')
         }
+        await cacheUtil.del(`board:${boardId}:user:${userId}`)
         await connection.getRepository(BoardUserRole).update(
             {boardId, userId},
             {roleId: role.id}

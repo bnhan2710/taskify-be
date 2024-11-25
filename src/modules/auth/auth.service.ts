@@ -25,7 +25,7 @@ class AuthService {
             }
             const refreshToken = await generateRefreshToken(payloadData)
             const accessToken = await generateAccessToken(payloadData)
-            await this.tokenRepository.find({where:{user: user}})
+
             if(user){
                 await this.tokenRepository.delete({user: user})
             }
@@ -41,26 +41,32 @@ class AuthService {
     }
 
     public async googleLogin(user: User):Promise<{accessToken: string} | undefined>{
-        console.log(user)
         if(!user){
-            throw new BadRequestError('User does not valid');
+            throw new BadRequestError('User not found!')
+        }
+        const findUser = await this.userRepository.findOne({where:{email: user.email}}) 
+        if(!findUser){
+            throw new NotFoundError('User not found!')
         }
         const payloadData = {
-            id: user.id,
-            username: user.username
+            id: findUser.id,
+            username: findUser.username
         }
-        // console.log(user)
         const refreshToken = await generateRefreshToken(payloadData)
         const accessToken = await generateAccessToken(payloadData)
-        await this.tokenRepository.find({where:{user: user}})
-        if(user){
-            await this.tokenRepository.delete({user: user})
+        const userTokens = await this.tokenRepository.find({
+            where: { user: { id: findUser.id } },
+            relations: ['user'], 
+        });
+        if(!userTokens){
+            await this.tokenRepository.delete({ user: { id: findUser.id } });
         }
+        console.log(1111)
         await this.tokenRepository.save({
             token: refreshToken,
             type: TokenEnum.REFRESH,
             expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
-            user: user
+            user: findUser
         })
         return {
             accessToken

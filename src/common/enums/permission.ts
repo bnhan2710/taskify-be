@@ -7,4 +7,5 @@ export enum PermissionEnum {
     'CanEditCard' = 'CanEditCard',
     'CanManageUser' = 'CanManageUser',
     'CanManageRole' = 'CanManageRole',
+    'CanManageBoardMember' = 'CanManageBoardMember'
 }

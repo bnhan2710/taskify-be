@@ -27,6 +27,7 @@ export async function seedRBAC(): Promise<void>  {
         {name: PermissionEnum.CanEditBoard},
         {name: PermissionEnum.CanViewCard},
         {name: PermissionEnum.CanEditCard},
+        {name: PermissionEnum.CanManageBoardMember},
         {name: PermissionEnum.CanManageUser},
         {name: PermissionEnum.CanManageRole}
     ]
@@ -40,14 +41,15 @@ export async function seedRBAC(): Promise<void>  {
     const canEditBoard = await permissionRepo.findOne({where: {name: PermissionEnum.CanEditBoard}})
     const canViewCard = await permissionRepo.findOne({where: {name: PermissionEnum.CanViewCard}})
     const canEditCard = await permissionRepo.findOne({where: {name: PermissionEnum.CanEditCard}})
+    const manageBoardMember = await permissionRepo.findOne({where: {name: PermissionEnum.CanManageBoardMember}})
     const manageUser = await permissionRepo.findOne({where: {name: PermissionEnum.CanManageUser}})
     const manageRole = await permissionRepo.findOne({where: {name: PermissionEnum.CanManageRole}})
-    if(!adminRole || !ownerRole || !memberRole || !guestRole || !canViewBoard || !canEditBoard || !canViewCard || !canEditCard || !manageUser || !manageRole){
+    if(!adminRole || !ownerRole || !memberRole || !guestRole || !canViewBoard || !canEditBoard || !canViewCard || !canEditCard || !manageBoardMember || !manageUser || !manageRole){
         throw new Error('Role or Permission not found')
     }
     adminRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard, manageUser, manageRole]
-    ownerRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard]
-    memberRole.permissions = [canViewBoard, canViewCard]
+    ownerRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard, manageBoardMember]
+    memberRole.permissions = [canViewBoard, canViewCard ,canEditCard]
     guestRole.permissions = [canViewBoard]
     await roleRepo.save([adminRole, ownerRole, memberRole, guestRole])
 }
