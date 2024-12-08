@@ -9,7 +9,7 @@ import { checkPermissionInBoard } from "../../middleware/checkPermission";
 import { PermissionEnum } from "../../common/enums/permission";
 
 //CREATE LIST
-// ListRoute.post('/', validate(newListValidation),asyncHandler(ListController.newList))
+ListRoute.post('/', validate(newListValidation),asyncHandler(ListController.newList))
 // ListRoute.post('/',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
@@ -21,12 +21,12 @@ ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))
 //GET LIST BY ID
 ListRoute.get('/:id',checkAuth, asyncHandler(ListController.getListById))
 // UPDATE LIST
-ListRoute.put('/:id',
-    checkAuth,
-    checkPermissionInBoard([PermissionEnum.CanEditBoard]),
-    validate(updateListValidation),
-    asyncHandler(ListController.updateList))
-// ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList))
+// ListRoute.put('/:id',
+//     checkAuth,
+//     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
+//     validate(updateListValidation),
+//     asyncHandler(ListController.updateList))
+ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList))
 //REMOVRE LIST
 ListRoute.delete('/:id',
     checkAuth,

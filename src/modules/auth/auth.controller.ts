@@ -10,7 +10,7 @@ class AuthController {
         const loginDto = LoginDTO(req.body);
         new OK({
             message: 'Login successfully',
-            data: await AuthService.login(loginDto)
+            data: await AuthService.login(loginDto, res)
         }).send(res);
     }
     
@@ -23,7 +23,7 @@ class AuthController {
     }
     public async logout(req:Request, res:Response, next: NextFunction){
         const userId = req.userJwt.id
-        await AuthService.logout(userId)
+        await AuthService.logout(userId,res)
         res.send({message: 'Logout successfully'})
     }
 
@@ -32,6 +32,14 @@ class AuthController {
             message: 'Login successfully',
             data: await AuthService.googleLogin(req.user as any)
         }).send(res);
+    }
+    
+    public async refreshNewToken(req: Request, res: Response, next: NextFunction){
+        const {refreshToken} = req.cookies
+        new OK({
+            message: 'refreshNewToken success',
+            data: await AuthService.refreshNewToken(refreshToken,res)
+        }).send(res)
     }
 }
 

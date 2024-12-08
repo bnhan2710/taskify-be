@@ -5,14 +5,13 @@ import helmet from 'helmet';
 import session from 'express-session';
 import passport from 'passport';
 import { NOT_FOUND } from 'http-status';
-
+import cookieParser from 'cookie-parser';
 import 'reflect-metadata';
 import {ConnectDB} from './configs/database.connect'; 
 import { corsOptions } from './configs/cors.config';
 import { env } from './configs/env.config';
 import { errorHandler } from './handler/errorHandle';
 import v1Api from './routes/v1.route';
-import { seedRBAC } from './orm/seeders/rbac-seed';
 import { ConnectRedis } from './configs/redis.config';
 
 const app: Express = express();
@@ -26,6 +25,7 @@ const configureMiddlewares = () => {
         resave: false,
         saveUninitialized: true,
     }));
+    app.use(cookieParser())
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(cors(corsOptions));
@@ -40,12 +40,10 @@ const configureDatabase = async () => {
 
 const configureRoutes = () => {
     app.use('/api/v1', v1Api); 
-
     app.use('*', (req: Request, res: Response) => res.status(NOT_FOUND).json({
         status: NOT_FOUND,
         message: `Can not GET ${req.originalUrl}`,
     }));
-
     app.use(errorHandler);
 };
 

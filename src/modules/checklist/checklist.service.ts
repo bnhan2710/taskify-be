@@ -11,7 +11,6 @@ class ChecklistService{
             throw new NotFoundError('Card not found')
         }
         await checklistRepository.newChecklist(newChecklistDto,card);
-
     }   
 
     public async getChecklistbyCard(cardId:string):Promise<Checklist[]>{

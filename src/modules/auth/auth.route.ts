@@ -7,11 +7,14 @@ import { loginValidation, registerValidation } from "./validator/auth.validate";
 import { checkAuth } from "../../middleware/checkAuth";
 import passport from 'passport';
 import { useGoogleStrategy } from './passport/googleStrategy';
+import authController from "../auth/auth.controller";
 useGoogleStrategy()
 // LOGIN
 router.post('/login', validate(loginValidation), asyncHandler(AuthController.login));
 // REGISTER
 router.post('/register', validate(registerValidation), asyncHandler(AuthController.register));
+//REQUEST REFRESH TOKEN 
+router.post('/refresh', asyncHandler(AuthController.refreshNewToken))
 // GOOGLE LOGIN
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 // GOOGLE CALLBACK

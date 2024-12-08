@@ -1,16 +1,18 @@
 import { LoginDto, RegisterDto} from "./dto";
 import connection from "../../configs/database.connect"
 import { User } from "../../orm/entities/User";
+import { Response } from "express";
 import { Token } from "../../orm/entities/Token";
 import { TokenEnum } from "../../common/enums/token";
-import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken } from './auth.util'
+import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from './auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
+import { string } from "joi";
 
 class AuthService {
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)
 
-    public async login(loginDto: LoginDto):Promise<{accessToken: string} | undefined>{
+    public async login(loginDto: LoginDto,res: Response):Promise<{accessToken: string} | undefined>{
         const user = await this.userRepository.findOne({where:{username: loginDto.username }})
             if(!user){
                 throw new NotFoundError('Username not found!')
@@ -35,6 +37,12 @@ class AuthService {
                 expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
                 user: user
             })
+
+            res.cookie('refreshToken', refreshToken ,{
+                httpOnly:true,
+                maxAge: (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)
+            })
+
             return {
                 accessToken
             }
@@ -61,7 +69,6 @@ class AuthService {
         if(!userTokens){
             await this.tokenRepository.delete({ user: { id: findUser.id } });
         }
-        console.log(1111)
         await this.tokenRepository.save({
             token: refreshToken,
             type: TokenEnum.REFRESH,
@@ -72,6 +79,7 @@ class AuthService {
             accessToken
         }
     }
+
     public async register(registerDto: RegisterDto):Promise<void>{
             const ExitsUser = await this.userRepository.findOne({ where: { username: registerDto.username } });
             if(ExitsUser){
@@ -89,14 +97,40 @@ class AuthService {
             })
             
        }
-    public async logout(userId: string):Promise<void>{
+
+    public async logout(userId: string,res: Response):Promise<void>{
         const user = await this.userRepository.findOne({where:{id: userId}})
         if(!user){
             throw new NotFoundError('User not found!')
         }
+        res.clearCookie("refreshToken")
         await this.tokenRepository.delete({user: user})
     }
 
+    public async refreshNewToken(resfreshToken: string,res: Response):Promise<{accessToken:string}>{
+        
+            const user = await verifyToken(resfreshToken)
+            if(!user){
+                console.log(user)
+                 throw new AuthFailError('RefeshToken is invalid')    
+            }
+            const payload = {
+                id: user.id,
+                username: user.username
+            }
+            
+            const refreshToken = await generateRefreshToken(payload)
+            await this.tokenRepository.delete({user:{id:user.id}})
+            await this.tokenRepository.save({
+                token: refreshToken,
+                type: TokenEnum.REFRESH,
+                expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
+                user: user
+            })
+            const accessToken = generateAccessToken(payload)
+            return { accessToken }
+        }
+    
 }
 
 

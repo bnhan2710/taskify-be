@@ -80,6 +80,14 @@ class AttachmentService {
         }
         }
     }
+
+    public async getAttachmentByCard(cardId: string): Promise<Attachment[]> {
+        const card = await cardRepository.findById(cardId);
+        if (!card) {
+            throw new NotFoundError('Card not found');
+        }
+        return connection.getRepository(Attachment).find({ where: { card } });
+    }
 }
     
 

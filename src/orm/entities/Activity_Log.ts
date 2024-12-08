@@ -12,13 +12,15 @@ export class ActivityLog {
   user!: User;
 
   @Column({ type: 'varchar', length: 255 })
-  description!: string;
+  action!: string;
 
-  @ManyToOne(() => Board, (board) => board.activityLogs,{ onDelete: 'CASCADE' })
-  board!: Board;
+  @ManyToOne(() => Board, (board) => board.activityLogs,{ nullable:true, onDelete: 'CASCADE' })
+  @JoinColumn({name: 'board_id'})
+  board?: Board;
     
   @ManyToOne(() => Card, (card) => card.ativityLogs, { nullable: true, onDelete: 'CASCADE' })
-  card!: Card;
+  @JoinColumn({name: 'card_id'})
+  card?: Card;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

@@ -3,6 +3,7 @@ const router = Router();
 import { Notification } from "../../orm/entities/Notification";
 import connection from "../../configs/database.connect";
 import { sendNotification, sseHandler } from "./sse.handler";
+
 router.post("/", async (req, res) => {
     const { message } = req.body;
   
@@ -20,7 +21,7 @@ router.post("/", async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
-  });
+});
 
 router.get("/sse", sseHandler);
 

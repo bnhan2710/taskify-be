@@ -29,6 +29,14 @@ class AttachmentController{
       message: 'Delete successfully'
     }).send(res)
   }
-}
 
+  public async getAttachmentBycard(req: Request, res: Response, next: NextFunction){
+    const { cardId } = req.params
+    const result = await AttachmentService.getAttachmentByCard(cardId)
+    new OK({
+      message: 'Get successfully',
+      data: result
+    }).send(res)
+}
+}
 export default new AttachmentController();

@@ -18,11 +18,12 @@ BoardRoute.get('/:id', asyncHandler(BoardController.getBoardById))
 //     checkPermissionInBoard([PermissionEnum.CanViewBoard]),
 //     asyncHandler(BoardController.getBoardById))
 //UPDATE BOARD
-BoardRoute.put('/:id',
-    checkAuth,
-    checkPermissionInBoard([PermissionEnum.CanEditBoard]),
-    validate(updateBoardValidation),
-    asyncHandler(BoardController.updateBoard))
+BoardRoute.put('/:id',asyncHandler(BoardController.updateBoard))
+// BoardRoute.put('/:id',
+//     checkAuth,
+//     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
+//     validate(updateBoardValidation),
+//     asyncHandler(BoardController.updateBoard))
 //REMOVE BOARD
 BoardRoute.delete('/:id',
     checkAuth,

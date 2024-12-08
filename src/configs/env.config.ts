@@ -9,7 +9,7 @@ export const env = {
     DB_NAME : process.env.DB_NAME || 'mydb',
     DB_PORT: process.env.DB_PORT || '3306',
     DB_DIALECT : process.env.DB_DIALECT || 'mysql',
-    SECRET_KEY : process.env.SECRET_KEY || 'secret',
+    SECRET_KEY : process.env.SECRET_KEY || '',
     REDIS_URL : process.env.REDIS_URL || '',
     CACHE_EXPIRE : process.env.CACHE_EXPIRE || '',
     REFRESH_TOEN_EXPIRE: process.env.REFRESH_TOEN_EXPIRE || 86400000,
