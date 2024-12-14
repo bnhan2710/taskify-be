@@ -1,6 +1,6 @@
 import CardService from "./card.service";
 import { Request, Response, NextFunction } from "express";
-import { NewCardDTO, UpdateCardDTO } from "./dto";
+import { NewCardDTO, UpdateCardDTO, AddMemberDTO } from "./dto";
 import { OK, CREATED } from "../../handler/success.reponse";
 
 class CardController {
@@ -24,7 +24,7 @@ class CardController {
         const cardId = req.params.id
         new OK({
             message: "Get Card Successfully",
-            data: await CardService.getCardById(cardId)
+            data: await CardService.getDetail(cardId)
         }).send(res);
     }
 
@@ -45,6 +45,12 @@ class CardController {
         }).send(res);
     }
 
+    public async addMember(req:Request, res:Response, next:NextFunction) {
+        const cardId = req.params.id
+        const userId = AddMemberDTO(req.body)
+        // await 
+
+    }
 }
 
 export default new CardController();

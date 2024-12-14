@@ -12,12 +12,13 @@ CardRoute.post('/', validate(createCardValidation) ,asyncHandler(CardController.
 //GET CARD BY LIST
 // CardRoute.get('/',checkAuth ,asyncHandler(CardController.getCardByList))
 CardRoute.get('/' ,asyncHandler(CardController.getCardByList))
-//GET CARD BY ID
+//GET DETAIL CARD
 CardRoute.get('/:id',checkAuth ,asyncHandler(CardController.getCardById))
 //UPDATE CARD
 // CardRoute.put('/:id',checkAuth,validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
 CardRoute.put('/:id',validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
 //REMOVE CARD
-CardRoute.delete('/:id',checkAuth ,asyncHandler(CardController.removeCard))
-
+CardRoute.delete('/:id',checkAuth, asyncHandler(CardController.removeCard))
+//ADD MEMBER TO CARD
+CardRoute.post('/:id/member/add',checkAuth,  )
 export default CardRoute

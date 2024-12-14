@@ -7,6 +7,7 @@ import { Token } from "./Token";
 import { Comment } from "./Comment";
 import { BoardUserRole } from "./BoardUserRole";
 import { Role } from "./Role"
+import { Card } from "./Card";
 @Entity('users')
 export class User extends BaseEntity {
   @Column({ type: "varchar", length: 50, unique: true })
@@ -30,11 +31,14 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true })
   avatar?: string;
 
-  @OneToMany(() => Workspace, workspace => workspace.owner)
-  workspaces!: Workspace[];
-
   @ManyToMany(() => Workspace, workspace => workspace.users)
   joinedWorkspaces!: Workspace[];
+
+  @ManyToMany(() => Card, card => card.member)
+  cards?: Card[]
+
+  @OneToMany(() => Workspace, workspace => workspace.owner)
+  workspaces!: Workspace[];
 
   @OneToMany(() => BoardUserRole, boardUserRole => boardUserRole.user, { cascade: true, onDelete: 'CASCADE' })
   boardUserRoles!: BoardUserRole[];

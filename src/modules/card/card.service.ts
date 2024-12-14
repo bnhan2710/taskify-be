@@ -21,8 +21,8 @@ class CardService{
         return await cardRepository.getCardByList(listId)
     }
 
-    public async getCardById(cardId: string): Promise<Card> {
-        const card = await cardRepository.findById(cardId)
+    public async getDetail(cardId: string): Promise<Card> {
+        const card = await cardRepository.getDetail(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
         }
