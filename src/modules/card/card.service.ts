@@ -3,6 +3,7 @@ import { INewCard, IUpdateCard } from "./dto";
 import { Card } from "../../orm/entities/Card";
 import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import listRepository from "../list/list.repository";
+import { AddMemberDto } from './dto/add-member.dto';
 
 class CardService{
     public async newCard(newCardDto: INewCard): Promise<void> {
@@ -45,6 +46,13 @@ class CardService{
         await cardRepository.remove(card)
     }
 
+    public async addMember(cardId: string, addMemberDto: AddMemberDto): Promise<void> {
+        const card = await cardRepository.findById(cardId)
+        if(!card){
+            throw new NotFoundError('Card not found')
+        }
+        await cardRepository.addMember(cardId, addMemberDto)
+    }
 }
 
 export default new CardService()

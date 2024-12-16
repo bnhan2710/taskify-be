@@ -47,8 +47,11 @@ class CardController {
 
     public async addMember(req:Request, res:Response, next:NextFunction) {
         const cardId = req.params.id
-        const userId = AddMemberDTO(req.body)
-        // await 
+        const addMemberDto = AddMemberDTO(req.body)
+        await CardService.addMember(cardId, addMemberDto);
+        new OK({
+            message: "Add Member Successfully"
+        }).send(res);
 
     }
 }

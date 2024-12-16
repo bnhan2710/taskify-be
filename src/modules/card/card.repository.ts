@@ -3,7 +3,7 @@ import connection from "../../configs/database.connect"
 import { Card } from "../../orm/entities/Card";
 import { List } from "../../orm/entities/List";
 import { User } from "../../orm/entities/User";
-import { INewCard, IUpdateCard } from "./dto";
+import { AddMemberDto, INewCard, IUpdateCard } from "./dto";
 class CardRepository{
     private readonly repository: Repository<Card>
     constructor(){
@@ -47,9 +47,9 @@ class CardRepository{
         await this.repository.remove(card)
     }
 
-    public async addMember(cardId:string,userId: string[]){
+    public async addMember(cardId:string,addMemberDto: AddMemberDto){
         const card = await this.repository.findOne({where:{id:cardId}, relations:['member']})
-        const users = await connection.getRepository(User).findByIds(userId)
+        const users = await connection.getRepository(User).findByIds(addMemberDto.userId)
         card?.member?.push(...users)
         await this.repository.update(cardId, {member: card?.member})
     }
