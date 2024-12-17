@@ -38,5 +38,6 @@ class AttachmentController{
       data: result
     }).send(res)
 }
+
 }
 export default new AttachmentController();
