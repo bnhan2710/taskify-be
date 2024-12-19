@@ -16,6 +16,15 @@ import { ConnectRedis } from './configs/redis.config';
 
 const app: Express = express();
 const PORT: string | number = env.PORT || '8000';
+console.log(env.PORT);
+console.log(env.DB_HOST)
+console.log(env.DB_USER)
+console.log(env.DB_PASS)
+console.log(env.DB_NAME)
+console.log(env.DB_PORT)
+console.log(env.DB_DIALECT)
+
+
 
 const configureMiddlewares = () => {
     app.use(express.json());

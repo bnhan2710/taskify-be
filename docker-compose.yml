@@ -8,7 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
     ports:
       - "3307:3306"
     networks:
