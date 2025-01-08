@@ -5,9 +5,10 @@ import { Request, Response, NextFunction } from "express";
 class ListController {
     public async newList(req: Request, res: Response, next: NextFunction) {
         const newListDto = NewListDTO(req.body);
-        await ListService.newlist(newListDto);
+       const created =  await ListService.newlist(newListDto);
         new CREATED({
-            message: "Create List Successfully"
+            message: "Create List Successfully",
+            data: created
         }).send(res);
     }
 

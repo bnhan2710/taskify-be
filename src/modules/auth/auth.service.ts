@@ -6,14 +6,13 @@ import { Token } from "../../orm/entities/Token";
 import { TokenEnum } from "../../common/enums/token";
 import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from './auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
-import { string } from "joi";
 
 class AuthService {
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)
 
     public async login(loginDto: LoginDto,res: Response):Promise<{accessToken: string} | undefined>{
-        const user = await this.userRepository.findOne({where:{username: loginDto.username }})
+        const user = await this.userRepository.findOne({where:{email: loginDto.email }})
             if(!user){
                 throw new NotFoundError('Username not found!')
             }

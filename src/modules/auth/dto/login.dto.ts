@@ -1,11 +1,11 @@
 export interface LoginDto {
-    username: string;
+    email: string;
     password: string
 }
 
 export function LoginDTO(body: any): LoginDto {
     return {
-        username: body.username,
+        email: body.email,
         password: body.password
     }
 }

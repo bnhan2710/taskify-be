@@ -28,10 +28,11 @@ ListRoute.get('/:id',checkAuth, asyncHandler(ListController.getListById))
 //     asyncHandler(ListController.updateList))
 ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList))
 //REMOVRE LIST
-ListRoute.delete('/:id',
-    checkAuth,
-    checkPermissionInBoard([PermissionEnum.CanEditBoard]),
-    asyncHandler(ListController.removeList))
+// ListRoute.delete('/:id',
+//     checkAuth,
+//     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
+//     asyncHandler(ListController.removeList))
+ListRoute.delete('/:id', asyncHandler(ListController.removeList))
 
 export default ListRoute
 

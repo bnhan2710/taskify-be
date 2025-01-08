@@ -15,12 +15,11 @@ class ListRepository {
             title: newListDto.title,
             board,
         });
+
         const savedList = await this.repository.save(newList);
-    
         listOrderIds.push(savedList.id.toString());
         await connection.getRepository(Board).update(board.id, { listOrderIds });
         board.listOrderIds = listOrderIds;
-    
         return savedList;
     }
     public async findById(listId: string): Promise<List | null> {

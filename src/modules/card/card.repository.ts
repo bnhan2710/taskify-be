@@ -19,6 +19,7 @@ class CardRepository{
         const savedCard = await this.repository.save(newCard)
         cardOrderIds.push(savedCard.id.toString())
         await connection.getRepository(List).update(list.id, {cardOrderIds})
+        return savedCard
     }
 
     public async getCardByList(listId:string){

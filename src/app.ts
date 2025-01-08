@@ -16,14 +16,6 @@ import { ConnectRedis } from './configs/redis.config';
 
 const app: Express = express();
 const PORT: string | number = env.PORT || '8000';
-console.log(env.PORT);
-console.log(env.DB_HOST)
-console.log(env.DB_USER)
-console.log(env.DB_PASS)
-console.log(env.DB_NAME)
-console.log(env.DB_PORT)
-console.log(env.DB_DIALECT)
-
 
 
 const configureMiddlewares = () => {
@@ -56,17 +48,18 @@ const configureRoutes = () => {
     app.use(errorHandler);
 };
 
-const startServer = () => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on http://localhost:${PORT}`);
-    });
-};
-
-const boostrap = () => {
-    configureMiddlewares(); 
-    configureDatabase();
-    configureRoutes();      
-    startServer();          
+const boostrap = async () => {
+    try {
+        await configureDatabase();
+        configureMiddlewares();
+        configureRoutes();
+        app.listen(PORT, () => {
+            console.log(`Server is running at http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to start the server:', error);
+        process.exit(1);
+    }
 };
 
 boostrap();

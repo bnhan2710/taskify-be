@@ -6,12 +6,12 @@ import listRepository from "../list/list.repository";
 import { AddMemberDto } from './dto/add-member.dto';
 
 class CardService{
-    public async newCard(newCardDto: INewCard): Promise<void> {
+    public async newCard(newCardDto: INewCard): Promise<Card> {
         const list = await listRepository.findById(newCardDto.listId)
         if(!list){
             throw new NotFoundError('List not found')
         }
-         await cardRepository.insert(newCardDto, list)
+       return await cardRepository.insert(newCardDto, list)
     }
 
     public async getCardByList(listId: string): Promise<Card[]> {

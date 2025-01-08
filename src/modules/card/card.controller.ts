@@ -6,9 +6,10 @@ import { OK, CREATED } from "../../handler/success.reponse";
 class CardController {
     public async newCard(req: Request, res: Response, next: NextFunction) {
         const newCardDto = NewCardDTO(req.body);
-        await CardService.newCard(newCardDto);
+        const createdCard = await CardService.newCard(newCardDto);
         new CREATED({
-            message: "Create Card Successfully"
+            message: "Create Card Successfully",
+            data: createdCard
         }).send(res);
     }
 
