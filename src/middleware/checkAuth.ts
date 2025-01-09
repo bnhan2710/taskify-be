@@ -7,11 +7,11 @@ const secretKey = env.SECRET_KEY as string;
 export function checkAuth(req: Request, res: Response, next: NextFunction) : void {
         const token = req.header('Authorization')?.replace('Bearer ','')
         if(!token){
-           return next(new AuthFailError('You need to login first'));
+           return next(new AuthFailError('Token not found'));
         }
         jwt.verify(token, secretKey, async (err, decoded) => {
             if (err) {
-                return next(new AuthFailError('Token is invalid'));
+                return next(new AuthFailError('Token is invalid or expired'));
             }
             req.userJwt = decoded as JwtPayload
             next();

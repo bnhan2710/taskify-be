@@ -9,10 +9,10 @@ import { checkPermissionInBoard } from "../../middleware/checkPermission";
 import { PermissionEnum } from "../../common/enums/permission";
 //CREATE BOARD
 BoardRoute.post('/', checkAuth, validate(NewBoardValidation) ,asyncHandler(BoardController.newBoard))
-//GET BOARD BY WORKSPACE
-BoardRoute.get('/', checkAuth , asyncHandler(BoardController.getBoardByWorkspace))
+//GET MY BOARD
+BoardRoute.get('/', checkAuth , asyncHandler(BoardController.getMyBoard))
 //GET BOARD BY ID
-BoardRoute.get('/:id', asyncHandler(BoardController.getBoardById))
+BoardRoute.get('/:id', checkAuth, asyncHandler(BoardController.getBoardById))
 // BoardRoute.get('/:id', 
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanViewBoard]),

@@ -25,11 +25,12 @@ class BoardController{
         }).send(res)
     }
 
-    public async getBoardByWorkspace(req:Request, res: Response, next: NextFunction){
-        const workspaceId = req.query.workspaceId as string
+    public async getMyBoard(req:Request, res: Response, next: NextFunction){
+        const userId = req.userJwt.id
+        const qs  = req.query
         new OK({
             message: "Get Board Successfully",
-            data: await BoardService.getBoardByWorkspace(workspaceId)
+            data: await BoardService.getMyBoard(userId,qs)
         }).send(res)
     }
 

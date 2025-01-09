@@ -1,7 +1,7 @@
 export interface IUpdateCard {
     title?: string,
     description?: string,
-    listId?: string,
+    listId: string,
 }
 
 export function UpdateCardDTO(body: any): IUpdateCard {

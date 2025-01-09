@@ -20,6 +20,9 @@ import {
     @Column({ type: "text", nullable: true })
     description!: string;
 
+    @Column({ type: "varchar", length: 255})
+    type!: string;
+
     @ManyToOne(() => Workspace, workspace => workspace.boards,{ onDelete: 'CASCADE' })
     @JoinColumn({ name: 'workspace_id' }) 
     workspace!: Workspace;

@@ -40,12 +40,8 @@ class BoardService{
         return await boardRepository.detele(board)
     }
 
-    public async getBoardByWorkspace(workspaceId: string){
-        const workspace = await workspaceRepository.findbyId(workspaceId)
-        if(!workspace){
-            throw new NotFoundError('Workspace not found')
-        }
-        return await boardRepository.getBoardbyWorkspace(workspaceId)
+    public async getMyBoard(userId:string,qs: any){
+        return await boardRepository.getMyBoard(userId,qs)
     }
 
     public async getBoardById(boardId: string){

@@ -14,12 +14,12 @@ router.post('/login', validate(loginValidation), asyncHandler(AuthController.log
 // REGISTER
 router.post('/register', validate(registerValidation), asyncHandler(AuthController.register));
 //REQUEST REFRESH TOKEN 
-router.post('/refresh', asyncHandler(AuthController.refreshNewToken))
+router.get('/refresh_token', asyncHandler(AuthController.refreshNewToken))
 // GOOGLE LOGIN
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 // GOOGLE CALLBACK
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), asyncHandler(AuthController.googleLogin));
 // LOG OUT 
-router.post('/logout', checkAuth , asyncHandler(AuthController.logout))
+router.delete('/logout', checkAuth , asyncHandler(AuthController.logout))
 
 export default router

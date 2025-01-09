@@ -7,6 +7,10 @@ export const NewBoardValidation = Joi.object({
     description: Joi.string().max(255).messages({
         'string.base': 'Description must be a string',
     }),
+    type: Joi.string().required().messages({
+        'string.base': 'Type must be a string',
+        'any.required': 'Type is required'
+    }),
     workspaceId: Joi.string().required().messages({
         'string.base': 'WorkspaceId must be a string',
         'any.required': 'WorkspaceId is required'

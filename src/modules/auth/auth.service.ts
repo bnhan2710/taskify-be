@@ -6,19 +6,19 @@ import { Token } from "../../orm/entities/Token";
 import { TokenEnum } from "../../common/enums/token";
 import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from './auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
-
+import { env } from "../../configs/env.config";
 class AuthService {
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)
 
-    public async login(loginDto: LoginDto,res: Response):Promise<{accessToken: string} | undefined>{
+    public async login(loginDto: LoginDto,res: Response):Promise<any>{
         const user = await this.userRepository.findOne({where:{email: loginDto.email }})
             if(!user){
-                throw new NotFoundError('Username not found!')
+                throw new AuthFailError('Username or password is incorrect!')
             }
             const matchPassword = await comparePassword(loginDto.password,user.password)
             if(!matchPassword){
-                throw new AuthFailError('Password is incorrect!')
+                throw new AuthFailError('Username or password is incorrect!')
             }
             const payloadData = {
                 id: user.id,
@@ -33,17 +33,19 @@ class AuthService {
             await this.tokenRepository.save({
                 token: refreshToken,
                 type: TokenEnum.REFRESH,
-                expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
+                expires: new Date(Date.now() + env.ACCESS_TOKEN_EXPIRE),
                 user: user
             })
 
             res.cookie('refreshToken', refreshToken ,{
                 httpOnly:true,
-                maxAge: (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)
+                maxAge: parseInt(env.REFRESH_TOKEN_EXPIRE)
             })
 
+            const { password,...userInfo } = user
             return {
-                accessToken
+                accessToken,
+                ...userInfo
             }
     }
 
@@ -71,7 +73,7 @@ class AuthService {
         await this.tokenRepository.save({
             token: refreshToken,
             type: TokenEnum.REFRESH,
-            expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
+            expires: new Date(Date.now() + env.REFRESH_TOKEN_EXPIRE),
             user: findUser
         })
         return {
@@ -111,21 +113,13 @@ class AuthService {
             const user = await verifyToken(resfreshToken)
             if(!user){
                 console.log(user)
-                 throw new AuthFailError('RefeshToken is invalid')    
+                 throw new AuthFailError('refeshToken is invalid')    
             }
             const payload = {
                 id: user.id,
                 username: user.username
             }
             
-            const refreshToken = await generateRefreshToken(payload)
-            await this.tokenRepository.delete({user:{id:user.id}})
-            await this.tokenRepository.save({
-                token: refreshToken,
-                type: TokenEnum.REFRESH,
-                expires: new Date(Date.now() + (process.env.REFRESH_TOKEN_EXPIRES ? parseInt(process.env.REFRESH_TOKEN_EXPIRES) : 31536000000)),
-                user: user
-            })
             const accessToken = generateAccessToken(payload)
             return { accessToken }
         }

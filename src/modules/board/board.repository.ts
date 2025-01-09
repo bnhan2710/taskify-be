@@ -5,35 +5,63 @@ import connection from "../../configs/database.connect";
 import { INewBoard, IUpdateBoard } from "./dto";
 import { BoardUserRole } from "../../orm/entities/BoardUserRole";
 class BoardRepository{
-    private readonly reposiotry: Repository<Board>
+    private readonly repository: Repository<Board>
     constructor(){
-        this.reposiotry = connection.getRepository(Board)
+        this.repository = connection.getRepository(Board)
     }
     
     public async insert(newBoardDto: INewBoard , workspace: Workspace): Promise<string>{
         
-        const newBoard = this.reposiotry.create({
+        const newBoard = this.repository.create({
             title: newBoardDto.title,
             description: newBoardDto.description,
+            type: newBoardDto.type,
             workspace: workspace
         })
-         await this.reposiotry.save(newBoard)
+         await this.repository.save(newBoard)
          return newBoard.id
     }   
     
     public async findById(boardId: string): Promise<Board | null> {
-        return await this.reposiotry.findOne({ where: { id: boardId } });
+        return await this.repository.findOne({ where: { id: boardId } });
     }
 
-    public async getBoardbyWorkspace(workspaceId:string){
-        await this.reposiotry.find({where: {workspace: {id: workspaceId}}})
+    public async getMyBoard(userId:string,qs: any){
+        //get all board of user with pagination
+        const page = parseInt(qs.page) || 1
+        const limit = parseInt(qs.limit) || 10
+        const skip = (page - 1) * limit
+        const [boards, total] = await this.repository.findAndCount({
+            join: {
+              alias: 'board',
+              innerJoin: {
+                boardUserRoles: 'board.boardUserRoles'
+              }
+            },
+            where: {
+              boardUserRoles: {
+                userId: userId
+              }
+            },
+            skip: skip,
+            take: limit
+          })
+          return { boards, totalBoards: total }
+
     }
 
     public async getBoardDetail(boardId:string){
-        return await this.reposiotry.findOne({where: {id: boardId}, relations:['lists', 'lists.cards']})
+        const board = await this.repository.findOne({where: {id: boardId}, relations:['lists', 'lists.cards','boardUserRoles']})
+        const userInfo = await connection.getRepository(BoardUserRole).find({where:{boardId:boardId}, relations:['user']})
+        const boardUsers: any[] = []
+        userInfo.forEach((user)=>{
+            //push user with username and avatar to boardUsers
+            boardUsers.push({ username: user.user.username, avatar: user.user.avatar, email: user.user.email})
+        })
+        return {...board, boardUsers}
     }
     public async update(updateBoardDto:IUpdateBoard, boardId:string){
-        await this.reposiotry.update(
+        await this.repository.update(
             { id:boardId }, 
             {
                 title: updateBoardDto.title,
@@ -45,7 +73,7 @@ class BoardRepository{
 
 
     public async detele( board:Board ){
-            await this.reposiotry.remove(board)
+            await this.repository.remove(board)
     }
 }
 

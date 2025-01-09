@@ -14,6 +14,10 @@ export class Card extends BaseEntity{
   @Column({ type: 'text', nullable: true })
   description!: string;
 
+  //cover image
+  @Column({ type: 'text', nullable: true })
+  cover!: string;
+  
   @ManyToOne(() => List, (list) => list.cards,{ onDelete: 'CASCADE' })
   @JoinColumn({ name: 'list_id' })
   list!: List;

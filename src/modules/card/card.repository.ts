@@ -38,9 +38,7 @@ class CardRepository{
         await this.repository.update(
             {id:cardId},
             {
-                title: updateCardDto.title,
-                description: updateCardDto.description,
-                list: { id: updateCardDto.listId}
+                ...updateCardDto
             })
     }
     
