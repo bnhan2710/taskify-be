@@ -52,7 +52,7 @@ class BoardService{
         return board
     }
 
-    public async inviteMember(boardId: string, userId: string){
+    public async inviteMember(boardId: string, userEmail: string){
         console.log(boardId)
         const board = await boardRepository.findById(boardId)
         if(!board){
@@ -62,9 +62,13 @@ class BoardService{
         if(!role){
             throw new NotFoundError('Role not found')
         }
+        const user  = await connection.getRepository('User').findOne({where: {email: userEmail}})
+        if(!user){
+            throw new NotFoundError('User not found')
+        }
         await connection.getRepository(BoardUserRole).insert({
             boardId,
-            userId,
+            userId: user.id,
             roleId: role.id
         })
     }

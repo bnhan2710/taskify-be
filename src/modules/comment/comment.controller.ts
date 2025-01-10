@@ -5,10 +5,10 @@ import { commentDTO, commentUpdateDTO } from "./dto";
 class CommentController{
     public async newComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentDto = commentDTO(req.body);
-        const userId = req.userJwt.id;
-        await CommentService.newComment(commentDto,userId);
+        const comment = await CommentService.newComment(commentDto);
         new CREATED({
-            message: 'Comment created successfully'
+            message: 'Comment created successfully',
+            data: comment
         }).send(res);
     }
 

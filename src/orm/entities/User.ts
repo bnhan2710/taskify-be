@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   email!: string;
 
   @Column({ type: "varchar", length: 50, nullable: true })
-  fullName?: string;
+  displayName?: string;
 
   @Column({ type: "int", nullable: true })
   age?: number;

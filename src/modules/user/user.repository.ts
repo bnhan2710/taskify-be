@@ -26,7 +26,7 @@ class UserRepository {
         return await this.repository.find({
             select: {
                 username: true,
-                fullName: true,
+                displayName: true,
                 email: true,
                 age: true
             }

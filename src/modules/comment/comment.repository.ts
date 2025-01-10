@@ -18,17 +18,17 @@ class CommentRepository {
         return await this.repository.find();
     }
 
-    public async insert(commentDto: IComment, card: Card, user:User): Promise<void> {
+    public async insert(commentDto: IComment, card: Card, user:User): Promise<Comment> {
         const newComment = this.repository.create({
-            text: commentDto.text,
+            content: commentDto.content,
             card,
             user
         });
-        await this.repository.save(newComment);
+         return await this.repository.save(newComment);
     }
 
     public async update(updateCommentDto: ICommentUpdate, commentId:string ): Promise<void> {
-        await this.repository.update({id: commentId}, {text: updateCommentDto.text});
+        await this.repository.update({id: commentId}, {content: updateCommentDto.content});
     }
 
     public async remove(comment: Comment): Promise<Comment> {

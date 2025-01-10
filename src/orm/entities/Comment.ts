@@ -14,5 +14,5 @@ export class Comment extends BaseEntity{
   user!: User;
 
   @Column({ type: 'varchar', length: 255 })
-  text!: string;
+  content!: string;
 }

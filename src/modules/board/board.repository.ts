@@ -56,7 +56,7 @@ class BoardRepository{
         const boardUsers: any[] = []
         userInfo.forEach((user)=>{
             //push user with username and avatar to boardUsers
-            boardUsers.push({ username: user.user.username, avatar: user.user.avatar, email: user.user.email})
+            boardUsers.push({ id:user.user.id ,username: user.user.username, avatar: user.user.avatar, email: user.user.email, displayName: user.user.displayName })
         })
         return {...board, boardUsers}
     }

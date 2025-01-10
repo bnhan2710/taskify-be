@@ -6,7 +6,8 @@ import { OK, CREATED } from "../../handler/success.reponse";
 class CardController {
     public async newCard(req: Request, res: Response, next: NextFunction) {
         const newCardDto = NewCardDTO(req.body);
-        const createdCard = await CardService.newCard(newCardDto);
+        const userId = req.userJwt.id;
+        const createdCard = await CardService.newCard(newCardDto,userId);
         new CREATED({
             message: "Create Card Successfully",
             data: createdCard

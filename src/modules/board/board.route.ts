@@ -30,7 +30,7 @@ BoardRoute.delete('/:id',
     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
     asyncHandler(BoardController.removeBoard))
 //INVITE MEMBER
-BoardRoute.post('/:id/member/add',
+BoardRoute.post('/:id/add',
     checkAuth,
     checkPermissionInBoard([PermissionEnum.CanManageBoardMember]),
     asyncHandler(BoardController.inviteMember))

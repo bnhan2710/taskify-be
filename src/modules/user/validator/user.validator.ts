@@ -2,8 +2,8 @@ import Joi from 'joi'
 import { Gender } from '../../../common/enums/gender';
 
 export const updateUserValidation = Joi.object({
-    fullName: Joi.string().min(10).max(255).messages({
-        'string.min': 'Fullname must be at least 10 characters',
+    displayName: Joi.string().min(5).max(255).messages({
+        'string.min': 'DisplayName must be at least 5 characters',
     }),
     age: Joi.number().min(1).max(200).messages({
         'number.min': 'Age must be at least 1',

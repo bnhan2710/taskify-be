@@ -1,11 +1,13 @@
 export interface IComment{
-    text: string
+    userId: string
+    content: string
     cardId: string
 }
 
 export function commentDTO(comment: IComment){
     return {
-        text: comment.text,
-        cardId: comment.cardId
+        content: comment.content,
+        cardId: comment.cardId,
+        userId: comment.userId
     }
 }

@@ -35,7 +35,7 @@ export const checkPermissionInBoard = (allowedList: string[]) => {
         if(userCache && allowedList.some(permission => userCache.includes(permission))){
             return next()
         }
-        return next(new ForbiddenError('You do not have permission to access this resource'))
+        return next(new ForbiddenError('You do not have permission'))
     }
 }
 

@@ -7,8 +7,7 @@ import validate from '../../middleware/validate';
 import { createCardValidation, updateCardValidation } from './validator';
 
 //CREATE CARD
-// CardRoute.post('/', checkAuth,validate(createCardValidation) ,asyncHandler(CardController.newCard))
-CardRoute.post('/', validate(createCardValidation) ,asyncHandler(CardController.newCard))
+CardRoute.post('/', checkAuth,validate(createCardValidation) ,asyncHandler(CardController.newCard))
 //GET CARD BY LIST
 // CardRoute.get('/',checkAuth ,asyncHandler(CardController.getCardByList))
 CardRoute.get('/' ,asyncHandler(CardController.getCardByList))

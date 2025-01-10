@@ -42,7 +42,7 @@ class UserService {
         if (!user) {
             throw new BadRequestError('User not found');
         }
-        await userRepository.updateById(id, { fullName: updateUserDto.fullName });
+        await userRepository.updateById(id, { displayName: updateUserDto.displayName });
     }
 
     public async deleteUserById(id: string): Promise<void> {

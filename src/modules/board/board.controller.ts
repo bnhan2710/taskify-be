@@ -51,9 +51,9 @@ class BoardController{
     }
 
     public async inviteMember(req:Request, res: Response, next: NextFunction){
-        const userId = req.body.userId
+        const userEmail = req.body.email
         const boardId = req.params.id
-        await BoardService.inviteMember(boardId, userId)
+        await BoardService.inviteMember(boardId, userEmail)
         new OK({
             message: "Invite Member Successfully"
         }).send(res)

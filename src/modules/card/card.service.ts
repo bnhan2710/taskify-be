@@ -4,14 +4,20 @@ import { Card } from "../../orm/entities/Card";
 import { BadRequestError, NotFoundError } from "../../handler/error.response";
 import listRepository from "../list/list.repository";
 import { AddMemberDto } from './dto/add-member.dto';
+import userRepository from "../user/user.repository";
 
 class CardService{
-    public async newCard(newCardDto: INewCard): Promise<Card> {
+    public async newCard(newCardDto: INewCard,userId: string): Promise<Card> {
         const list = await listRepository.findById(newCardDto.listId)
         if(!list){
             throw new NotFoundError('List not found')
         }
-       return await cardRepository.insert(newCardDto, list)
+        const user = await userRepository.findOneById(userId)
+        if(!user){
+            throw new NotFoundError('User not found')
+        }
+        const newCard = await cardRepository.insert(newCardDto, list, user)
+        return newCard
     }
 
     public async getCardByList(listId: string): Promise<Card[]> {
@@ -22,7 +28,7 @@ class CardService{
         return await cardRepository.getCardByList(listId)
     }
 
-    public async getDetail(cardId: string): Promise<Card> {
+    public async getDetail(cardId: string) {
         const card = await cardRepository.getDetail(cardId)
         if(!card){
             throw new NotFoundError('Card not found')

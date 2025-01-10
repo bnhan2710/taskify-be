@@ -1,9 +1,9 @@
 export interface ICommentUpdate {
-    text: string;
+    content: string;
 }
 
 export function commentUpdateDTO(body: any): ICommentUpdate {
     return {
-        text: body.text,
+        content: body.content,
     };
 }
