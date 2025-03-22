@@ -37,6 +37,15 @@ export class AuthFailError extends CustomError{
     }
 }
 
+export class TokenExpiredErr extends CustomError{ 
+    readonly statusCode = StatusCodes.UNAUTHORIZED
+    readonly status = 'TokenExpired'
+    readonly logging = false
+    constructor(message: string,) {
+        super(message);
+    }
+}
+
 export class ConflictRequestError extends CustomError{
     readonly statusCode = StatusCodes.CONFLICT
     readonly status = ReasonPhrases.CONFLICT

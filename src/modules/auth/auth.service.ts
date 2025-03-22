@@ -4,7 +4,7 @@ import { User } from "../../orm/entities/User";
 import { Response } from "express";
 import { Token } from "../../orm/entities/Token";
 import { TokenEnum } from "../../common/enums/token";
-import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from './auth.util'
+import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
 import { env } from "../../configs/env.config";
 class AuthService {
@@ -14,11 +14,11 @@ class AuthService {
     public async login(loginDto: LoginDto,res: Response):Promise<any>{
         const user = await this.userRepository.findOne({where:{email: loginDto.email }})
             if(!user){
-                throw new AuthFailError('Username or password is incorrect!')
+                throw new AuthFailError('Email or password is incorrect!')
             }
             const matchPassword = await comparePassword(loginDto.password,user.password)
             if(!matchPassword){
-                throw new AuthFailError('Username or password is incorrect!')
+                throw new AuthFailError('Email or password is incorrect!')
             }
             const payloadData = {
                 id: user.id,
@@ -73,7 +73,7 @@ class AuthService {
         await this.tokenRepository.save({
             token: refreshToken,
             type: TokenEnum.REFRESH,
-            expires: new Date(Date.now() + env.REFRESH_TOKEN_EXPIRE),
+            expires: (new Date(Date.now() + env.REFRESH_TOKEN_EXPIRE)).toISOString(),
             user: findUser
         })
         return {
@@ -109,7 +109,7 @@ class AuthService {
     }
 
     public async refreshNewToken(resfreshToken: string,res: Response):Promise<{accessToken:string}>{
-        
+            console.log('REFRESH NEW TOKEN')
             const user = await verifyToken(resfreshToken)
             if(!user){
                 console.log(user)

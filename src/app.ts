@@ -7,16 +7,13 @@ import passport from 'passport';
 import { NOT_FOUND } from 'http-status';
 import cookieParser from 'cookie-parser';
 import 'reflect-metadata';
-import {ConnectDB} from './configs/database.connect'; 
 import { corsOptions } from './configs/cors.config';
 import { env } from './configs/env.config';
 import { errorHandler } from './handler/errorHandle';
 import v1Api from './routes/v1.route';
-import { ConnectRedis } from './configs/redis.config';
+import { createServer } from 'http';
 
 const app: Express = express();
-const PORT: string | number = env.PORT || '8000';
-
 
 const configureMiddlewares = () => {
     app.use(express.json());
@@ -34,11 +31,6 @@ const configureMiddlewares = () => {
     app.use(morgan('dev'));
 };
 
-const configureDatabase = async () => {
-    await ConnectDB();
-    await ConnectRedis();
-}
-
 const configureRoutes = () => {
     app.use('/api/v1', v1Api); 
     app.use('*', (req: Request, res: Response) => res.status(NOT_FOUND).json({
@@ -48,19 +40,11 @@ const configureRoutes = () => {
     app.use(errorHandler);
 };
 
-const boostrap = async () => {
-    try {
-        await configureDatabase();
+const createHttpServer =  () => {
+        const server = createServer(app);
         configureMiddlewares();
         configureRoutes();
-        app.listen(PORT, () => {
-            console.log(`Server is running at http://localhost:${PORT}`);
-        });
-    } catch (error) {
-        console.error('Failed to start the server:', error);
-        process.exit(1);
-    }
+        return server;
 };
 
-boostrap();
-export default app;
+export { createHttpServer };

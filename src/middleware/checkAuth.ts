@@ -1,6 +1,6 @@
 import { Request, Response , NextFunction } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { AuthFailError, ForbiddenError } from '../handler/error.response';
+import { AuthFailError, TokenExpiredErr } from '../handler/error.response';
 import { env } from '../configs/env.config';
 const secretKey = env.SECRET_KEY as string;
 
@@ -11,11 +11,11 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) : voi
         }
         jwt.verify(token, secretKey, async (err, decoded) => {
             if (err) {
-                return next(new AuthFailError('Token is invalid or expired'));
+                return next(new TokenExpiredErr('Token is invalid or expired'));
             }
             req.userJwt = decoded as JwtPayload
             next();
         });
-}
+}   
 
 

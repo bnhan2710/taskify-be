@@ -10,7 +10,7 @@
     "migration:revert": "npx ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/database.connect.ts",
     "seed-01": "npx ts-node ./src/orm/seeders/rbac-seed.ts",
     "start": "npm run build && cross-env BUILD_MODE=production node dist/app.js",
-    "dev": "cross-env BUILD_MODE=development nodemon src/app.ts",
+    "dev": "cross-env BUILD_MODE=development nodemon src/main.ts",
     "test": "jest"
   },
   "author": "",
@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
+    "envalid": "^8.0.0",
     "express": "^4.21.0",
     "express-session": "^1.18.1",
     "fs": "^0.0.1-security",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
@@ -56,7 +58,6 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
-    "@types/cookie-parser": "^1.4.8",
     "@types/node": "^22.7.4",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth20": "^2.0.16",
