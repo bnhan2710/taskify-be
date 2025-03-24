@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 import { Board } from "../../orm/entities/Board";
 import { Workspace } from "../../orm/entities/Workspace";
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import { INewBoard, IUpdateBoard } from "./dto";
 import { BoardUserRole } from "../../orm/entities/BoardUserRole";
 class BoardRepository{

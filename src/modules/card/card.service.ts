@@ -1,7 +1,7 @@
 import cardRepository from "./card.repository";
 import { INewCard, IUpdateCard } from "./dto";
 import { Card } from "../../orm/entities/Card";
-import { BadRequestError, NotFoundError } from "../../handler/error.response";
+import { BadRequestError, NotFoundError } from "../../core/handler/error.response";
 import listRepository from "../list/list.repository";
 import { AddMemberDto } from './dto/add-member.dto';
 import userRepository from "../user/user.repository";

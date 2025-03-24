@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto'
-import { env } from '../configs/env.config';
+import { env } from '../../core/configs/env.config';
 
 export const generateAccessToken = (data: string | object): string => {
     try {

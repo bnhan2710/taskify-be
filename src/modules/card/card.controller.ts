@@ -1,7 +1,7 @@
 import CardService from "./card.service";
 import { Request, Response, NextFunction } from "express";
 import { NewCardDTO, UpdateCardDTO, AddMemberDTO } from "./dto";
-import { OK, CREATED } from "../../handler/success.reponse";
+import { OK, CREATED } from "../../core/handler/success.reponse";
 
 class CardController {
     public async newCard(req: Request, res: Response, next: NextFunction) {

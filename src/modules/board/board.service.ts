@@ -1,12 +1,12 @@
-import { NotFoundError } from "../../handler/error.response";
+import { NotFoundError } from "../../core/handler/error.response";
 import boardRepository from "./board.repository";
 import workspaceRepository from "../workspace/workspace.repository";
 import { INewBoard, IUpdateBoard } from "./dto";
 import { BoardUserRole } from "../../orm/entities/BoardUserRole";
 import { Role } from "../../orm/entities/Role";
-import { RoleEnum } from "../../common/enums/role";
-import connection from "../../configs/database.connect";
-import cacheUtil from "../../utils/cache.util";
+import { RoleEnum } from "../../shared/common/enums/role";
+import connection from "../../core/configs/database.connect";
+import cacheUtil from "../../shared/utils/cache.util";
 class BoardService{
 
     public async newBoard (newBoardDto: INewBoard, userId: string): Promise<string>{

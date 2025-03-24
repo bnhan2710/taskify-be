@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'
-import { User } from '../orm/entities/User'
-import { Permission } from '../orm/entities/Permission'
-import { BoardUserRole } from '../orm/entities/BoardUserRole'
+import { User } from '../../orm/entities/User'
+import { Permission } from '../../orm/entities/Permission'
+import { BoardUserRole } from '../../orm/entities/BoardUserRole'
 import connection from '../configs/database.connect'
 import { ForbiddenError,BadRequestError } from '../handler/error.response'
-import cacheUtil from '../utils/cache.util'
+import cacheUtil from '../../shared/utils/cache.util'
 
 export const checkPermissionInBoard = (allowedList: string[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {

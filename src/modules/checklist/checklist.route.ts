@@ -2,9 +2,9 @@ import { Router } from "express";
 const ChecklistRoute:Router = Router()
 import ChecklistController from "./checklist.controller";
 import { createChecklistValidation,updateChecklistValidation } from "./validator";
-import validate from "../../middleware/validate";
-import asyncHandler from '../../middleware/asyncHandle';
-import { checkAuth } from "../../middleware/checkAuth";
+import validate from "../../core/middleware/validate";
+import asyncHandler from '../../core/middleware/asyncHandle';
+import { checkAuth } from "../../core/middleware/checkAuth";
 //CREATE CHECKLIST
 ChecklistRoute.post('/',checkAuth,validate(createChecklistValidation), asyncHandler(ChecklistController.newChecklist))
 //GET CHECKLIST BY CARD

@@ -20,5 +20,12 @@
   "exclude": [
     "public",
     "dist",
-  ]
+  ],
+  "baseUrl": "./src",
+  "paths": {
+    "@/*": ["*"],
+    "@modules/*": ["modules/*"],
+    "@share/*": ["shared/*"],
+    "@core/*": ["core/*"],
+  }
 }

@@ -3,7 +3,7 @@ import { IComment, ICommentUpdate } from "./dto";
 import { Comment } from "../../orm/entities/Comment";
 import cardRepository from "../card/card.repository";
 import userRepository from "../user/user.repository";
-import { NotFoundError, ForbiddenError } from "../../handler/error.response";
+import { NotFoundError, ForbiddenError } from "../../core/handler/error.response";
 
 class CommentService {
     public async newComment(commentDto: IComment): Promise<any> {

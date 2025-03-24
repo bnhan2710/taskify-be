@@ -1,8 +1,8 @@
 import { Role } from "../entities/Role";
 import { Permission } from "../entities/Permission";
-import { RoleEnum } from "../../common/enums/role";
-import { PermissionEnum } from "../../common/enums/permission";
-import  connection  from "../../configs/database.connect";
+import { RoleEnum } from "../../shared/common/enums/role";
+import { PermissionEnum } from "../../shared/common/enums/permission";
+import  connection  from "../../core/configs/database.connect";
 
 export async function seedRBAC(): Promise<void>  {
     if (!connection.isInitialized) {

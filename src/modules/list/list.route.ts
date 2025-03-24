@@ -1,12 +1,12 @@
 import { Router } from "express";
 const ListRoute:Router = Router()
 import ListController from "./list.controller";
-import { checkAuth } from "../../middleware/checkAuth";
-import validate from "../../middleware/validate";
-import asyncHandler from "../../middleware/asyncHandle"
+import { checkAuth } from "../../core/middleware/checkAuth";
+import validate from "../../core/middleware/validate";
+import asyncHandler from "../../core/middleware/asyncHandle"
 import { newListValidation , updateListValidation } from "./validator";
-import { checkPermissionInBoard } from "../../middleware/checkPermission";
-import { PermissionEnum } from "../../common/enums/permission";
+import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
+import { PermissionEnum } from "../../shared/common/enums/permission";
 
 //CREATE LIST
 ListRoute.post('/', validate(newListValidation),asyncHandler(ListController.newList))

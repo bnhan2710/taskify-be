@@ -1,6 +1,6 @@
 import { Token } from '../../../orm/entities/Token';
-import CacheUtil from '../../../utils/cache.util';
-import connection from '../../../configs/database.connect'
+import CacheUtil from '../../../shared/utils/cache.util';
+import connection from '../../../core/configs/database.connect'
 
 export async function updatePermission(roleId: string):Promise<void>{
     //update Permission of Role when assign new permission to role

@@ -1,5 +1,5 @@
 import listRepository from './list.repository';
-import { BadRequestError, NotFoundError } from '../../handler/error.response';
+import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
 import { List } from '../../orm/entities/List';
 import boardRepository from '../board/board.repository';
 import { INewList, IUpdateList } from './dto';

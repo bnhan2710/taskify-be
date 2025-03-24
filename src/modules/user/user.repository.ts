@@ -1,4 +1,4 @@
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import { User } from '../../orm/entities/User';
 import { Repository } from "typeorm";
 import { IUserDTO } from "./dto";

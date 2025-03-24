@@ -1,10 +1,10 @@
 import { Request,Response, NextFunction } from "express";
-import cloudinary from '../../configs/cloudinary.config';
+import cloudinary from '../../core/configs/cloudinary.config';
 import { unlinkSync } from "fs";
-import { BadRequestError,NotFoundError, } from "../../handler/error.response";
+import { BadRequestError,NotFoundError, } from "../../core/handler/error.response";
 import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../orm/entities/Attachment";
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import cardRepository from "../card/card.repository";
 import { AttachmentDto } from "./dto/attachment.dto";
 class AttachmentService {

@@ -1,5 +1,5 @@
 import { Repository } from "typeorm"
-import connection from "../../configs/database.connect"
+import connection from "../../core/configs/database.connect"
 import { Checklist } from '../../orm/entities/Checklist';
 import { Card } from "../../orm/entities/Card";
 import { INewChecklist,IUpdateChecklist } from "./dto";

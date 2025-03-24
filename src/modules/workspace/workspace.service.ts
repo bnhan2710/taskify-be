@@ -1,6 +1,6 @@
 import { Workspace } from "../../orm/entities/Workspace";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
-import { NotFoundError,ConflictRequestError } from "../../handler/error.response";
+import { NotFoundError,ConflictRequestError } from "../../core/handler/error.response";
 import WorkspaceRepository from "./workspace.repository";
 import UserRepository from "../user/user.repository";
 class WorkSpaceService{

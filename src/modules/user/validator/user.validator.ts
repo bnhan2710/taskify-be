@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { Gender } from '../../../common/enums/gender';
+import { Gender } from '../../../shared/common/enums/gender';
 
 export const updateUserValidation = Joi.object({
     displayName: Joi.string().min(5).max(255).messages({

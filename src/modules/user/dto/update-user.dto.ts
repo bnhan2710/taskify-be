@@ -1,4 +1,4 @@
-import { Gender } from "../../../common/enums/gender"
+import { Gender } from "../../../shared/common/enums/gender"
 export interface UpdateUserDto {
     displayName?:string,
     age?:number,

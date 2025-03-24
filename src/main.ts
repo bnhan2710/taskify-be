@@ -2,9 +2,9 @@ import {config} from 'dotenv';
 import path from 'path';
 config({ path: path.join(process.cwd(), '.env') });
 import { createHttpServer} from './app';
-import env from './configs/env.config';
-import { connectDB } from './configs/database.connect';
-import { connectRedis } from './configs/redis.config';
+import env from './core/configs/env.config';
+import { connectDB } from './core/configs/database.connect';
+import { connectRedis } from './core/configs/redis.config';
 
 async function start() {
 

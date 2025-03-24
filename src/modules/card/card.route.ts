@@ -1,9 +1,9 @@
 import { Router } from "express";
 const CardRoute:Router = Router()
 import CardController from "./card.controller";
-import asyncHandler from '../../middleware/asyncHandle';
-import { checkAuth } from "../../middleware/checkAuth";
-import validate from '../../middleware/validate';
+import asyncHandler from '../../core/middleware/asyncHandle';
+import { checkAuth } from "../../core/middleware/checkAuth";
+import validate from '../../core/middleware/validate';
 import { createCardValidation, updateCardValidation } from './validator';
 
 //CREATE CARD

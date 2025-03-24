@@ -1,10 +1,10 @@
 import { Router } from "express";
 const WorkspaceRoute:Router = Router()
 import WorkspaceController from "./workspace.controller";
-import { checkAuth } from "../../middleware/checkAuth";
-import validate from "../../middleware/validate";
+import { checkAuth } from "../../core/middleware/checkAuth";
+import validate from "../../core/middleware/validate";
 import { NewWorkspaceValidation,UpdateWorkspaceValidation } from "./validator/workspace.validate";
-import asyncHandler from "../../middleware/asyncHandle";
+import asyncHandler from "../../core/middleware/asyncHandle";
 import workspaceController from "./workspace.controller";
 
 //CREATE WORKSPACE

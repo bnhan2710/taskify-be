@@ -1,12 +1,12 @@
 import { LoginDto, RegisterDto} from "./dto";
-import connection from "../../configs/database.connect"
+import connection from "../../core/configs/database.connect"
 import { User } from "../../orm/entities/User";
 import { Response } from "express";
 import { Token } from "../../orm/entities/Token";
-import { TokenEnum } from "../../common/enums/token";
-import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../utils/auth.util'
-import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../handler/error.response'
-import { env } from "../../configs/env.config";
+import { TokenEnum } from "../../shared/common/enums/token";
+import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../shared/utils/auth.util'
+import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../core/handler/error.response'
+import { env } from "../../core/configs/env.config";
 class AuthService {
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)

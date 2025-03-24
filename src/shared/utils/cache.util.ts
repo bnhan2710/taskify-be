@@ -1,5 +1,5 @@
-import instance from '../configs/redis.config';
-import {env} from '../configs/env.config';
+import instance from '../../core/configs/redis.config';
+import {env} from '../../core/configs/env.config';
 class CacheUtil {
     private static DEFAULT_EXPIRATION_TIME = parseInt(env.CACHE_EXPIRE) || 2592000;
 

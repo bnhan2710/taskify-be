@@ -1,7 +1,7 @@
 import { Column,  Entity,  JoinTable,  ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from '../base-entity';
 import { Workspace } from "./Workspace";
-import { Gender } from "../../common/enums/gender";
+import { Gender } from "../../shared/common/enums/gender";
 import { ActivityLog } from "./Activity_Log";
 import { Token } from "./Token";
 import { Comment } from "./Comment";

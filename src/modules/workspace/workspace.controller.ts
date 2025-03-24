@@ -1,7 +1,7 @@
 import { NextFunction, Request , Response } from "express";
 import WorkspaceService from "./workspace.service";
 import { NewWorkspaceDTO , UpdateWorkspaceDTO } from "./dto";
-import { OK ,CREATED } from "../../handler/success.reponse";
+import { OK ,CREATED } from "../../core/handler/success.reponse";
 import { Workspace } from '../../orm/entities/Workspace';
 class WorkspaceController{ 
     public async newWorkspace(req: Request, res: Response , next: NextFunction): Promise<void> {

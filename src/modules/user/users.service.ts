@@ -1,6 +1,6 @@
 // src/services/user.service.ts
 import { User } from '../../orm/entities/User';
-import { BadRequestError, NotFoundError } from "../../handler/error.response";
+import { BadRequestError, NotFoundError } from "../../core/handler/error.response";
 import { UpdateUserDto } from './dto/update-user.dto';
 import userRepository from './user.repository';
 import { IUserDTO } from './dto';

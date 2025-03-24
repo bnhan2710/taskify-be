@@ -1,9 +1,9 @@
 import { Router } from "express";
 const router:Router = Router();
-import validate from '../../middleware/validate';
+import validate from '../../core/middleware/validate';
 import UserController from "./users.controller";
-import asyncHandler from "../../middleware/asyncHandle";
-import { checkAuth } from "../../middleware/checkAuth";
+import asyncHandler from "../../core/middleware/asyncHandle";
+import { checkAuth } from "../../core/middleware/checkAuth";
 import { updateUserValidation } from "./validator/user.validator";
 
 //GET ALL USERS

@@ -2,11 +2,11 @@ import { Router } from "express";
 const BoardRoute:Router = Router()
 import { NewBoardValidation,updateBoardValidation } from "./validator";
 import BoardController from "./board.controller";
-import asyncHandler from "../../middleware/asyncHandle";
-import { checkAuth } from "../../middleware/checkAuth";
-import validate from "../../middleware/validate";
-import { checkPermissionInBoard } from "../../middleware/checkPermission";
-import { PermissionEnum } from "../../common/enums/permission";
+import asyncHandler from "../../core/middleware/asyncHandle";
+import { checkAuth } from "../../core/middleware/checkAuth";
+import validate from "../../core/middleware/validate";
+import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
+import { PermissionEnum } from "../../shared/common/enums/permission";
 //CREATE BOARD
 BoardRoute.post('/', checkAuth, validate(NewBoardValidation) ,asyncHandler(BoardController.newBoard))
 //GET MY BOARD

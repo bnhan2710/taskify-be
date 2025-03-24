@@ -1,5 +1,5 @@
-import { BadRequestError, ConflictRequestError, NotFoundError } from '../../handler/error.response';
-import connection from '../../configs/database.connect'
+import { BadRequestError, ConflictRequestError, NotFoundError } from '../../core/handler/error.response';
+import connection from '../../core/configs/database.connect'
 import { Permission } from '../../orm/entities/Permission';
 import { Role } from '../../orm/entities/Role';
 import { BoardUserRole } from '../../orm/entities/BoardUserRole';

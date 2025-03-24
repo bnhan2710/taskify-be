@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { BaseEntity } from '../base-entity';
 import { User } from "./User";
-import { TokenEnum } from "../../common/enums/token";
+import { TokenEnum } from "../../shared/common/enums/token";
 
 @Entity('tokens')
 export class Token extends BaseEntity {

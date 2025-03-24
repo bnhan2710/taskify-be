@@ -1,4 +1,4 @@
-import { OK, CREATED } from "../../handler/success.reponse";
+import { OK, CREATED } from "../../core/handler/success.reponse";
 import ListService from "./list.service";
 import { NewListDTO, UpdateListDTO } from "./dto";
 import { Request, Response, NextFunction } from "express";

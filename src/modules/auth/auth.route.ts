@@ -1,10 +1,10 @@
 import { Router } from "express";
 const router = Router()
-import asyncHandler from '../../middleware/asyncHandle';
-import validate from '../../middleware/validate';
+import asyncHandler from '../../core/middleware/asyncHandle';
+import validate from "../../core/middleware/validate";
 import AuthController from '../auth/auth.controller'
 import { loginValidation, registerValidation } from "./validator/auth.validate";
-import { checkAuth } from "../../middleware/checkAuth";
+import { checkAuth } from "../../core/middleware/checkAuth";
 import passport from 'passport';
 import { useGoogleStrategy } from './passport/googleStrategy';
 import authController from "../auth/auth.controller";

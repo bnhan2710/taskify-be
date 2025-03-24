@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { upload } from "../../utils/multer.uitl";
+import { upload } from "../../shared/utils/multer.uitl";
 import AttachmentController from "./attachment.controller";
-import asyncHandler from "../../middleware/asyncHandle";
-import validate from "../../middleware/validate";
+import asyncHandler from "../../core/middleware/asyncHandle";
+import validate from "../../core/middleware/validate";
 import { attachmentLinkValidation } from "./validator/attachments.validate"; 
 const router = Router();
 

@@ -1,9 +1,9 @@
 import { Repository } from "typeorm";
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import { Workspace } from "../../orm/entities/Workspace";
 import { User } from "../../orm/entities/User";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
-import { NotFoundError } from "../../handler/error.response";
+import { NotFoundError } from "../../core/handler/error.response";
 
 class WorkspaceRepository {
     private readonly repository: Repository<Workspace>;

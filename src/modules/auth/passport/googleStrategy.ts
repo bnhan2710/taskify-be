@@ -1,8 +1,8 @@
 import passport from 'passport';
 import passportGoogle  from 'passport-google-oauth20'
 import usersService from '../../../modules/user/users.service';
-import { env } from '../../../configs/env.config';
-import { BadRequestError,NotFoundError } from '../../../handler/error.response';
+import { env } from '../../../core/configs/env.config';
+import { BadRequestError,NotFoundError } from '../../../core/handler/error.response';
 const GoogleStrategy = passportGoogle.Strategy;
 
 export function useGoogleStrategy(){ passport.use(new GoogleStrategy({

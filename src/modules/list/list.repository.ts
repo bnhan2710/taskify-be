@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { List } from "../../orm/entities/List";
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import { Board } from "../../orm/entities/Board";
 import { INewList ,IUpdateList } from "./dto";
 class ListRepository {

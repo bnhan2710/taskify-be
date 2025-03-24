@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import {OK, CREATED} from '../../handler/success.reponse';
+import {OK, CREATED} from '../../core/handler/success.reponse';
 import AttachmentService from './attachment.service';
 import { AttachmentDTO } from './dto/attachment.dto';
 class AttachmentController{

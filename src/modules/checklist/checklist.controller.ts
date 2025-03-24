@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import ChecklistService from "./checklist.service";
-import {OK, CREATED} from "../../handler/success.reponse";
+import {OK, CREATED} from "../../core/handler/success.reponse";
 import {CreateChecklistDTO, UpdateChecklistDTO} from "./dto";
 import checklistService from "./checklist.service";
 

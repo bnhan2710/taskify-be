@@ -1,9 +1,9 @@
 import { Router } from "express";
 import CommentController from "./comment.controller";
-import  validate from "../../middleware/validate";
+import  validate from "../../core/middleware/validate";
 import { commentSchema, commentUpdateSchema } from "./validator/comment.validate";
-import asyncHandler from "../../middleware/asyncHandle";
-import { checkAuth } from "../../middleware/checkAuth";
+import asyncHandler from "../../core/middleware/asyncHandle";
+import { checkAuth } from "../../core/middleware/checkAuth";
 const router = Router();
 
 router.post("/",checkAuth, validate(commentSchema), asyncHandler(CommentController.newComment));

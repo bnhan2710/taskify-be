@@ -1,4 +1,4 @@
-import connection from "../../configs/database.connect";
+import connection from "../../core/configs/database.connect";
 import { Repository } from "typeorm";
 import { Comment } from "../../orm/entities/Comment";
 import { IComment,ICommentUpdate } from "./dto"

@@ -1,4 +1,4 @@
-import { WHITELIST_DOMAIN } from "../common/enums/domain";
+import { WHITELIST_DOMAIN } from "../../shared/common/enums/domain";
 import { env } from "./env.config";
 import { StatusCodes } from "http-status-codes";
 import { ForbiddenError } from "../handler/error.response";

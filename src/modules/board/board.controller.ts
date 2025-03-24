@@ -1,5 +1,5 @@
 import { Request,Response ,NextFunction } from "express";
-import { OK, CREATED } from "../../handler/success.reponse";
+import { OK, CREATED } from "../../core/handler/success.reponse";
 import BoardService from "./board.service";
 import { NewBoardDTO } from "./dto";
 import { UpdateBoardDTO } from './dto/update-board.dto';

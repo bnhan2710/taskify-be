@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import connection from "../../configs/database.connect"
+import connection from "../../core/configs/database.connect"
 import { Card } from "../../orm/entities/Card";
 import { List } from "../../orm/entities/List";
 import { User } from "../../orm/entities/User";

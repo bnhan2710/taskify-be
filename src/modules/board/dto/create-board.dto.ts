@@ -1,4 +1,3 @@
-
 export interface INewBoard{
     title: string,
     description?: string,

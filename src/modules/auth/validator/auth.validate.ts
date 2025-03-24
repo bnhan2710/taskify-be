@@ -4,7 +4,7 @@ import {
   EMAIL_RULE_MESSAGE, 
   PASSWORD_RULE, 
   PASSWORD_RULE_MESSAGE
-} from '../../../utils/validator.util';
+} from '../../../shared/utils/validator.util';
 
 export const loginValidation = Joi.object({
   email: Joi.string().pattern(EMAIL_RULE).required().messages({

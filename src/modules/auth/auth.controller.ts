@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import AuthService from './auth.service';
 import { LoginDTO, RegisterDTO} from './dto';
 import { StatusCodes } from 'http-status-codes';
-import { OK , CREATED } from '../../handler/success.reponse';
+import { OK , CREATED } from '../../core/handler/success.reponse';
 class AuthController {
 
     public async login(req: Request, res: Response, next : NextFunction){
