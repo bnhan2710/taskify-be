@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { BaseEntity } from '../base-entity';
+import { BaseEntity } from '../../shared/base/base-entity';
 import { User } from "./User";
 import { TokenEnum } from "../../shared/common/enums/token";
 

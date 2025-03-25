@@ -3,7 +3,7 @@ import cloudinary from '../../core/configs/cloudinary.config';
 import { unlinkSync } from "fs";
 import { BadRequestError,NotFoundError, } from "../../core/handler/error.response";
 import { attachmentValidation } from "./validator/attachments.validate";
-import { Attachment } from "../../orm/entities/Attachment";
+import { Attachment } from "../../database/entities/Attachment";
 import connection from "../../core/configs/database.connect";
 import cardRepository from "../card/card.repository";
 import { AttachmentDto } from "./dto/attachment.dto";

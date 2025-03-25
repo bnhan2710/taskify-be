@@ -1,11 +1,6 @@
-import { Gender } from "../../../shared/common/enums/gender"
-export interface UpdateUserDto {
-    displayName?:string,
-    age?:number,
-    gender?:Gender,
-    avatar?:string
-}
-export function UpdateUserDTO(body: any): UpdateUserDto {
+import { IUpdateUserDto } from "../interface";
+
+export function UpdateUserDTO(body: any): IUpdateUserDto {
     return {
         displayName: body.displayName,
         age: body.age,

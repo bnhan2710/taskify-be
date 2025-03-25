@@ -1,4 +1,4 @@
-import { ActivityLog } from "../../orm/entities/Activity_Log";
+import { ActivityLog } from "../../database/entities/Activity_Log";
 import connection from "../../core/configs/database.connect";
 import { NotFoundError } from "../../core/handler/error.response";
 class ActivitiesService {

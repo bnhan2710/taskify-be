@@ -1,5 +1,5 @@
-import { Token } from '../../../orm/entities/Token';
-import CacheUtil from '../../../shared/utils/cache.util';
+import { Token } from '../../../database/entities/Token';
+import CacheUtil from '../../../shared/services/cache.service';
 import connection from '../../../core/configs/database.connect'
 
 export async function updatePermission(roleId: string):Promise<void>{

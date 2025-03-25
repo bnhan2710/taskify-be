@@ -1,8 +1,4 @@
-export interface IUpdateCard {
-    title?: string,
-    description?: string,
-    listId: string,
-}
+import { IUpdateCard } from "../interface";
 
 export function UpdateCardDTO(body: any): IUpdateCard {
     return {

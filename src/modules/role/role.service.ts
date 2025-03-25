@@ -1,8 +1,8 @@
 import { BadRequestError, ConflictRequestError, NotFoundError } from '../../core/handler/error.response';
 import connection from '../../core/configs/database.connect'
-import { Permission } from '../../orm/entities/Permission';
-import { Role } from '../../orm/entities/Role';
-import { BoardUserRole } from '../../orm/entities/BoardUserRole';
+import { Permission } from '../../database/entities/Permission';
+import { Role } from '../../database/entities/Role';
+import { BoardUserRole } from '../../database/entities/BoardUserRole';
 import {updatePermission, updateRole} from './helper/update.helper'
 import { IRoleDto , IPermissionDto } from './dto';
 

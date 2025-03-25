@@ -1,8 +1,4 @@
-export interface IUpdateBoard{
-    title?: string
-    description?: string
-    listOrderIds?: string[]
-}
+import { IUpdateBoard } from "../interface";
 
 export function UpdateBoardDTO(body:any): IUpdateBoard{
     return {

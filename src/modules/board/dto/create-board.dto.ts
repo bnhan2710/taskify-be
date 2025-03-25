@@ -1,11 +1,6 @@
-export interface INewBoard{
-    title: string,
-    description?: string,
-    workspaceId: string
-    type: string
-}
+import { ICreateBoard } from "../interface";
 
-export function NewBoardDTO(body:any): INewBoard{
+export function NewBoardDTO(body:any): ICreateBoard{
     return {
         title: body.title,
         description: body.description,

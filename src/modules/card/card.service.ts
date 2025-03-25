@@ -1,13 +1,13 @@
 import cardRepository from "./card.repository";
-import { INewCard, IUpdateCard } from "./dto";
-import { Card } from "../../orm/entities/Card";
+import { IAddMember, ICardService, ICreateCard, IUpdateCard } from "./interface";
+import { Card } from "../../database/entities/Card";
 import { BadRequestError, NotFoundError } from "../../core/handler/error.response";
 import listRepository from "../list/list.repository";
-import { AddMemberDto } from './dto/add-member.dto';
 import userRepository from "../user/user.repository";
+import { ICardDetail } from './interface/index';
 
-class CardService{
-    public async newCard(newCardDto: INewCard,userId: string): Promise<Card> {
+class CardService implements ICardService{
+    public async newCard(newCardDto: ICreateCard,userId: string): Promise<Card> {
         const list = await listRepository.findById(newCardDto.listId)
         if(!list){
             throw new NotFoundError('List not found')
@@ -28,7 +28,7 @@ class CardService{
         return await cardRepository.getCardByList(listId)
     }
 
-    public async getDetail(cardId: string) {
+    public async getDetail(cardId: string) : Promise<ICardDetail>{
         const card = await cardRepository.getDetail(cardId)
         if(!card){
             throw new NotFoundError('Card not found')
@@ -52,7 +52,7 @@ class CardService{
         await cardRepository.remove(card)
     }
 
-    public async addMember(cardId: string, addMemberDto: AddMemberDto): Promise<void> {
+    public async addMember(cardId: string, addMemberDto: IAddMember): Promise<void> {
         const card = await cardRepository.findById(cardId)
         if(!card){
             throw new NotFoundError('Card not found')

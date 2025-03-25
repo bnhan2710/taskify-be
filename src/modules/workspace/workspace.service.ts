@@ -1,16 +1,15 @@
-import { Workspace } from "../../orm/entities/Workspace";
+import { Workspace } from "../../database/entities/Workspace";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
 import { NotFoundError,ConflictRequestError } from "../../core/handler/error.response";
 import WorkspaceRepository from "./workspace.repository";
 import UserRepository from "../user/user.repository";
 class WorkSpaceService{
-
     public async newWorkspace(createWorkspaceDto: INewWorkSpace, ownerId:string): Promise<string> {
         const owner = await UserRepository.findOneById(ownerId);
         if (!owner) {
             throw new NotFoundError("User not found");
         }
-        return await WorkspaceRepository.insert(createWorkspaceDto, owner);
+        return await WorkspaceRepository.insert(createWorkspaceDto, ownerId);
     }
 
     public async getMyworkspace(userId:string):Promise<[Workspace[],Workspace[]]> {
@@ -38,21 +37,6 @@ class WorkSpaceService{
     }
     
 
-    public async addUser(userId: string, workspaceId: string){
-        const user = await UserRepository.findOneById(userId)
-        if(!user){
-            throw new NotFoundError('User not found')
-        }
-        const workspace = await WorkspaceRepository.findWorkspaceUsers(workspaceId)
-        if(!workspace){
-            throw new NotFoundError('Workspace not found')
-        }
-        if(workspace.users.find(u => u.id === userId)){
-            throw new ConflictRequestError('User already in this workspace')
-        }
-        
-        await WorkspaceRepository.addUser(workspace, user)
-    }
     
     public async removeWorkspace(workspaceId: string): Promise<void> {
         const workspace = await WorkspaceRepository.findbyId(workspaceId);

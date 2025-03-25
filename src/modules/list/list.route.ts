@@ -4,17 +4,17 @@ import ListController from "./list.controller";
 import { checkAuth } from "../../core/middleware/checkAuth";
 import validate from "../../core/middleware/validate";
 import asyncHandler from "../../core/middleware/asyncHandle"
-import { newListValidation , updateListValidation } from "./validator";
+import { CreateListValidation , updateListValidation } from "./validator";
 import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
 import { PermissionEnum } from "../../shared/common/enums/permission";
 
 //CREATE LIST
-ListRoute.post('/', validate(newListValidation),asyncHandler(ListController.newList))
+ListRoute.post('/', validate(CreateListValidation),asyncHandler(ListController.CreateList))
 // ListRoute.post('/',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
-//     validate(newListValidation),
-//     asyncHandler(ListController.newList))
+//     validate(CreateListValidation),
+//     asyncHandler(ListController.CreateList))
 //GET LIST
 // ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))
 ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))

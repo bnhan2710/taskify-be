@@ -7,7 +7,6 @@ import { checkAuth } from "../../core/middleware/checkAuth";
 const router = Router();
 
 router.post("/",checkAuth, validate(commentSchema), asyncHandler(CommentController.newComment));
-router.get("/",checkAuth, asyncHandler(CommentController.listAllComments));
 router.get("/:id",checkAuth, asyncHandler(CommentController.getCommentDetail));
 router.put("/:id",checkAuth, validate(commentUpdateSchema), asyncHandler(CommentController.updateComment));
 router.delete("/:id",checkAuth, asyncHandler(CommentController.removeComment));

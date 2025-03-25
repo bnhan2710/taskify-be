@@ -5,17 +5,11 @@ import { commentDTO, commentUpdateDTO } from "./dto";
 class CommentController{
     public async newComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentDto = commentDTO(req.body);
-        const comment = await CommentService.newComment(commentDto);
+        const userId = req.userJwt.id
+        const comment = await CommentService.newComment(commentDto,userId);
         new CREATED({
             message: 'Comment created successfully',
             data: comment
-        }).send(res);
-    }
-
-    public async listAllComments(req: Request, res: Response, next: NextFunction): Promise<void> {
-        new OK({
-            message: 'List all comments',
-            data: await CommentService.listAllComments()
         }).send(res);
     }
 

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany,  OneToMany, ManyToOne, JoinColumn} from "typeorm";
-import { BaseEntity } from '../base-entity';
+import { BaseEntity } from '../../shared/base/base-entity';
 import { User } from "./User";
 import { Board } from "./Board";
 @Entity('workspaces')

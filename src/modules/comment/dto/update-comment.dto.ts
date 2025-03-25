@@ -1,8 +1,6 @@
-export interface ICommentUpdate {
-    content: string;
-}
+import { IUpdateComment } from "../interface";
 
-export function commentUpdateDTO(body: any): ICommentUpdate {
+export function commentUpdateDTO(body: any): IUpdateComment {
     return {
         content: body.content,
     };

@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToMany } from 'typeorm';
-import { BaseEntity } from '../base-entity';
+import { BaseEntity } from '../../shared/base/base-entity';
 import { Role } from './Role';
 
 @Entity('permissions')

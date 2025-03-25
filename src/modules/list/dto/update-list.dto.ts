@@ -1,7 +1,4 @@
-export interface IUpdateList {
-    title?: string;
-    cardOrderIds?: string[]
-}
+import { IUpdateList } from "../interface";
 
 export function UpdateListDTO(body: any): IUpdateList {
     return {

@@ -1,11 +1,11 @@
 import checklistRepository from './checklist.repository';
 import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
-import { Checklist } from '../../orm/entities/Checklist';
+import { Checklist } from '../../database/entities/Checklist';
 import cardRepository from '../card/card.repository';
-import { INewChecklist,IUpdateChecklist } from './dto';
+import { ICreateChecklist, IUpdateChecklist } from './interface';
 
-class ChecklistService{
-    public async newChecklist(newChecklistDto: INewChecklist): Promise<void> {
+class ChecklistService {
+    public async newChecklist(newChecklistDto: ICreateChecklist): Promise<void> {
         const card = await cardRepository.findById(newChecklistDto.cardId)
         if(!card){
             throw new NotFoundError('Card not found')

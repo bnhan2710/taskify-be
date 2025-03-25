@@ -1,9 +1,6 @@
-export interface INewList {
-    title:string,
-    boardId: string;
-}
+import { ICreateList } from "../interface";
 
-export function NewListDTO(body: any): INewList {
+export function CreateListDTO(body: any): ICreateList {
     return {
         title: body.title,
         boardId: body.boardId

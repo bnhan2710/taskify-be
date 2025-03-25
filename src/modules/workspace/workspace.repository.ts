@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import connection from "../../core/configs/database.connect";
-import { Workspace } from "../../orm/entities/Workspace";
-import { User } from "../../orm/entities/User";
+import { Workspace } from "../../database/entities/Workspace";
 import { INewWorkSpace, IUpdateWorkspace } from "./dto";
 import { NotFoundError } from "../../core/handler/error.response";
 
@@ -10,11 +9,13 @@ class WorkspaceRepository {
     constructor() {
         this.repository = connection.getRepository(Workspace);
     }
-    public async insert(createWorkspaceDto: INewWorkSpace, owner: User): Promise<string> {
+    public async insert(createWorkspaceDto: INewWorkSpace, ownerId: string): Promise<string> {
         const newWorkspace = this.repository.create({
             name: createWorkspaceDto.name,
             description: createWorkspaceDto.description,
-            owner,
+            owner : {
+                id: ownerId
+            },
         });
         await this.repository.save(newWorkspace);
         return newWorkspace.id;
@@ -40,11 +41,6 @@ class WorkspaceRepository {
                 description: updateWorkspaceDto.description,
             }
         );
-    }
-
-    public async addUser(workspace: Workspace, user: User):Promise<void> {
-        workspace.users.push(user);
-        await this.repository.save(workspace);
     }
 
     public async getMy(userId: string): Promise<[Workspace[], Workspace[]]> {

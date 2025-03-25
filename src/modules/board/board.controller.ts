@@ -30,7 +30,7 @@ class BoardController{
         const qs  = req.query
         new OK({
             message: "Get Board Successfully",
-            data: await BoardService.getMyBoard(userId,qs)
+            data: await BoardService.getMyBoards(userId,qs)
         }).send(res)
     }
 

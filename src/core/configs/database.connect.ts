@@ -11,8 +11,8 @@ const connection = new DataSource({
     database: env.DB_NAME,
     synchronize: false,
     logging : false,
-    entities: [__dirname + "/../orm/entities/*.ts"],
-    migrations: [__dirname + "/../orm/migrations/*.ts"],
+    entities: [__dirname + "/../../database/entities/*.ts"],
+    migrations: [__dirname + "/../../database/migrations/*.ts"],
 });
 
 export const connectDB = async (): Promise<void> => {

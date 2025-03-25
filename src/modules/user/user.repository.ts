@@ -1,14 +1,14 @@
 import connection from "../../core/configs/database.connect";
-import { User } from '../../orm/entities/User';
+import { User } from '../../database/entities/User';
 import { Repository } from "typeorm";
-import { IUserDTO } from "./dto";
-class UserRepository {
+import { IUserCreateDto, IUserRepository } from "./interface";
+class UserRepository implements IUserRepository{
     private readonly repository: Repository<User>;
     constructor() {
         this.repository = connection.getRepository(User);
     }
 
-    public async create(user: IUserDTO): Promise<void> {
+    public async create(user: IUserCreateDto): Promise<void> {
         const newUser = this.repository.create(user);
         await this.repository.save(newUser);
         
@@ -28,7 +28,8 @@ class UserRepository {
                 username: true,
                 displayName: true,
                 email: true,
-                age: true
+                age: true,
+                avatar: true
             }
         });
     }

@@ -1,7 +1,4 @@
-export interface IUpdateChecklist {
-    description?: string;
-    isDone?: boolean;
-}
+import { IUpdateChecklist } from "../interface";
 
 export function UpdateChecklistDTO(body:any): IUpdateChecklist {
     return {

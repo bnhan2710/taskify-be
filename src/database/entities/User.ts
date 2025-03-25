@@ -1,5 +1,5 @@
 import { Column,  Entity,  JoinTable,  ManyToMany, OneToMany } from "typeorm";
-import { BaseEntity } from '../base-entity';
+import { BaseEntity } from '../../shared/base/base-entity';
 import { Workspace } from "./Workspace";
 import { Gender } from "../../shared/common/enums/gender";
 import { ActivityLog } from "./Activity_Log";
@@ -8,6 +8,7 @@ import { Comment } from "./Comment";
 import { BoardUserRole } from "./BoardUserRole";
 import { Role } from "./Role"
 import { Card } from "./Card";
+
 @Entity('users')
 export class User extends BaseEntity {
   @Column({ type: "varchar", length: 50, unique: true })

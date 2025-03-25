@@ -1,8 +1,6 @@
-export interface  AddMemberDto{
-    userId: string[]
-}
+import { IAddMember } from "../interface";
 
-export function AddMemberDTO(body:any): AddMemberDto{ 
+export function AddMemberDTO(body:any): IAddMember{ 
     return {
         userId: body.userId
     }

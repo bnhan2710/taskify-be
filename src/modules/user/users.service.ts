@@ -1,13 +1,9 @@
-// src/services/user.service.ts
-import { User } from '../../orm/entities/User';
 import { BadRequestError, NotFoundError } from "../../core/handler/error.response";
-import { UpdateUserDto } from './dto/update-user.dto';
+import { IUserCreateDto, IUpdateUserDto, IUserService } from './interface';
+import { User } from "../../database/entities/User";
 import userRepository from './user.repository';
-import { IUserDTO } from './dto';
+class UserService implements IUserService {
 
-class UserService {
-
-    
     public async getMe(id: string): Promise<User | null> {
         return await userRepository.findOneById(id);
     }
@@ -33,11 +29,11 @@ class UserService {
         return user;
     }
     
-    public async create(newUser: IUserDTO): Promise<void> {
-        await userRepository.create(newUser);
+    public async create(createUserDto: IUserCreateDto): Promise<void> {
+        await userRepository.create(createUserDto);
     }
     
-    public async updateOneUserById(id: string, updateUserDto: UpdateUserDto): Promise<void> {
+    public async updateOneUserById(id: string, updateUserDto: IUpdateUserDto): Promise<void> {
         const user = await userRepository.findOneById(id);
         if (!user) {
             throw new BadRequestError('User not found');

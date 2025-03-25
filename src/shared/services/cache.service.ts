@@ -1,9 +1,9 @@
 import instance from '../../core/configs/redis.config';
 import {env} from '../../core/configs/env.config';
-class CacheUtil {
+class CacheService {
     private static DEFAULT_EXPIRATION_TIME = parseInt(env.CACHE_EXPIRE) || 2592000;
 
-    async set<T>(key: string, value: T, expTime: number = CacheUtil.DEFAULT_EXPIRATION_TIME): Promise<void> {
+    async set<T>(key: string, value: T, expTime: number = CacheService.DEFAULT_EXPIRATION_TIME): Promise<void> {
         await instance.set(key, JSON.stringify(value), { EX: expTime });
     }
 
@@ -19,4 +19,4 @@ class CacheUtil {
     }
 }
 
-export default new CacheUtil();
+export default new CacheService();

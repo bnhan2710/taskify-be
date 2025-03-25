@@ -1,11 +1,11 @@
 import { OK, CREATED } from "../../core/handler/success.reponse";
 import ListService from "./list.service";
-import { NewListDTO, UpdateListDTO } from "./dto";
+import { CreateListDTO, UpdateListDTO } from "./dto";
 import { Request, Response, NextFunction } from "express";
 class ListController {
-    public async newList(req: Request, res: Response, next: NextFunction) {
-        const newListDto = NewListDTO(req.body);
-       const created =  await ListService.newlist(newListDto);
+    public async CreateList(req: Request, res: Response, next: NextFunction) {
+        const CreateListDto = CreateListDTO(req.body);
+       const created =  await ListService.createList(CreateListDto);
         new CREATED({
             message: "Create List Successfully",
             data: created

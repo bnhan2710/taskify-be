@@ -1,17 +1,17 @@
 import listRepository from './list.repository';
 import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
-import { List } from '../../orm/entities/List';
+import { List } from '../../database/entities/List';
 import boardRepository from '../board/board.repository';
-import { INewList, IUpdateList } from './dto';
+import { ICreateList, IListService, IUpdateList } from './interface';
 
 
-class ListService {
-    public async newlist(newListDto : INewList): Promise<List> {
-        const board = await boardRepository.findById(newListDto.boardId)
+class ListService implements IListService {
+    public async createList(CreateListDto : ICreateList): Promise<List> {
+        const board = await boardRepository.findById(CreateListDto.boardId)
         if(!board){
             throw new NotFoundError('Board not found')
         } 
-        return await listRepository.insert(newListDto, board);
+        return await listRepository.insert(CreateListDto, board);
     }
     
     public async getListsByBoard(boardId: string): Promise<List[]> {
@@ -35,7 +35,7 @@ class ListService {
         if (!list) {
             throw new NotFoundError('List not found');
         }
-        await listRepository.updateList(updateListDto, listId);
+        await listRepository.update(updateListDto, listId);
     }
 
     public async removeList(listId: string): Promise<void> {

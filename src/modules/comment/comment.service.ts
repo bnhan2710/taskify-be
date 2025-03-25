@@ -1,35 +1,24 @@
 import commentRepository from "./comment.repository";
-import { IComment, ICommentUpdate } from "./dto";
-import { Comment } from "../../orm/entities/Comment";
+import { IComment, ICommentService, IUpdateComment } from './interface';
+import { Comment } from "../../database/entities/Comment";
 import cardRepository from "../card/card.repository";
-import userRepository from "../user/user.repository";
 import { NotFoundError, ForbiddenError } from "../../core/handler/error.response";
 
-class CommentService {
-    public async newComment(commentDto: IComment): Promise<any> {
+class CommentService implements ICommentService{
+    public async newComment(commentDto: IComment, userId: string): Promise<any> {
         const card = await cardRepository.findById(commentDto.cardId);
         if (!card) {
             throw new NotFoundError('Card not found');
         }
-        const user = await userRepository.findOneById(commentDto.userId);
-        if (!user) {
-            throw new NotFoundError('User not found');
-        }
-       const created =  await commentRepository.insert(commentDto, card , user);
+       const created =  await commentRepository.insert(commentDto, userId);
         return {
             id: created.id,
             content: created.content,
             createdAt: created.createdAt,
             user: {
-                id: user.id,
-                displayName: user.displayName,
-                avatar: user.avatar
+                id: userId
             }
         }
-    }
-
-    public async listAllComments(): Promise<Comment[]> {
-        return await commentRepository.ListAllComments();
     }
 
     public async getCommentById(commentId: string): Promise<Comment> {
@@ -40,7 +29,7 @@ class CommentService {
         return comment;
     }
 
-    public async updateComment(updateCommentDto: ICommentUpdate, commentId: string ,userId: string): Promise<void> {
+    public async updateComment(updateCommentDto: IUpdateComment, commentId: string ,userId: string): Promise<void> {
         const comment = await commentRepository.findById(commentId);
         if (!comment) {
             throw new NotFoundError('Comment not found');

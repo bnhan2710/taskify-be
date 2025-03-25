@@ -1,15 +1,15 @@
 import { Repository } from "typeorm"
 import connection from "../../core/configs/database.connect"
-import { Checklist } from '../../orm/entities/Checklist';
-import { Card } from "../../orm/entities/Card";
-import { INewChecklist,IUpdateChecklist } from "./dto";
-class ChecklistRepository {
+import { Checklist } from '../../database/entities/Checklist';
+import { Card } from "../../database/entities/Card";
+import { ICreateChecklist, IUpdateChecklist } from "./interface";
+class ChecklistRepository{
     private readonly repository: Repository<Checklist>
     constructor() {
         this.repository = connection.getRepository(Checklist)
     }
 
-    public async newChecklist(newChecklistDto: INewChecklist,  card: Card): Promise<void> {
+    public async newChecklist(newChecklistDto: ICreateChecklist,  card: Card): Promise<void> {
         const checklist = this.repository.create({
             description: newChecklistDto.description,
             card

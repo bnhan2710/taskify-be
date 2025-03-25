@@ -1,15 +1,15 @@
 import { NotFoundError } from "../../core/handler/error.response";
 import boardRepository from "./board.repository";
 import workspaceRepository from "../workspace/workspace.repository";
-import { INewBoard, IUpdateBoard } from "./dto";
-import { BoardUserRole } from "../../orm/entities/BoardUserRole";
-import { Role } from "../../orm/entities/Role";
+import { IBoardService, ICreateBoard, IUpdateBoard, ListBoard } from "./interface";
+import { BoardUserRole } from "../../database/entities/BoardUserRole";
+import { Role } from "../../database/entities/Role";
 import { RoleEnum } from "../../shared/common/enums/role";
 import connection from "../../core/configs/database.connect";
-import cacheUtil from "../../shared/utils/cache.util";
-class BoardService{
+import cacheService from "../../shared/services/cache.service";
+class BoardService implements IBoardService {
 
-    public async newBoard (newBoardDto: INewBoard, userId: string): Promise<string>{
+    public async newBoard (newBoardDto: ICreateBoard, userId: string): Promise<string>{
         const workspace = await workspaceRepository.findbyId(newBoardDto.workspaceId)
         if(!workspace){
             throw new NotFoundError('Workspace not found')
@@ -24,7 +24,7 @@ class BoardService{
         return boardId
     }   
 
-    public async updateBoard(updateBoardDto:IUpdateBoard, boardId:string){
+    public async updateBoard(updateBoardDto:IUpdateBoard, boardId:string) : Promise<void>{
         const board = await boardRepository.findById(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
@@ -40,16 +40,16 @@ class BoardService{
         return await boardRepository.detele(board)
     }
 
-    public async getMyBoard(userId:string,qs: any){
+    public async getMyBoards(userId:string,qs: any) : Promise<ListBoard>{
         return await boardRepository.getMyBoard(userId,qs)
     }
 
-    public async getBoardById(boardId: string){
+    public async getBoardById(boardId: string) : Promise<any>{
         const board = await boardRepository.getBoardDetail(boardId)
         if(!board){
             throw new NotFoundError('Board not found')
         }
-        return board
+        return  board 
     }
 
     public async inviteMember(boardId: string, userEmail: string){
@@ -93,7 +93,7 @@ class BoardService{
         if(!role){
             throw new NotFoundError('Role not found')
         }
-        await cacheUtil.del(`board:${boardId}:user:${userId}`)
+        await cacheService.del(`board:${boardId}:user:${userId}`)
         await connection.getRepository(BoardUserRole).update(
             {boardId, userId},
             {roleId: role.id}

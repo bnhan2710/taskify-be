@@ -1,10 +1,6 @@
-export interface INewCard{
-    title: string;       
-    description: string;
-    listId: string;
-}
+import { ICreateCard } from "../interface";
 
-export function NewCardDTO(body: any): INewCard {
+export function NewCardDTO(body: any): ICreateCard {
     return {
         title: body.title,
         description: body.description,

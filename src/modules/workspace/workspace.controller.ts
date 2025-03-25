@@ -2,7 +2,7 @@ import { NextFunction, Request , Response } from "express";
 import WorkspaceService from "./workspace.service";
 import { NewWorkspaceDTO , UpdateWorkspaceDTO } from "./dto";
 import { OK ,CREATED } from "../../core/handler/success.reponse";
-import { Workspace } from '../../orm/entities/Workspace';
+import { Workspace } from '../../database/entities/Workspace';
 class WorkspaceController{ 
     public async newWorkspace(req: Request, res: Response , next: NextFunction): Promise<void> {
         const newWorkSpaceDto = NewWorkspaceDTO(req.body)
@@ -23,14 +23,6 @@ class WorkspaceController{
         }).send(res)
     }
     
-    public async addUser(req:Request, res: Response, next: NextFunction){
-        const userId = req.body.id
-        const workspaceId = req.params.id
-        await WorkspaceService.addUser( userId, workspaceId)
-        new OK({
-            message: 'Add user to workspace succesfully'
-        }).send(res)    
-    }
     
     public async getMyworkpspace(req:Request, res: Response, next: NextFunction): Promise<void> {
         const userId = req.userJwt.id

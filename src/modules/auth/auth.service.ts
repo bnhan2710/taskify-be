@@ -1,8 +1,8 @@
 import { LoginDto, RegisterDto} from "./dto";
 import connection from "../../core/configs/database.connect"
-import { User } from "../../orm/entities/User";
+import { User } from "../../database/entities/User";
 import { Response } from "express";
-import { Token } from "../../orm/entities/Token";
+import { Token } from "../../database/entities/Token";
 import { TokenEnum } from "../../shared/common/enums/token";
 import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../shared/utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../core/handler/error.response'

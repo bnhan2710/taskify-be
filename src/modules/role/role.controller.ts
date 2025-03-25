@@ -2,7 +2,7 @@ import {Request, Response ,NextFunction } from "express"
 import roleService from "./role.service"
 import { CreateRoleDTO , CreatePermissionDTO } from "./dto"
 import { StatusCodes } from 'http-status-codes';
-import setOneUser from "../../shared/utils/cache.util"
+import setOneUser from "../../shared/services/cache.service"
 class RoleController {
     
     

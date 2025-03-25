@@ -1,6 +1,6 @@
 import { Router } from "express";
 const router = Router();
-import { Notification } from "../../orm/entities/Notification";
+import { Notification } from "../../database/entities/Notification";
 import connection from "../../core/configs/database.connect";
 import { sendNotification, sseHandler } from "./sse.handler";
 
