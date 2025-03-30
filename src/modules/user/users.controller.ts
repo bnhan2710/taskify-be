@@ -2,6 +2,7 @@ import { Request, Response , NextFunction } from "express";
 import UserService from "./users.service"
 import { StatusCodes } from "http-status-codes";
 import { UpdateUserDTO } from "./dto/index";
+import { OK } from "../../core/handler/success.reponse";
 
 
 class UserController {
@@ -22,8 +23,11 @@ class UserController {
     public async updateUserById(req:Request, res: Response, next:NextFunction){
       const id = req.params.id
       const updateUserDto = UpdateUserDTO(req.body)
-      await UserService.updateOneUserById(id,updateUserDto)
-      res.send({message:'Update info succesfully!'})
+     const update = await UserService.updateUserById(id,updateUserDto)
+      new OK({
+        message: 'Update user successfully',
+        data: update
+      }).send(res)
     }
     public async deleteUserById(req:Request, res: Response, next:NextFunction){
       const id = req.params.id

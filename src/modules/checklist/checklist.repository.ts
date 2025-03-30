@@ -2,8 +2,8 @@ import { Repository } from "typeorm"
 import connection from "../../core/configs/database.connect"
 import { Checklist } from '../../database/entities/Checklist';
 import { Card } from "../../database/entities/Card";
-import { ICreateChecklist, IUpdateChecklist } from "./interface";
-class ChecklistRepository{
+import { IChecklistRepository, ICreateChecklist, IUpdateChecklist } from "./interface";
+class ChecklistRepository implements IChecklistRepository{
     private readonly repository: Repository<Checklist>
     constructor() {
         this.repository = connection.getRepository(Checklist)

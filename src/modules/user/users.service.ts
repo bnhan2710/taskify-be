@@ -1,5 +1,5 @@
 import { BadRequestError, NotFoundError } from "../../core/handler/error.response";
-import { IUserCreateDto, IUpdateUserDto, IUserService } from './interface';
+import { IUserCreateDto, IUpdateUserDto, IUserService, UpdateInfo } from './interface';
 import { User } from "../../database/entities/User";
 import userRepository from './user.repository';
 class UserService implements IUserService {
@@ -33,12 +33,22 @@ class UserService implements IUserService {
         await userRepository.create(createUserDto);
     }
     
-    public async updateOneUserById(id: string, updateUserDto: IUpdateUserDto): Promise<void> {
+    public async updateUserById(id: string, updateUserDto: IUpdateUserDto): Promise<UpdateInfo> {
         const user = await userRepository.findOneById(id);
         if (!user) {
             throw new BadRequestError('User not found');
         }
-        await userRepository.updateById(id, { displayName: updateUserDto.displayName });
+        await userRepository.updateById(id, { 
+            displayName: updateUserDto.displayName,
+            age: updateUserDto.age,
+            gender: updateUserDto.gender
+        });
+
+        return {
+            displayName: updateUserDto?.displayName,
+            age: updateUserDto?.age,
+            gender: updateUserDto?.gender
+        }
     }
 
     public async deleteUserById(id: string): Promise<void> {

@@ -2,9 +2,9 @@ import checklistRepository from './checklist.repository';
 import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
 import { Checklist } from '../../database/entities/Checklist';
 import cardRepository from '../card/card.repository';
-import { ICreateChecklist, IUpdateChecklist } from './interface';
+import { IChecklistService, ICreateChecklist, IUpdateChecklist } from './interface';
 
-class ChecklistService {
+class ChecklistService implements IChecklistService{
     public async newChecklist(newChecklistDto: ICreateChecklist): Promise<void> {
         const card = await cardRepository.findById(newChecklistDto.cardId)
         if(!card){

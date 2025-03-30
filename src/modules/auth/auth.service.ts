@@ -1,4 +1,4 @@
-import { LoginDto, RegisterDto} from "./dto";
+import { IAuthService, ICredentials,IRegister } from "./interface";
 import connection from "../../core/configs/database.connect"
 import { User } from "../../database/entities/User";
 import { Response } from "express";
@@ -7,11 +7,11 @@ import { TokenEnum } from "../../shared/common/enums/token";
 import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../shared/utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../core/handler/error.response'
 import { env } from "../../core/configs/env.config";
-class AuthService {
+class AuthService implements IAuthService{
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)
 
-    public async login(loginDto: LoginDto,res: Response):Promise<any>{
+    public async login(loginDto: ICredentials,res: Response):Promise<any>{
         const user = await this.userRepository.findOne({where:{email: loginDto.email }})
             if(!user){
                 throw new AuthFailError('Email or password is incorrect!')
@@ -81,7 +81,7 @@ class AuthService {
         }
     }
 
-    public async register(registerDto: RegisterDto):Promise<void>{
+    public async register(registerDto: IRegister):Promise<void>{
             const ExitsUser = await this.userRepository.findOne({ where: { username: registerDto.username } });
             if(ExitsUser){
                 throw new ConflictRequestError('User already exits')
@@ -125,6 +125,5 @@ class AuthService {
         }
     
 }
-
 
 export default new AuthService

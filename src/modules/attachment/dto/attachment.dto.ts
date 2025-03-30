@@ -1,10 +1,6 @@
-export interface AttachmentDto {
-    cardId: string;
-    attachName?: string;
-    url: string;
-}
+import { IAttachmentDto } from "../interface";
 
-export function AttachmentDTO(body: any): AttachmentDto {
+export function AttachmentDTO(body: any): IAttachmentDto {
     return {
         cardId: body.cardId,
         attachName: body.attachName,

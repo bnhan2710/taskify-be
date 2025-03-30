@@ -2,7 +2,7 @@ import CommentService from "./comment.service";
 import { Request, Response, NextFunction } from "express";
 import {OK, CREATED } from "../../core/handler/success.reponse"
 import { commentDTO, commentUpdateDTO } from "./dto";
-class CommentController{
+class CommentController {
     public async newComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const commentDto = commentDTO(req.body);
         const userId = req.userJwt.id

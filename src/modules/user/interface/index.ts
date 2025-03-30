@@ -24,6 +24,12 @@ export interface IUpdateUserDto {
     avatar?:string,
 }
 
+export type UpdateInfo = {
+    displayName?: string,
+    age?: number,
+    gender?: string
+}
+
 export interface IUserRepository{
     create(user: IUserCreateDto): Promise<void>;
     findOneById(id: string): Promise<User | null>;
@@ -39,7 +45,7 @@ export interface IUserService {
     getOneUserById(id: string): Promise<User | null>;
     getUserByEmail(email: string): Promise<User | null>;
     create(createUserDto: IUserCreateDto): Promise<void>;
-    updateOneUserById(id: string, updateUserDto: IUpdateUserDto): Promise<void>;
+    updateUserById(id: string, updateUserDto: IUpdateUserDto): Promise<UpdateInfo>;
     deleteUserById(id: string): Promise<void>;
 }
 

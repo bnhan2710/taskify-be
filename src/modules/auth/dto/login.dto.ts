@@ -1,9 +1,6 @@
-export interface LoginDto {
-    email: string;
-    password: string
-}
+import { ICredentials } from "../interface";
 
-export function LoginDTO(body: any): LoginDto {
+export function LoginDTO(body: any): ICredentials {
     return {
         email: body.email,
         password: body.password

@@ -6,9 +6,10 @@ import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../database/entities/Attachment";
 import connection from "../../core/configs/database.connect";
 import cardRepository from "../card/card.repository";
-import { AttachmentDto } from "./dto/attachment.dto";
-class AttachmentService {
-    public async uploadAttachment(file: Express.Multer.File | undefined, cardId: string): Promise<{url: string, public_id: string} | undefined> {
+import { IAttachmentDto, IAttachmentService } from "./interface";
+import { UploadResult } from './interface';
+class AttachmentService implements IAttachmentService{
+    public async uploadAttachment(file: Express.Multer.File | undefined, cardId: string): Promise<UploadResult> {
         if (!file) {
             throw new BadRequestError('No file uploaded');
         }
@@ -30,14 +31,6 @@ class AttachmentService {
             } catch (err) {
                 console.log('Error deleting file:', err);
             }
-            await connection.getRepository(Attachment).save({
-                attachName: file.originalname,
-                fileType: file.mimetype,
-                URL: result.secure_url,
-                cloudinaryPublicId: result.public_id,
-                isLink: false,
-                card: card,
-            });
             return {
                 url: result.secure_url,
                 public_id: result.public_id,
@@ -48,7 +41,7 @@ class AttachmentService {
         }
     }
 
-    public async linkAttachment(attachDto: AttachmentDto ): Promise<void> {
+    public async linkAttachment(attachDto: IAttachmentDto ): Promise<void> {
         const card = await cardRepository.findById(attachDto.cardId);
         if (!card) {
             throw new NotFoundError('Card not found');

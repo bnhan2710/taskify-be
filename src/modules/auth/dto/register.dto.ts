@@ -1,11 +1,6 @@
+import { IRegister } from "../interface";
 
-export interface RegisterDto {
-    username: string;
-    password: string;
-    email:string
-}
-
-export function RegisterDTO(body: any): RegisterDto {
+export function RegisterDTO(body: any): IRegister {
     return {
         username: body.username,
         password: body.password,
