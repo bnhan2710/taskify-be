@@ -8,13 +8,24 @@ import asyncHandler from "../../core/middleware/asyncHandle";
 import workspaceController from "./workspace.controller";
 
 //CREATE WORKSPACE
-WorkspaceRoute.post('/', checkAuth, validate(NewWorkspaceValidation), asyncHandler(WorkspaceController.newWorkspace))
+WorkspaceRoute.post('/',
+    checkAuth,
+    validate(NewWorkspaceValidation),
+    asyncHandler(WorkspaceController.newWorkspace))
 //GET MY WORKSPACE 
-WorkspaceRoute.get('/',checkAuth, asyncHandler(workspaceController.getMyworkpspace))
+WorkspaceRoute.get('/',
+    checkAuth,
+    asyncHandler(workspaceController.getMyworkpspace))
 //GET WORKSPACE BY ID
-WorkspaceRoute.get('/:id',checkAuth, asyncHandler(workspaceController.getWorkspaceById))
+WorkspaceRoute.get('/:id',
+    checkAuth,
+    asyncHandler(workspaceController.getWorkspaceById))
 //UPDATE WORKSPACE
-WorkspaceRoute.put('/:id/', checkAuth,validate(UpdateWorkspaceValidation), asyncHandler(workspaceController.updateWorkspace))
+WorkspaceRoute.put('/:id/',
+    checkAuth,validate(UpdateWorkspaceValidation),
+    asyncHandler(workspaceController.updateWorkspace))
 //REMOVE WORKSPACE
-WorkspaceRoute.delete('/:id',checkAuth, asyncHandler(workspaceController.removeWorkspace))
+WorkspaceRoute.delete('/:id',
+    checkAuth,
+    asyncHandler(workspaceController.removeWorkspace))
 export default WorkspaceRoute

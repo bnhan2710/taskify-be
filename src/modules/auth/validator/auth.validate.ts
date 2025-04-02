@@ -33,3 +33,15 @@ export const registerValidation = Joi.object({
     'any.required': 'Email is required',
   }),
 });
+
+
+export const changePasswordValidation = Joi.object({
+  currentPassword: Joi.string().pattern(PASSWORD_RULE).required().messages({
+    'string.pattern.base': PASSWORD_RULE_MESSAGE,
+    'any.required': 'Current password is required',
+  }),
+  newPassword: Joi.string().pattern(PASSWORD_RULE).required().messages({
+    'string.pattern.base': PASSWORD_RULE_MESSAGE,
+    'any.required': 'New password is required',
+  }),
+});

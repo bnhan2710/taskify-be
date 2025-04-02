@@ -8,11 +8,18 @@ import validate from "../../core/middleware/validate";
 import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
 import { PermissionEnum } from "../../shared/common/enums/permission";
 //CREATE BOARD
-BoardRoute.post('/', checkAuth, validate(NewBoardValidation) ,asyncHandler(BoardController.newBoard))
+BoardRoute.post('/', 
+    checkAuth, 
+    validate(NewBoardValidation),
+    asyncHandler(BoardController.newBoard))
 //GET MY BOARD
-BoardRoute.get('/', checkAuth , asyncHandler(BoardController.getMyBoard))
+BoardRoute.get('/', 
+    checkAuth, 
+    asyncHandler(BoardController.getMyBoard))
 //GET BOARD BY ID
-BoardRoute.get('/:id', checkAuth, asyncHandler(BoardController.getBoardById))
+BoardRoute.get('/:id',
+    checkAuth, 
+    asyncHandler(BoardController.getBoardById))
 // BoardRoute.get('/:id', 
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanViewBoard]),

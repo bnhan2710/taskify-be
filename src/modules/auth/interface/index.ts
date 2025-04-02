@@ -12,11 +12,17 @@ export interface IRegister{
     password: string
 }
 
+export interface IChangePassword{
+    currentPassword: string;
+    newPassword: string;
+}
+
 
 export interface IAuthService {
     login(loginDto: ICredentials,res: Response):Promise<any>;
     googleLogin(user: User):Promise<{accessToken: string} | undefined>
     register(registerDto: IRegister):Promise<void>
+    changePassword(userId: string, changePasswordDto: IChangePassword):Promise<void>
     logout(userId: string,res: Response):Promise<void>
     refreshNewToken(resfreshToken: string,res: Response):Promise<{accessToken:string}>
 }

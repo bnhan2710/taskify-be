@@ -9,7 +9,9 @@ import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
 import { PermissionEnum } from "../../shared/common/enums/permission";
 
 //CREATE LIST
-ListRoute.post('/', validate(CreateListValidation),asyncHandler(ListController.CreateList))
+ListRoute.post('/',
+    validate(CreateListValidation),
+    asyncHandler(ListController.CreateList))
 // ListRoute.post('/',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
@@ -17,9 +19,13 @@ ListRoute.post('/', validate(CreateListValidation),asyncHandler(ListController.C
 //     asyncHandler(ListController.CreateList))
 //GET LIST
 // ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))
-ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))
+ListRoute.get('/',
+    checkAuth,
+    asyncHandler(ListController.getList))
 //GET LIST BY ID
-ListRoute.get('/:id',checkAuth, asyncHandler(ListController.getListById))
+ListRoute.get('/:id',
+    checkAuth,
+    asyncHandler(ListController.getListById))
 // UPDATE LIST
 // ListRoute.put('/:id',
 //     checkAuth,
@@ -28,7 +34,7 @@ ListRoute.get('/:id',checkAuth, asyncHandler(ListController.getListById))
 //     asyncHandler(ListController.updateList))
 ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList))
 //REMOVRE LIST
-// ListRoute.delete('/:id',
+//  ListRoute.delete('/:id',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
 //     asyncHandler(ListController.removeList))

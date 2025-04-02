@@ -1,16 +1,16 @@
-import { IAuthService, ICredentials,IRegister } from "./interface";
+import { IAuthService, IChangePassword, ICredentials,IRegister } from "./interface";
 import connection from "../../core/configs/database.connect"
 import { User } from "../../database/entities/User";
 import { Response } from "express";
 import { Token } from "../../database/entities/Token";
 import { TokenEnum } from "../../shared/common/enums/token";
-import { generateAccessToken , hashPassword , comparePassword, generateRefreshToken, verifyToken } from '../../shared/utils/auth.util'
+import { generateAccessToken, hashPassword, comparePassword, generateRefreshToken, verifyToken } from '../../shared/utils/auth.util';
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../core/handler/error.response'
 import { env } from "../../core/configs/env.config";
 class AuthService implements IAuthService{
     private readonly userRepository = connection.getRepository(User)
     private readonly tokenRepository = connection.getRepository(Token)
-
+    
     public async login(loginDto: ICredentials,res: Response):Promise<any>{
         const user = await this.userRepository.findOne({where:{email: loginDto.email }})
             if(!user){
@@ -41,7 +41,7 @@ class AuthService implements IAuthService{
                 httpOnly:true,
                 maxAge: parseInt(env.REFRESH_TOKEN_EXPIRE)
             })
-
+            
             const { password,...userInfo } = user
             return {
                 accessToken,
@@ -97,9 +97,9 @@ class AuthService implements IAuthService{
                 password: registerDto.password,
             })
             
-       }
+        }
 
-    public async logout(userId: string,res: Response):Promise<void>{
+        public async logout(userId: string,res: Response):Promise<void>{
         const user = await this.userRepository.findOne({where:{id: userId}})
         if(!user){
             throw new NotFoundError('User not found!')
@@ -107,9 +107,9 @@ class AuthService implements IAuthService{
         res.clearCookie("refreshToken")
         await this.tokenRepository.delete({user: user})
     }
-
+    
     public async refreshNewToken(resfreshToken: string,res: Response):Promise<{accessToken:string}>{
-            console.log('REFRESH NEW TOKEN')
+        console.log('REFRESH NEW TOKEN')
             const user = await verifyToken(resfreshToken)
             if(!user){
                 console.log(user)
@@ -124,6 +124,20 @@ class AuthService implements IAuthService{
             return { accessToken }
         }
     
-}
-
-export default new AuthService
+     public async changePassword(userId: string, changePasswordDto: IChangePassword): Promise<void> {
+           const user = await this.userRepository.findOne({ where: { id: userId } });
+           if(!user) {
+               throw new NotFoundError('User not found!');
+           }
+            const matchPassword = await comparePassword(changePasswordDto.currentPassword, user.password);
+           if (!matchPassword) {
+               throw new AuthFailError('Current password is incorrect!');
+            }
+            const hashedPassword = await hashPassword(changePasswordDto.newPassword);
+            await this.userRepository.update(userId, {
+                password: hashedPassword,
+            });
+        }
+    }
+    
+    export default new AuthService

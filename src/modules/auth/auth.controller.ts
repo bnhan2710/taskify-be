@@ -1,7 +1,7 @@
 //AuthController
 import { NextFunction, Request, Response } from 'express';
 import AuthService from './auth.service';
-import { LoginDTO, RegisterDTO} from './dto';
+import { LoginDTO, RegisterDTO, ChangePasswordDTO} from './dto';
 import { StatusCodes } from 'http-status-codes';
 import { OK , CREATED } from '../../core/handler/success.reponse';
 class AuthController {
@@ -25,6 +25,15 @@ class AuthController {
         const userId = req.userJwt.id
         await AuthService.logout(userId,res)
         res.send({message: 'Logout successfully'})
+    }
+
+    public async changePassword(req: Request, res: Response, next: NextFunction){
+        const userId = req.userJwt.id
+        const changePasswordDto = ChangePasswordDTO(req.body);
+        await AuthService.changePassword(userId, changePasswordDto);
+        new OK({
+            message: 'Change password successfully'
+        }).send(res);
     }
 
     public async googleLogin(req: Request, res: Response, next: NextFunction){

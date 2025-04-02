@@ -6,9 +6,10 @@ import { attachmentValidation } from "./validator/attachments.validate";
 import { Attachment } from "../../database/entities/Attachment";
 import connection from "../../core/configs/database.connect";
 import cardRepository from "../card/card.repository";
-import { IAttachmentDto, IAttachmentService } from "./interface";
+import { IAttachmentDto, IUploadService } from "./interface";
 import { UploadResult } from './interface';
-class AttachmentService implements IAttachmentService{
+import { User } from "../../database/entities/User";
+class UploadService implements IUploadService{
     public async uploadAttachment(file: Express.Multer.File | undefined, cardId: string): Promise<UploadResult> {
         if (!file) {
             throw new BadRequestError('No file uploaded');
@@ -35,6 +36,39 @@ class AttachmentService implements IAttachmentService{
                 url: result.secure_url,
                 public_id: result.public_id,
             };
+        } catch (error) {
+            console.log('Error uploading file:', error);
+            throw new BadRequestError('Upload failed');
+        }
+    }
+
+    public async uploadAvatar(file: Express.Multer.File | undefined, userId: string): Promise<{avatar: string}> {
+        if (!file) {
+            throw new BadRequestError('No file uploaded');
+        }
+        const { error } = attachmentValidation.validate({ size: file.size });
+        if (error) {
+            throw new BadRequestError(error.message);
+        }
+        try {
+            const result = await cloudinary.uploader.upload(file.path, {
+                folder: 'taskify-avatars',
+                resource_type: 'auto'
+            });
+            try {
+                unlinkSync(file.path);
+            } catch (err) {
+                console.log('Error deleting file:', err);
+            }
+            const user = await connection.getRepository(User).findOne({ where: { id: userId } });
+            if (!user) {
+                throw new NotFoundError('User not found');
+            }
+            await connection.getRepository(User).update(userId, {
+                avatar: result.secure_url,
+            });
+            
+            return { avatar: result.secure_url };
         } catch (error) {
             console.log('Error uploading file:', error);
             throw new BadRequestError('Upload failed');
@@ -84,4 +118,4 @@ class AttachmentService implements IAttachmentService{
 }
     
 
-export default new AttachmentService();
+export default new UploadService();
