@@ -1,10 +1,9 @@
-
 export interface IPermissionDto {
-    permissionName: string; 
+  permissionName: string;
 }
 
-export function CreatePermissionDTO(body: any): IPermissionDto { 
-    return {
-        permissionName: body.name
-    }
+export function CreatePermissionDTO(body: any): IPermissionDto {
+  return {
+    permissionName: body.name,
+  };
 }

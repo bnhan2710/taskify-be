@@ -1,13 +1,13 @@
-import { Column, Entity, ManyToOne, OneToMany, JoinColumn, JoinTable, ManyToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, JoinColumn, JoinTable, ManyToMany } from 'typeorm';
 import { BaseEntity } from '../../shared/base/base-entity';
-import { List } from "./List";
-import { Attachment } from "./Attachment";
-import { Comment } from "./Comment";
-import { ActivityLog } from "./Activity_Log";
-import { Checklist } from "./Checklist";
-import { User } from "./User";
+import { ListEntity } from './List';
+import { Attachment } from './Attachment';
+import { Comment } from './Comment';
+import { ActivityLog } from './Activity_Log';
+import { Checklist } from './Checklist';
+import { User } from './User';
 @Entity('cards')
-export class Card extends BaseEntity{
+export class Card extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   title!: string;
 
@@ -17,28 +17,34 @@ export class Card extends BaseEntity{
   //cover image
   @Column({ type: 'text', nullable: true })
   cover!: string;
-  
-  @ManyToOne(() => List, (list) => list.cards,{ onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'list_id' })
-  list!: List;
 
-  @ManyToMany(() => User, user => user.cards)
+  @ManyToOne(() => ListEntity, (list) => list.cards, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'list_id' })
+  list!: ListEntity;
+
+  @ManyToMany(() => User, (user) => user.cards)
   @JoinTable({
     name: 'card_member',
     joinColumn: { name: 'card_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'member_id', referencedColumnName: 'id' }
+    inverseJoinColumn: { name: 'member_id', referencedColumnName: 'id' },
   })
-  member?: User[]
+  member?: User[];
 
-  @OneToMany(()=> Checklist , checklist => checklist.card, { cascade: true, onDelete: 'CASCADE' })
-  checklists!:Checklist[]
+  @OneToMany(() => Checklist, (checklist) => checklist.card, { cascade: true, onDelete: 'CASCADE' })
+  checklists!: Checklist[];
 
-  @OneToMany(() => Comment, comment => comment.card ,{ cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => Comment, (comment) => comment.card, { cascade: true, onDelete: 'CASCADE' })
   comments!: Comment[];
 
-  @OneToMany(() => Attachment, attachment => attachment.card ,{ cascade: true, onDelete: 'CASCADE' })
+  @OneToMany(() => Attachment, (attachment) => attachment.card, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   attachments!: Attachment[];
 
-  @OneToMany(() => ActivityLog , activity_logs => activity_logs.card, { cascade: true, onDelete: 'CASCADE' })
-  ativityLogs!:ActivityLog[]
+  @OneToMany(() => ActivityLog, (activity_logs) => activity_logs.card, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  ativityLogs!: ActivityLog[];
 }

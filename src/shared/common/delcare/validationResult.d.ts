@@ -1,5 +1,5 @@
 declare interface ValidationResult {
-    error?: {
-        message: string;
-    };
+  error?: {
+    message: string;
+  };
 }

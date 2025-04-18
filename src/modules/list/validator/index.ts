@@ -1,2 +1,2 @@
-export * from './create-list.validate'
-export * from './update-list.validate'
+export * from './create-list.validate';
+export * from './update-list.validate';

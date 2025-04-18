@@ -20,6 +20,7 @@
   "exclude": [
     "public",
     "dist",
+    "eslint.config.js"
   ],
   "baseUrl": "./src",
   "paths": {

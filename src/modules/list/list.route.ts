@@ -1,17 +1,15 @@
-import { Router } from "express";
-const ListRoute:Router = Router()
-import ListController from "./list.controller";
-import { checkAuth } from "../../core/middleware/checkAuth";
-import validate from "../../core/middleware/validate";
-import asyncHandler from "../../core/middleware/asyncHandle"
-import { CreateListValidation , updateListValidation } from "./validator";
-import { checkPermissionInBoard } from "../../core/middleware/checkPermission";
-import { PermissionEnum } from "../../shared/common/enums/permission";
+import { Router } from 'express';
+const ListRoute: Router = Router();
+import ListController from './list.controller';
+import { checkAuth } from '../../core/middleware/checkAuth';
+import validate from '../../core/middleware/validate';
+import asyncHandler from '../../core/middleware/asyncHandle';
+import { CreateListValidation, updateListValidation } from './validator';
+import { checkPermissionInBoard } from '../../core/middleware/checkPermission';
+import { PermissionEnum } from '../../shared/common/enums/permission';
 
 //CREATE LIST
-ListRoute.post('/',
-    validate(CreateListValidation),
-    asyncHandler(ListController.CreateList))
+ListRoute.post('/', validate(CreateListValidation), asyncHandler(ListController.CreateList));
 // ListRoute.post('/',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
@@ -19,26 +17,21 @@ ListRoute.post('/',
 //     asyncHandler(ListController.CreateList))
 //GET LIST
 // ListRoute.get('/',checkAuth, asyncHandler(ListController.getList))
-ListRoute.get('/',
-    checkAuth,
-    asyncHandler(ListController.getList))
+ListRoute.get('/', checkAuth, asyncHandler(ListController.getList));
 //GET LIST BY ID
-ListRoute.get('/:id',
-    checkAuth,
-    asyncHandler(ListController.getListById))
+ListRoute.get('/:id', checkAuth, asyncHandler(ListController.getListById));
 // UPDATE LIST
 // ListRoute.put('/:id',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
 //     validate(updateListValidation),
 //     asyncHandler(ListController.updateList))
-ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList))
+ListRoute.put('/:id', validate(updateListValidation), asyncHandler(ListController.updateList));
 //REMOVRE LIST
 //  ListRoute.delete('/:id',
 //     checkAuth,
 //     checkPermissionInBoard([PermissionEnum.CanEditBoard]),
 //     asyncHandler(ListController.removeList))
-ListRoute.delete('/:id', asyncHandler(ListController.removeList))
+ListRoute.delete('/:id', asyncHandler(ListController.removeList));
 
-export default ListRoute
-
+export default ListRoute;

@@ -1,9 +1,8 @@
-import { IUpdateChecklist } from "../interface";
+import { IUpdateChecklist } from '../interface';
 
-export function UpdateChecklistDTO(body:any): IUpdateChecklist {
-    return {
-        description: body.description,
-        isDone: body.isDone
-    }    
+export function UpdateChecklistDTO(body: any): IUpdateChecklist {
+  return {
+    description: body.description,
+    isDone: body.isDone,
+  };
 }
-
