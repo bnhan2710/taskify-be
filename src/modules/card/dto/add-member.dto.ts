@@ -1,7 +1,7 @@
-import { IAddMember } from "../interface";
+import { IAddMember } from '../interface';
 
-export function AddMemberDTO(body:any): IAddMember{ 
-    return {
-        userId: body.userId
-    }
+export function AddMemberDTO(body: any): IAddMember {
+  return {
+    userId: body.userId,
+  };
 }

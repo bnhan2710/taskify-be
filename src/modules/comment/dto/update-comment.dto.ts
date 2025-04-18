@@ -1,7 +1,7 @@
-import { IUpdateComment } from "../interface";
+import { IUpdateComment } from '../interface';
 
 export function commentUpdateDTO(body: any): IUpdateComment {
-    return {
-        content: body.content,
-    };
+  return {
+    content: body.content,
+  };
 }

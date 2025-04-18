@@ -1,7 +1,7 @@
-import { Entity, ManyToOne, JoinColumn, PrimaryColumn } from "typeorm";
-import { Board } from "./Board";
-import { User } from "./User";
-import { Role } from "./Role";
+import { Entity, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
+import { Board } from './Board';
+import { User } from './User';
+import { Role } from './Role';
 
 @Entity('board_user_roles')
 export class BoardUserRole {

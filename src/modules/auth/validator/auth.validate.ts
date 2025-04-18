@@ -1,9 +1,9 @@
 import Joi from 'joi';
-import { 
-  EMAIL_RULE, 
-  EMAIL_RULE_MESSAGE, 
-  PASSWORD_RULE, 
-  PASSWORD_RULE_MESSAGE
+import {
+  EMAIL_RULE,
+  EMAIL_RULE_MESSAGE,
+  PASSWORD_RULE,
+  PASSWORD_RULE_MESSAGE,
 } from '../../../shared/utils/validator.util';
 
 export const loginValidation = Joi.object({
@@ -33,7 +33,6 @@ export const registerValidation = Joi.object({
     'any.required': 'Email is required',
   }),
 });
-
 
 export const changePasswordValidation = Joi.object({
   currentPassword: Joi.string().pattern(PASSWORD_RULE).required().messages({

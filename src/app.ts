@@ -16,35 +16,39 @@ import { createServer } from 'http';
 const app: Express = express();
 
 const configureMiddlewares = () => {
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-    app.use(session({
-        secret: env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: true,
-    }));
-    app.use(cookieParser())
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(cors(corsOptions));
-    app.use(helmet());
-    app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(
+    session({
+      secret: env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true,
+    }),
+  );
+  app.use(cookieParser());
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(cors(corsOptions));
+  app.use(helmet());
+  app.use(morgan('dev'));
 };
 
 const configureRoutes = () => {
-    app.use('/api/v1', v1Api); 
-    app.use('*', (req: Request, res: Response) => res.status(NOT_FOUND).json({
-        status: NOT_FOUND,
-        message: `Can not GET ${req.originalUrl}`,
-    }));
-    app.use(errorHandler);
+  app.use('/api/v1', v1Api);
+  app.use('*', (req: Request, res: Response) =>
+    res.status(NOT_FOUND).json({
+      status: NOT_FOUND,
+      message: `Can not GET ${req.originalUrl}`,
+    }),
+  );
+  app.use(errorHandler);
 };
 
-const createHttpServer =  () => {
-        const server = createServer(app);
-        configureMiddlewares();
-        configureRoutes();
-        return server;
+const createHttpServer = () => {
+  const server = createServer(app);
+  configureMiddlewares();
+  configureRoutes();
+  return server;
 };
 
 export { createHttpServer };

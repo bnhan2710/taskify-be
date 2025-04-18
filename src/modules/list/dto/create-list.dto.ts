@@ -1,8 +1,11 @@
-import { ICreateList } from "../interface";
+export interface ICreateList {
+  title: string;
+  boardId: string;
+}
 
 export function CreateListDTO(body: any): ICreateList {
-    return {
-        title: body.title,
-        boardId: body.boardId
-    }
+  return {
+    title: body.title,
+    boardId: body.boardId,
+  };
 }

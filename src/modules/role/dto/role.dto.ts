@@ -1,9 +1,9 @@
 export interface IRoleDto {
-    roleName: string; 
+  roleName: string;
 }
 
 export function CreateRoleDTO(body: any): IRoleDto {
-    return {
-        roleName: body.name 
-    }
+  return {
+    roleName: body.name,
+  };
 }

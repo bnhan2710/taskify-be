@@ -1,8 +1,8 @@
-import { ICreateChecklist } from "../interface";
+import { ICreateChecklist } from '../interface';
 
-export function CreateChecklistDTO(body:any): ICreateChecklist {
-    return {
-        description: body.description,
-        cardId: body.cardId
-    }
-}   
+export function CreateChecklistDTO(body: any): ICreateChecklist {
+  return {
+    description: body.description,
+    cardId: body.cardId,
+  };
+}
