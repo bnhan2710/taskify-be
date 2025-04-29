@@ -5,7 +5,7 @@ import { CreateChecklistDTO, UpdateChecklistDTO } from './dto';
 import checklistService from './checklist.service';
 
 class ChecklistController {
-  public async newChecklist(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async newChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const CreateChecklistDto = CreateChecklistDTO(req.body);
     await ChecklistService.newChecklist(CreateChecklistDto);
     new CREATED({
@@ -13,7 +13,7 @@ class ChecklistController {
     }).send(res);
   }
 
-  public async getCheckListbyCard(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async getCheckListbyCard(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const cardId = req.query.cardId as string;
     new OK({
       message: 'Get checklist successfully',
@@ -21,7 +21,7 @@ class ChecklistController {
     }).send(res);
   }
 
-  public async getChecklistbyId(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async getChecklistbyId(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const checklistId = req.params.id;
     new OK({
       message: 'Get checklist successfully',
@@ -29,7 +29,7 @@ class ChecklistController {
     }).send(res);
   }
 
-  public async updateChecklist(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async updateChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const checklistId = req.params.id;
     const updateChecklistDto = UpdateChecklistDTO(req.body);
     await checklistService.updateChecklist(updateChecklistDto, checklistId);
@@ -38,7 +38,7 @@ class ChecklistController {
     }).send(res);
   }
 
-  public async removeChecklist(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async removeChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const checklistId = req.params.id;
     await checklistService.removeChecklist(checklistId);
     new OK({

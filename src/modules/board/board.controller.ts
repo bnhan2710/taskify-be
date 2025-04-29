@@ -5,7 +5,7 @@ import { NewBoardDTO } from './dto';
 import { UpdateBoardDTO } from './dto/update-board.dto';
 
 class BoardController {
-  public async newBoard(req: Request, res: Response, next: NextFunction) {
+  public async newBoard(req: Request, res: Response, _next: NextFunction) {
     const newBoardDto = NewBoardDTO(req.body);
     const userId = req.userJwt.id;
     const boardId = await BoardService.newBoard(newBoardDto, userId);
@@ -15,7 +15,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async updateBoard(req: Request, res: Response, next: NextFunction) {
+  public async updateBoard(req: Request, res: Response, _next: NextFunction) {
     const updateBoardDto = UpdateBoardDTO(req.body);
     const boardId = req.params.id;
     await BoardService.updateBoard(updateBoardDto, boardId);
@@ -24,7 +24,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async getMyBoard(req: Request, res: Response, next: NextFunction) {
+  public async getMyBoard(req: Request, res: Response, _next: NextFunction) {
     const userId = req.userJwt.id;
     const qs = req.query;
     new OK({
@@ -33,7 +33,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async getPublicBoard(req: Request, res: Response, next: NextFunction) {
+  public async getPublicBoard(req: Request, res: Response, _next: NextFunction) {
     const qs = req.query;
     new OK({
       message: 'Get Public Board Successfully',
@@ -41,7 +41,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async removeBoard(req: Request, res: Response, next: NextFunction) {
+  public async removeBoard(req: Request, res: Response, _next: NextFunction) {
     const boardId = req.params.id;
     await BoardService.removeBoard(boardId);
     new OK({
@@ -49,7 +49,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async getBoardById(req: Request, res: Response, next: NextFunction) {
+  public async getBoardById(req: Request, res: Response, _next: NextFunction) {
     const boardId = req.params.id;
     new OK({
       message: 'Get Board Successfully',
@@ -57,7 +57,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async inviteMember(req: Request, res: Response, next: NextFunction) {
+  public async inviteMember(req: Request, res: Response, _next: NextFunction) {
     const userEmail = req.body.email;
     const boardId = req.params.id;
     await BoardService.inviteMember(boardId, userEmail);
@@ -66,7 +66,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async removeMember(req: Request, res: Response, next: NextFunction) {
+  public async removeMember(req: Request, res: Response, _next: NextFunction) {
     const userId = req.body.userId;
     const boardId = req.params.id;
     await BoardService.removeMember(boardId, userId);
@@ -75,7 +75,7 @@ class BoardController {
     }).send(res);
   }
 
-  public async changeRole(req: Request, res: Response, next: NextFunction) {
+  public async changeRole(req: Request, res: Response, _next: NextFunction) {
     const userId = req.body.userId;
     const boardId = req.params.id;
     const roleName = req.body.roleId;

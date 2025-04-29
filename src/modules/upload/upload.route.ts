@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { upload } from '../../shared/utils/multer.uitl';
 import UploadController from './upload.controller';
-import asyncHandler from '../../core/middleware/asyncHandle';
+import asyncHandler from '../../core/middleware/async-handler';
 import validate from '../../core/middleware/validate';
 import { attachmentLinkValidation } from './validator/attachments.validate';
-import { checkAuth } from '../../core/middleware/checkAuth';
+import { authenticate } from '../../core/middleware/authentication-middleware';
 const router = Router();
 
 // Route for uploading attachments
@@ -12,7 +12,7 @@ router.post('/', upload.single('file'), asyncHandler(UploadController.uploadAtta
 // Route for uploading avatar
 router.post(
   '/avatar',
-  checkAuth,
+  authenticate,
   upload.single('file'),
   asyncHandler(UploadController.uploadAvatar),
 );

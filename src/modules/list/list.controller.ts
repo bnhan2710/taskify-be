@@ -3,7 +3,7 @@ import ListService from './list.service';
 import { ListMapper } from './mapper/list.mapper';
 import { Request, Response, NextFunction } from 'express';
 class ListController {
-  public async CreateList(req: Request, res: Response, next: NextFunction) {
+  public async CreateList(req: Request, res: Response, _next: NextFunction) {
     const CreateListDto = ListMapper.toCreateListDTO(req.body);
     const created = await ListService.createList(CreateListDto);
     new CREATED({
@@ -12,7 +12,7 @@ class ListController {
     }).send(res);
   }
 
-  public async updateList(req: Request, res: Response, next: NextFunction) {
+  public async updateList(req: Request, res: Response, _next: NextFunction) {
     const listId = req.params.id;
     const updateListDto = ListMapper.toUpdateListDTO(req.body);
     await ListService.updateList(updateListDto, listId);
@@ -21,7 +21,7 @@ class ListController {
     }).send(res);
   }
 
-  public async removeList(req: Request, res: Response, next: NextFunction) {
+  public async removeList(req: Request, res: Response, _next: NextFunction) {
     const listId = req.params.id;
     await ListService.removeList(listId);
     new OK({
@@ -29,7 +29,7 @@ class ListController {
     }).send(res);
   }
 
-  public async getList(req: Request, res: Response, next: NextFunction) {
+  public async getList(req: Request, res: Response, _next: NextFunction) {
     const boardId = req.query.boardId as string;
     new OK({
       message: 'Get List Successfully',
@@ -37,7 +37,7 @@ class ListController {
     }).send(res);
   }
 
-  public async getListById(req: Request, res: Response, next: NextFunction) {
+  public async getListById(req: Request, res: Response, _next: NextFunction) {
     const listId = req.params.id;
     new OK({
       message: 'Get List Successfully',

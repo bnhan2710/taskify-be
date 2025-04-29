@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { OK, CREATED } from '../../core/handler/success.reponse';
 import { commentDTO, commentUpdateDTO } from './dto';
 class CommentController {
-  public async newComment(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async newComment(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const commentDto = commentDTO(req.body);
     const userId = req.userJwt.id;
     const comment = await CommentService.newComment(commentDto, userId);
@@ -13,7 +13,7 @@ class CommentController {
     }).send(res);
   }
 
-  public async getCommentDetail(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async getCommentDetail(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const commentId = req.params.id;
     new OK({
       message: 'Get comment detail successfully',
@@ -21,7 +21,7 @@ class CommentController {
     }).send(res);
   }
 
-  public async updateComment(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async updateComment(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const commentId = req.params.id;
     const userId = req.userJwt.id;
     const updateCommentDto = commentUpdateDTO(req.body);
@@ -31,7 +31,7 @@ class CommentController {
     }).send(res);
   }
 
-  public async removeComment(req: Request, res: Response, next: NextFunction): Promise<void> {
+  public async removeComment(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const commentId = req.params.id;
     const userId = req.userJwt.id;
     await CommentService.removeComment(commentId, userId);

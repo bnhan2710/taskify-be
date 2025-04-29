@@ -28,6 +28,7 @@ export class ListRepository implements IListRepository {
   public async getByBoard(boardId: string): Promise<List[]> {
     const lists = await this.repository.find({
       where: { board: { id: boardId } },
+      order: { createdAt: 'ASC' },
     });
     return lists.map((list) => ListMapper.toList(list));
   }
@@ -37,6 +38,6 @@ export class ListRepository implements IListRepository {
   }
 
   public async remove(listid: string): Promise<void> {
-    await this.repository.remove({ id: listid } as any);
+    await this.repository.delete({ id: listid } as any);
   }
 }

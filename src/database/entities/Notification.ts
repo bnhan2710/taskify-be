@@ -7,6 +7,9 @@ export class Notification {
   @Column()
   message!: string;
 
+  @Column({ default: 'invite' })
+  status!: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 }

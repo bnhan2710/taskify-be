@@ -23,7 +23,7 @@ class ListService implements IListService {
       if (!board) {
         throw new NotFoundError('Board not found');
       }
-      let listOrderIds = board.listOrderIds || [];
+      const listOrderIds = board.listOrderIds || [];
       const newList = await this.listRepository.insert(CreateListDto);
       listOrderIds.push(newList.id.toString());
       await boardRepository.update({ listOrderIds }, CreateListDto.boardId);
@@ -41,7 +41,7 @@ class ListService implements IListService {
   }
 
   public async getListsByBoard(boardId: string): Promise<List[]> {
-    const board = boardRepository.findById(boardId);
+    const board = await boardRepository.findById(boardId);
     if (!board) {
       throw new NotFoundError('Board not found');
     }

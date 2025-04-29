@@ -25,7 +25,7 @@ export interface IBoardService {
   getPublicBoard(qs: any): Promise<ListBoard>;
   getBoardById(boardId: string): Promise<any>;
   updateBoard(updateBoardDto: IUpdateBoard, boardId: string): Promise<void>;
-  removeBoard(boardId: string): Promise<any>;
+  removeBoard(boardId: string): Promise<void>;
   inviteMember(boardId: string, userEmail: string): Promise<any>;
 }
 

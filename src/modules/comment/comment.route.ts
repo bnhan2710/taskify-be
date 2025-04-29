@@ -2,18 +2,18 @@ import { Router } from 'express';
 import CommentController from './comment.controller';
 import validate from '../../core/middleware/validate';
 import { commentSchema, commentUpdateSchema } from './validator/comment.validate';
-import asyncHandler from '../../core/middleware/asyncHandle';
-import { checkAuth } from '../../core/middleware/checkAuth';
+import asyncHandler from '../../core/middleware/async-handler';
+import { authenticate } from '../../core/middleware/authentication-middleware';
 const router = Router();
 
-router.post('/', checkAuth, validate(commentSchema), asyncHandler(CommentController.newComment));
-router.get('/:id', checkAuth, asyncHandler(CommentController.getCommentDetail));
+router.post('/', authenticate, validate(commentSchema), asyncHandler(CommentController.newComment));
+router.get('/:id', authenticate, asyncHandler(CommentController.getCommentDetail));
 router.put(
   '/:id',
-  checkAuth,
+  authenticate,
   validate(commentUpdateSchema),
   asyncHandler(CommentController.updateComment),
 );
-router.delete('/:id', checkAuth, asyncHandler(CommentController.removeComment));
+router.delete('/:id', authenticate, asyncHandler(CommentController.removeComment));
 
 export default router;

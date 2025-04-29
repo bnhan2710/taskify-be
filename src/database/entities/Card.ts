@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, JoinColumn, JoinTable, ManyToMany } from 'typeorm';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { BaseEntity } from '../base-entity';
 import { ListEntity } from './List';
 import { Attachment } from './Attachment';
 import { Comment } from './Comment';

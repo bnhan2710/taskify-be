@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, CreateDateColumn } from 'typeorm';
-import { BaseEntity } from '../../shared/base/base-entity';
+import { BaseEntity } from '../base-entity';
 import { Card } from './Card';
 
 @Entity('attachments')

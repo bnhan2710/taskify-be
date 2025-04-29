@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import asyncHandler from '../../core/middleware/asyncHandle';
+import asyncHandler from '../../core/middleware/async-handler';
 import RoleController from './role.controller';
 const router: Router = Router();
 

@@ -69,7 +69,7 @@ class BoardService implements IBoardService {
     }
     const user = await connection.getRepository('User').findOne({ where: { email: userEmail } });
     if (!user) {
-      throw new NotFoundError('User not found');
+      throw new NotFoundError(`Not found user with email ${userEmail}`);
     }
     await connection.getRepository(BoardUserRole).insert({
       boardId,

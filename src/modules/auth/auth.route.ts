@@ -1,40 +1,39 @@
 import { Router } from 'express';
 const router = Router();
-import asyncHandler from '../../core/middleware/asyncHandle';
+import asyncHandler from '../../core/middleware/async-handler';
 import validate from '../../core/middleware/validate';
-import AuthController from '../auth/auth.controller';
 import {
   changePasswordValidation,
   loginValidation,
   registerValidation,
 } from './validator/auth.validate';
-import { checkAuth } from '../../core/middleware/checkAuth';
+import { authenticate } from '../../core/middleware/authentication-middleware';
 import passport from 'passport';
 import { useGoogleStrategy } from './passport/googleStrategy';
 import authController from '../auth/auth.controller';
 useGoogleStrategy();
 // LOGIN
-router.post('/login', validate(loginValidation), asyncHandler(AuthController.login));
+router.post('/login', validate(loginValidation), asyncHandler(authController.login));
 // REGISTER
-router.post('/register', validate(registerValidation), asyncHandler(AuthController.register));
+router.post('/register', validate(registerValidation), asyncHandler(authController.register));
 //REQUEST REFRESH TOKEN
-router.get('/refresh_token', asyncHandler(AuthController.refreshNewToken));
+router.get('/refresh_token', asyncHandler(authController.refreshNewToken));
 // GOOGLE LOGIN
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 // GOOGLE CALLBACK
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  asyncHandler(AuthController.googleLogin),
+  asyncHandler(authController.googleLogin),
 );
 // LOG OUT
-router.delete('/logout', checkAuth, asyncHandler(AuthController.logout));
+router.delete('/logout', authenticate, asyncHandler(authController.logout));
 // CHANGE PASSWORD
 router.put(
   '/change-password',
-  checkAuth,
+  authenticate,
   validate(changePasswordValidation),
-  asyncHandler(AuthController.changePassword),
+  asyncHandler(authController.changePassword),
 );
 
 export default router;

@@ -4,7 +4,7 @@ import { NewCardDTO, UpdateCardDTO, AddMemberDTO } from './dto';
 import { OK, CREATED } from '../../core/handler/success.reponse';
 
 class CardController {
-  public async newCard(req: Request, res: Response, next: NextFunction) {
+  public async newCard(req: Request, res: Response, _next: NextFunction) {
     const newCardDto = NewCardDTO(req.body);
     const userId = req.userJwt.id;
     const createdCard = await CardService.newCard(newCardDto, userId);
@@ -14,7 +14,7 @@ class CardController {
     }).send(res);
   }
 
-  public async getCardByList(req: Request, res: Response, next: NextFunction) {
+  public async getCardByList(req: Request, res: Response, _next: NextFunction) {
     const listId = req.query.listId as string;
     new OK({
       message: 'Get Card Successfully',
@@ -22,7 +22,7 @@ class CardController {
     }).send(res);
   }
 
-  public async getCardById(req: Request, res: Response, next: NextFunction) {
+  public async getCardById(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
     new OK({
       message: 'Get Card Successfully',
@@ -30,7 +30,7 @@ class CardController {
     }).send(res);
   }
 
-  public async updateCard(req: Request, res: Response, next: NextFunction) {
+  public async updateCard(req: Request, res: Response, _next: NextFunction) {
     const updateCardDto = UpdateCardDTO(req.body);
     const cardId = req.params.id;
     await CardService.updateCard(cardId, updateCardDto);
@@ -39,7 +39,7 @@ class CardController {
     }).send(res);
   }
 
-  public async removeCard(req: Request, res: Response, next: NextFunction) {
+  public async removeCard(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
     await CardService.removeCard(cardId);
     new OK({
@@ -47,7 +47,7 @@ class CardController {
     }).send(res);
   }
 
-  public async addMember(req: Request, res: Response, next: NextFunction) {
+  public async addMember(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
     const addMemberDto = AddMemberDTO(req.body);
     await CardService.addMember(cardId, addMemberDto);
