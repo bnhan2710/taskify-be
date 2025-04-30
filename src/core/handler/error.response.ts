@@ -1,4 +1,4 @@
-import { StatusCodes, ReasonPhrases } from './httpStatusCode';
+import { StatusCodes, ReasonPhrases } from './http-status-code';
 
 abstract class CustomError extends Error {
   abstract readonly statusCode: number;

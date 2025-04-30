@@ -18,7 +18,7 @@ yarn install
 yarn typeorm migration:run
 
 # Seed the Database sample data
-yarn seed-01
+yarn seed-rbac
 
 # Start the Application
 yarn start

@@ -16,7 +16,7 @@ export class Card extends BaseEntity {
 
   //cover image
   @Column({ type: 'text', nullable: true })
-  cover!: string;
+  cover?: string | null;
 
   @ManyToOne(() => ListEntity, (list) => list.cards, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'list_id' })
@@ -46,5 +46,5 @@ export class Card extends BaseEntity {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  ativityLogs!: ActivityLog[];
+  activityLogs!: ActivityLog[];
 }

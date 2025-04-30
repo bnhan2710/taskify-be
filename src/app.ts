@@ -9,8 +9,8 @@ import cookieParser from 'cookie-parser';
 import 'reflect-metadata';
 import { corsOptions } from './core/configs/cors.config';
 import { env } from './core/configs/env.config';
-import { errorHandler } from './core/handler/errorHandle';
-import v1Api from './routes/v1';
+import { errorHandler } from './core/handler/error-handle';
+import v1Api from './apis/v1';
 import { createServer } from 'http';
 
 const app: Express = express();

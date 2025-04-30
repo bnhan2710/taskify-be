@@ -30,7 +30,7 @@ export class ActivityLog {
   @JoinColumn({ name: 'board_id' })
   board?: Board;
 
-  @ManyToOne(() => Card, (card) => card.ativityLogs, { nullable: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Card, (card) => card.activityLogs, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'card_id' })
   card?: Card;
 

@@ -37,28 +37,28 @@ BoardRoute.put('/:id', asyncHandler(BoardController.updateBoard));
 BoardRoute.delete(
   '/:id',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CanEditBoard]),
+  // requireBoardPermissions([PermissionEnum.CanEditBoard]),
   asyncHandler(BoardController.removeBoard),
 );
 //INVITE MEMBER
 BoardRoute.post(
   '/:id/add',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
   asyncHandler(BoardController.inviteMember),
 );
 //REMOVE MEMBER
 BoardRoute.delete(
   '/:id/member/remove',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
   asyncHandler(BoardController.removeMember),
 );
 //CHACNGE ROLE
 BoardRoute.put(
   '/:id/member/change-role',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
   asyncHandler(BoardController.changeRole),
 );
 

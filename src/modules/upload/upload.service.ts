@@ -9,6 +9,7 @@ import cardRepository from '../card/card.repository';
 import { IAttachmentDto, IUploadService } from './interface';
 import { UploadResult } from './interface';
 import { User } from '../../database/entities/User';
+import { Card } from '../../database/entities/Card';
 class UploadService implements IUploadService {
   public async uploadAttachment(
     file: Express.Multer.File | undefined,
@@ -87,6 +88,57 @@ class UploadService implements IUploadService {
     }
   }
 
+  public async uploadCardcover(file: Express.Multer.File | undefined, cardId: string) {
+    if (!file) {
+      throw new BadRequestError('No file uploaded');
+    }
+    const { error } = attachmentValidation.validate({ size: file.size });
+    if (error) {
+      throw new BadRequestError(error.message);
+    }
+    try {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: 'taskify-cardcovers',
+        resource_type: 'auto',
+      });
+      try {
+        unlinkSync(file.path);
+      } catch (err) {
+        console.log('Error deleting file:', err);
+      }
+      const card = await cardRepository.findById(cardId);
+      if (!card) {
+        throw new NotFoundError('Card not found');
+      }
+      //delete old cover with url
+      if (card.cover) {
+        const oldCover = card.cover.split('/').pop();
+        await cloudinary.uploader.destroy(`taskify-cardcovers/${oldCover}`);
+      }
+      await connection.getRepository(Card).update(cardId, {
+        cover: result.secure_url,
+      });
+      return { url: result.secure_url };
+    } catch (error) {
+      console.log('Error uploading file:', error);
+      throw new BadRequestError('Upload failed');
+    }
+  }
+
+  public async removeCardCover(cardId: string): Promise<void> {
+    const card = await cardRepository.findById(cardId);
+    if (!card) {
+      throw new NotFoundError('Card not found');
+    }
+    if (card.cover) {
+      const cover = card.cover.split('/').pop();
+      await cloudinary.uploader.destroy(`taskify-cardcovers/${cover}`);
+      await connection.getRepository(Card).update(cardId, {
+        cover: null,
+      });
+    }
+  }
+
   public async linkAttachment(attachDto: IAttachmentDto): Promise<void> {
     const card = await cardRepository.findById(attachDto.cardId);
     if (!card) {
@@ -110,8 +162,9 @@ class UploadService implements IUploadService {
       await connection.getRepository(Attachment).delete(id);
     } else {
       try {
-        if (attachment.cloudinaryPublicId)
+        if (attachment.cloudinaryPublicId) {
           await cloudinary.uploader.destroy(attachment.cloudinaryPublicId);
+        }
         await connection.getRepository(Attachment).delete(id);
       } catch (error) {
         console.log('Error deleting attachment:', error);

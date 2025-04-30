@@ -15,7 +15,7 @@ class CardController {
   }
 
   public async getCardByList(req: Request, res: Response, _next: NextFunction) {
-    const listId = req.query.listId as string;
+    const listId = req.params.listId as string;
     new OK({
       message: 'Get Card Successfully',
       data: await CardService.getCardByList(listId),

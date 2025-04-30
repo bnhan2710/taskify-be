@@ -11,10 +11,10 @@ export async function seedRBAC(): Promise<void> {
   const roleRepo = connection.getRepository(Role);
   const permissionRepo = connection.getRepository(Permission);
 
-  const checkSeederExist = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });
-  if (checkSeederExist) {
-    return;
-  }
+  // const checkSeederExist = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });
+  // if (checkSeederExist) {
+  //   return;
+  // }
 
   const roles = [
     { name: RoleEnum.ADMIN },
@@ -23,63 +23,136 @@ export async function seedRBAC(): Promise<void> {
     { name: RoleEnum.MEMBER },
   ];
   const permissions = [
-    { name: PermissionEnum.CanViewBoard },
-    { name: PermissionEnum.CanEditBoard },
-    { name: PermissionEnum.CanViewCard },
-    { name: PermissionEnum.CanEditCard },
-    { name: PermissionEnum.CanManageBoardMember },
-    { name: PermissionEnum.CanManageUser },
-    { name: PermissionEnum.CanManageRole },
+    { name: PermissionEnum.CAN_VIEW_BOARD },
+    { name: PermissionEnum.CAN_UPDATE_BOARD },
+    { name: PermissionEnum.CAN_DELETE_BOARD },
+    { name: PermissionEnum.CAN_INVITE_MEMBER },
+    { name: PermissionEnum.CAN_REMOVE_MEMBER },
+    { name: PermissionEnum.CAN_CHANGE_ROLE },
+    { name: PermissionEnum.CAN_CREATE_LIST },
+    { name: PermissionEnum.CAN_UPDATE_LIST },
+    { name: PermissionEnum.CAN_DELETE_LIST },
+    { name: PermissionEnum.CAN_CREATE_CARD },
+    { name: PermissionEnum.CAN_VIEW_CARD },
+    { name: PermissionEnum.CAN_UPDATE_CARD },
+    { name: PermissionEnum.CAN_DELETE_CARD },
   ];
-  await roleRepo.save(roles);
+  // await roleRepo.save(roles);
   await permissionRepo.save(permissions);
   const adminRole = await roleRepo.findOne({ where: { name: RoleEnum.ADMIN } });
   const ownerRole = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });
   const memberRole = await roleRepo.findOne({ where: { name: RoleEnum.MEMBER } });
   const guestRole = await roleRepo.findOne({ where: { name: RoleEnum.GUEST } });
+
   const canViewBoard = await permissionRepo.findOne({
-    where: { name: PermissionEnum.CanViewBoard },
+    where: { name: PermissionEnum.CAN_VIEW_BOARD },
   });
-  const canEditBoard = await permissionRepo.findOne({
-    where: { name: PermissionEnum.CanEditBoard },
+  const canUpdateBoard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_UPDATE_BOARD },
   });
-  const canViewCard = await permissionRepo.findOne({ where: { name: PermissionEnum.CanViewCard } });
-  const canEditCard = await permissionRepo.findOne({ where: { name: PermissionEnum.CanEditCard } });
-  const manageBoardMember = await permissionRepo.findOne({
-    where: { name: PermissionEnum.CanManageBoardMember },
+  const canDeleteBoard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_DELETE_BOARD },
   });
-  const manageUser = await permissionRepo.findOne({
-    where: { name: PermissionEnum.CanManageUser },
+  const canInviteMember = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_INVITE_MEMBER },
   });
-  const manageRole = await permissionRepo.findOne({
-    where: { name: PermissionEnum.CanManageRole },
+  const canRemoveMember = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_REMOVE_MEMBER },
   });
+  const canChangeRole = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_CHANGE_ROLE },
+  });
+  const canCreateList = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_CREATE_LIST },
+  });
+  const canUpdateList = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_UPDATE_LIST },
+  });
+  const canDeleteList = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_DELETE_LIST },
+  });
+  const canCreateCard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_CREATE_CARD },
+  });
+  const canViewCard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_VIEW_CARD },
+  });
+  const canUpdateCard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_UPDATE_CARD },
+  });
+  const canDeleteCard = await permissionRepo.findOne({
+    where: { name: PermissionEnum.CAN_DELETE_CARD },
+  });
+
   if (
     !adminRole ||
     !ownerRole ||
     !memberRole ||
     !guestRole ||
     !canViewBoard ||
-    !canEditBoard ||
+    !canUpdateBoard ||
+    !canDeleteBoard ||
+    !canInviteMember ||
+    !canRemoveMember ||
+    !canChangeRole ||
+    !canCreateList ||
+    !canUpdateList ||
+    !canDeleteList ||
+    !canCreateCard ||
     !canViewCard ||
-    !canEditCard ||
-    !manageBoardMember ||
-    !manageUser ||
-    !manageRole
+    !canUpdateCard ||
+    !canDeleteCard
   ) {
     throw new Error('Role or Permission not found');
   }
+
+  // Admin has all permissions
   adminRole.permissions = [
     canViewBoard,
-    canEditBoard,
+    canUpdateBoard,
+    canDeleteBoard,
+    canInviteMember,
+    canRemoveMember,
+    canChangeRole,
+    canCreateList,
+    canUpdateList,
+    canDeleteList,
+    canCreateCard,
     canViewCard,
-    canEditCard,
-    manageUser,
-    manageRole,
+    canUpdateCard,
+    canDeleteCard,
   ];
-  ownerRole.permissions = [canViewBoard, canEditBoard, canViewCard, canEditCard, manageBoardMember];
-  memberRole.permissions = [canViewBoard, canViewCard, canEditCard];
-  guestRole.permissions = [canViewBoard];
+
+  // Owner has all board-related permissions
+  ownerRole.permissions = [
+    canViewBoard,
+    canUpdateBoard,
+    canDeleteBoard,
+    canInviteMember,
+    canRemoveMember,
+    canChangeRole,
+    canCreateList,
+    canUpdateList,
+    canDeleteList,
+    canCreateCard,
+    canViewCard,
+    canUpdateCard,
+    canDeleteCard,
+  ];
+
+  // Member has limited edit permissions
+  memberRole.permissions = [
+    canViewBoard,
+    canCreateList,
+    canUpdateList,
+    canCreateCard,
+    canViewCard,
+    canUpdateCard,
+  ];
+
+  // Guest can only view
+  guestRole.permissions = [canViewBoard, canViewCard];
+
   await roleRepo.save([adminRole, ownerRole, memberRole, guestRole]);
 }
 

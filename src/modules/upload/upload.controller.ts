@@ -23,6 +23,15 @@ class UploadtController {
     }).send(res);
   }
 
+  public async uploadCardCover(req: Request, res: Response, _next: NextFunction) {
+    const file = req.file;
+    const cardId = req.params.cardId;
+    const result = await uploadService.uploadCardcover(file, cardId);
+    new CREATED({
+      message: 'Upload successfully',
+      data: result,
+    }).send(res);
+  }
   public async linkAttachment(req: Request, res: Response, _next: NextFunction) {
     const attachDto = AttachmentDTO(req.body);
     await uploadService.linkAttachment(attachDto);
@@ -38,5 +47,14 @@ class UploadtController {
       message: 'Delete successfully',
     }).send(res);
   }
+
+  public async removeCardCover(req: Request, res: Response, _next: NextFunction) {
+    const { cardId } = req.params;
+    await uploadService.removeCardCover(cardId);
+    new OK({
+      message: 'Delete successfully',
+    }).send(res);
+  }
+
 }
 export default new UploadtController();

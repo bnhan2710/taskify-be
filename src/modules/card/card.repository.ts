@@ -14,7 +14,7 @@ class CardRepository implements ICardRepository {
   }
 
   public async insert(newCardDto: ICreateCard, list: List, user: User) {
-    let cardOrderIds = list.cardOrderIds || [];
+    const cardOrderIds = list.cardOrderIds || [];
     const newCard = this.repository.create({
       title: newCardDto.title,
       list,
@@ -23,13 +23,15 @@ class CardRepository implements ICardRepository {
     cardOrderIds.push(savedCard.id.toString());
     await connection.getRepository(ListEntity).update(list.id, { cardOrderIds });
     //update table card_member
-    savedCard.member;
     await this.repository.save(savedCard);
     return savedCard;
   }
 
   public async getCardByList(listId: string) {
-    return await this.repository.find({ where: { list: { id: listId } } });
+    return await this.repository.find({
+      where: { list: { id: listId } },
+      relations: ['attachments', 'comments', 'checklists', 'activityLogs'],
+    });
   }
 
   public async findById(cardId: string) {
@@ -39,7 +41,7 @@ class CardRepository implements ICardRepository {
   public async getDetail(cardId: string): Promise<ICardDetail | null> {
     const card = await this.repository.findOne({
       where: { id: cardId },
-      relations: ['attachments', 'comments', 'checklists', 'ativityLogs'],
+      relations: ['attachments', 'comments', 'checklists', 'activityLogs'],
     });
     if (!card) {
       return null;

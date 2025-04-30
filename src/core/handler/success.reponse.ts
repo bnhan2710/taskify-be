@@ -1,4 +1,4 @@
-import { ReasonPhrases, StatusCodes } from './httpStatusCode';
+import { ReasonPhrases, StatusCodes } from './http-status-code';
 
 abstract class SuccessResponse {
   constructor(
