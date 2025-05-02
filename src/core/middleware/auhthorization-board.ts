@@ -5,6 +5,7 @@ import { BoardUserRole } from '../../database/entities/BoardUserRole';
 import { AuthFailError, ForbiddenError } from '../handler/error.response';
 import cacheService from '../../shared/services/cache.service';
 import connection from '../configs/database.connect';
+import { Board } from '../../database/entities/Board';
 
 function extractBoardId(req: Request): string | undefined {
   // console.log('REQ BODY ', req.body);
@@ -13,6 +14,14 @@ function extractBoardId(req: Request): string | undefined {
   return req.body.boardId || req.params.id;
 }
 
+async function isBoardPublic(boardId: string): Promise<boolean> {
+  const boardRepo = connection.getRepository(Board);
+  const board = await boardRepo.findOne({
+    where: { id: boardId },
+    cache: true,
+  });
+  return board?.type === 'public' ? true : false;
+}
 async function getUserBoardPermissions(userId: string, boardId: string): Promise<string[]> {
   const cacheKey = `board:${boardId}:user:${userId}:permissions`;
 
@@ -52,7 +61,6 @@ function hasRequiredPermission(userPermissions: string[], requiredPermissions: s
 export function requireBoardPermissions(requiredPermissions: string[]) {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      console.log('Checking permissions...', req.userJwt);
       const userId = req.userJwt?.id;
       if (!userId) {
         return next(new ForbiddenError('Authentication required'));
@@ -63,6 +71,9 @@ export function requireBoardPermissions(requiredPermissions: string[]) {
         return next(new ForbiddenError('Board ID is required'));
       }
 
+      if (await isBoardPublic(boardId)) {
+        return next();
+      }
       const userRepo = connection.getRepository(User);
       const userExists = await userRepo.findOne({
         where: { id: userId },
@@ -79,7 +90,7 @@ export function requireBoardPermissions(requiredPermissions: string[]) {
         return next();
       }
 
-      return next(new ForbiddenError('Insufficient permissions'));
+      return next(new ForbiddenError('You do not have permsssion'));
     } catch (error) {
       next(error);
     }

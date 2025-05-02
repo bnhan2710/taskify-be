@@ -19,13 +19,13 @@ BoardRoute.get('/', authenticate, asyncHandler(BoardController.getMyBoard));
 
 BoardRoute.get('/public', authenticate, asyncHandler(BoardController.getPublicBoard));
 //GET BOARD BY ID
-BoardRoute.get('/:id', authenticate, asyncHandler(BoardController.getBoardById));
-// BoardRoute.get(
-//   '/:id',
-//   authenticate,
-//   requireBoardPermissions([PermissionEnum.CanViewBoard]),
-//   asyncHandler(BoardController.getBoardById),
-// );
+// BoardRoute.get('/:id', authenticate, asyncHandler(BoardController.getBoardById));
+BoardRoute.get(
+  '/:id',
+  authenticate,
+  requireBoardPermissions([PermissionEnum.CAN_VIEW_BOARD]),
+  asyncHandler(BoardController.getBoardById),
+);
 //UPDATE BOARD
 BoardRoute.put('/:id', asyncHandler(BoardController.updateBoard));
 // BoardRoute.put('/:id',
@@ -44,21 +44,21 @@ BoardRoute.delete(
 BoardRoute.post(
   '/:id/add',
   authenticate,
-  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.inviteMember),
 );
 //REMOVE MEMBER
 BoardRoute.delete(
-  '/:id/member/remove',
+  '/:id/member',
   authenticate,
-  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  requireBoardPermissions([PermissionEnum.CAN_REMOVE_MEMBER]),
   asyncHandler(BoardController.removeMember),
 );
 //CHACNGE ROLE
 BoardRoute.put(
   '/:id/member/change-role',
   authenticate,
-  // requireBoardPermissions([PermissionEnum.CanManageBoardMember]),
+  // requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.changeRole),
 );
 

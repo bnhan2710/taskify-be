@@ -3,7 +3,6 @@ import { ListEntity } from '../../database/entities/List';
 import connection from '../../core/configs/database.connect';
 import { IListRepository, List } from './interface';
 import { ICreateList, IUpdateList } from './dto';
-import { ListMapper } from './mapper/list.mapper';
 
 export class ListRepository implements IListRepository {
   private readonly repository: Repository<ListEntity>;
@@ -12,25 +11,24 @@ export class ListRepository implements IListRepository {
     this.repository = connection.getRepository(ListEntity);
   }
 
-  public async insert(createListDto: ICreateList): Promise<List> {
+  public async insert(createListDto: ICreateList): Promise<ListEntity> {
     const savedList = await this.repository.save({
       ...createListDto,
       board: { id: createListDto.boardId },
     });
-    return ListMapper.toList(savedList);
+    return savedList;
   }
 
-  public async findById(listId: string): Promise<List | null> {
+  public async findById(listId: string): Promise<ListEntity | null> {
     const list = await this.repository.findOne({ where: { id: listId } });
-    return list ? ListMapper.toList(list) : null;
+    return list;
   }
-
-  public async getByBoard(boardId: string): Promise<List[]> {
+  public async getByBoard(boardId: string): Promise<ListEntity[]> {
     const lists = await this.repository.find({
       where: { board: { id: boardId } },
       order: { createdAt: 'ASC' },
     });
-    return lists.map((list) => ListMapper.toList(list));
+    return lists;
   }
 
   public async update(updateListDto: IUpdateList, listId: string): Promise<void> {

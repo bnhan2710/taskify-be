@@ -8,7 +8,7 @@ import ListRoute from '../../modules/list/list.route';
 import CardRoute from '../../modules/card/card.route';
 import ChecklistRoute from '../../modules/checklist/checklist.route';
 import UploadRoute from '../../modules/upload/upload.route';
-import NotificationRouter from '../../modules/notification/sse.router';
+import NotificationRouter from '../../modules/notification/notification.router';
 import CommentRouter from '../../modules/comment/comment.route';
 const router: Router = Router();
 

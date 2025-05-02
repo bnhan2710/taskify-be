@@ -14,6 +14,11 @@ export interface IUpdateBoard {
   listOrderIds?: string[];
 }
 
+export interface IInviteMember {
+  email: string;
+  roleName: string;
+}
+
 export type ListBoard = {
   boards: Board[];
   totalBoards: number;
@@ -26,7 +31,7 @@ export interface IBoardService {
   getBoardById(boardId: string): Promise<any>;
   updateBoard(updateBoardDto: IUpdateBoard, boardId: string): Promise<void>;
   removeBoard(boardId: string): Promise<void>;
-  inviteMember(boardId: string, userEmail: string): Promise<any>;
+  inviteMember(boardId: string, inviteMemberDto: IInviteMember): Promise<any>;
 }
 
 export interface IBoardRepository {

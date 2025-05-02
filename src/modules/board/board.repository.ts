@@ -71,12 +71,13 @@ class BoardRepository implements IBoardRepository {
     });
     const userInfo = await connection
       .getRepository(BoardUserRole)
-      .find({ where: { boardId: boardId }, relations: ['user'] });
+      .find({ where: { boardId: boardId }, relations: ['user', 'role'] });
     const boardUsers: any[] = [];
     userInfo.forEach((user) => {
       //push user with username and avatar to boardUsers
       boardUsers.push({
         id: user.user.id,
+        role: user.role.name,
         username: user.user.username,
         avatar: user.user.avatar,
         email: user.user.email,

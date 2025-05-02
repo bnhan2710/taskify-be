@@ -1,6 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import { Notification } from '../../database/entities/Notification';
+import { NotificationEntity } from '../../database/entities/Notification';
 import connection from '../../core/configs/database.connect';
 import { sendNotification, sseHandler } from './sse.handler';
 
@@ -12,10 +12,10 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const notification = new Notification();
+    const notification = new NotificationEntity();
     notification.message = message;
 
-    await connection.getRepository(Notification).save(notification);
+    await connection.getRepository(NotificationEntity).save(notification);
     sendNotification(message);
     res.status(201).json({ message: 'Notification created successfully', notification });
   } catch (error) {

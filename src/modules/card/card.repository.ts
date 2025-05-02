@@ -13,7 +13,7 @@ class CardRepository implements ICardRepository {
     this.repository = connection.getRepository(Card);
   }
 
-  public async insert(newCardDto: ICreateCard, list: List, user: User) {
+  public async insert(newCardDto: ICreateCard, list: ListEntity) {
     const cardOrderIds = list.cardOrderIds || [];
     const newCard = this.repository.create({
       title: newCardDto.title,
@@ -42,6 +42,9 @@ class CardRepository implements ICardRepository {
     const card = await this.repository.findOne({
       where: { id: cardId },
       relations: ['attachments', 'comments', 'checklists', 'activityLogs'],
+      order: {
+        comments: { createdAt: 'DESC' },
+      },
     });
     if (!card) {
       return null;

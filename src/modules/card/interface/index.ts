@@ -2,7 +2,7 @@ import { Attachment } from '../../../database/entities/Attachment';
 import { Card } from '../../../database/entities/Card';
 import { Checklist } from '../../../database/entities/Checklist';
 import { User } from '../../../database/entities/User';
-import { List } from '../../../database/entities/List';
+import { ListEntity } from '../../../database/entities/List';
 // import { ActivityLog } from "../../../database/entities/Activity_Log";
 
 export interface ICreateCard {
@@ -51,7 +51,7 @@ export interface ICardService {
 }
 
 export interface ICardRepository {
-  insert(newCardDto: ICreateCard, list: List, user: User): Promise<Card>;
+  insert(newCardDto: ICreateCard, list: ListEntity, user: User): Promise<Card>;
   getCardByList(listId: string): Promise<Card[]>;
   findById(cardId: string): Promise<Card | null>;
   getDetail(cardId: string): Promise<ICardDetail | null>;

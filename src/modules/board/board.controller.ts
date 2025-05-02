@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { OK, CREATED } from '../../core/handler/success.reponse';
 import BoardService from './board.service';
-import { NewBoardDTO } from './dto';
-import { UpdateBoardDTO } from './dto/update-board.dto';
+import { NewBoardDTO, UpdateBoardDTO, InviteMemberDTO } from './dto';
 
 class BoardController {
   public async newBoard(req: Request, res: Response, _next: NextFunction) {
@@ -58,9 +57,9 @@ class BoardController {
   }
 
   public async inviteMember(req: Request, res: Response, _next: NextFunction) {
-    const userEmail = req.body.email;
+    const InviteMemberDto = InviteMemberDTO(req.body);
     const boardId = req.params.id;
-    await BoardService.inviteMember(boardId, userEmail);
+    await BoardService.inviteMember(boardId, InviteMemberDto);
     new OK({
       message: 'Invite Member Successfully',
     }).send(res);

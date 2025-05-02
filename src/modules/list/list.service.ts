@@ -1,13 +1,13 @@
 import { ListRepository } from './list.repository';
 import boardRepository from '../board/board.repository';
 import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
-import { List } from './interface';
+import { IListRepository, List } from './interface';
 import { IListService } from './interface';
 import { ICreateList, IUpdateList } from './dto';
 import connection from '../../core/configs/database.connect';
-
+import { ListMapper } from './mapper/list.mapper';
 class ListService implements IListService {
-  private listRepository: ListRepository;
+  private listRepository: IListRepository;
 
   constructor() {
     this.listRepository = new ListRepository();
@@ -25,10 +25,11 @@ class ListService implements IListService {
       }
       const listOrderIds = board.listOrderIds || [];
       const newList = await this.listRepository.insert(CreateListDto);
-      listOrderIds.push(newList.id.toString());
+      const list = ListMapper.toList(newList);
+      listOrderIds.push(list.id.toString());
       await boardRepository.update({ listOrderIds }, CreateListDto.boardId);
       await queryRunner.commitTransaction();
-      return newList;
+      return list;
     } catch (error: any) {
       await queryRunner.rollbackTransaction();
       if (error instanceof NotFoundError) {
@@ -45,7 +46,8 @@ class ListService implements IListService {
     if (!board) {
       throw new NotFoundError('Board not found');
     }
-    return await this.listRepository.getByBoard(boardId);
+    const lists = await this.listRepository.getByBoard(boardId);
+    return lists.map((list) => ListMapper.toList(list));
   }
 
   public async getListById(listId: string): Promise<List> {
@@ -53,7 +55,7 @@ class ListService implements IListService {
     if (!list) {
       throw new NotFoundError('List not found');
     }
-    return list;
+    return ListMapper.toList(list);
   }
 
   public async updateList(updateListDto: IUpdateList, listId: string): Promise<void> {

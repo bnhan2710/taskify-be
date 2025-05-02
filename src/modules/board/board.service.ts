@@ -1,12 +1,13 @@
-import { NotFoundError } from '../../core/handler/error.response';
+import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
 import boardRepository from './board.repository';
 import workspaceRepository from '../workspace/workspace.repository';
-import { IBoardService, ICreateBoard, IUpdateBoard, ListBoard } from './interface';
+import { IBoardService, ICreateBoard, IUpdateBoard, ListBoard, IInviteMember } from './interface';
 import { BoardUserRole } from '../../database/entities/BoardUserRole';
 import { Role } from '../../database/entities/Role';
 import { RoleEnum } from '../../shared/common/enums/role';
 import connection from '../../core/configs/database.connect';
 import cacheService from '../../shared/services/cache.service';
+import notificationService from '../notification/notification.service';
 class BoardService implements IBoardService {
   public async newBoard(newBoardDto: ICreateBoard, userId: string): Promise<string> {
     const workspace = await workspaceRepository.findbyId(newBoardDto.workspaceId);
@@ -57,24 +58,33 @@ class BoardService implements IBoardService {
     return board;
   }
 
-  public async inviteMember(boardId: string, userEmail: string) {
-    console.log(boardId);
+  public async inviteMember(boardId: string, inviteMemberDto: IInviteMember) {
     const board = await boardRepository.findById(boardId);
     if (!board) {
       throw new NotFoundError('Board not found');
     }
-    const role = await connection.getRepository(Role).findOne({ where: { name: RoleEnum.MEMBER } });
+    const role = await connection
+      .getRepository(Role)
+      .findOne({ where: { name: inviteMemberDto.roleName } });
     if (!role) {
       throw new NotFoundError('Role not found');
     }
-    const user = await connection.getRepository('User').findOne({ where: { email: userEmail } });
+    const user = await connection
+      .getRepository('User')
+      .findOne({ where: { email: inviteMemberDto.email } });
     if (!user) {
-      throw new NotFoundError(`Not found user with email ${userEmail}`);
+      throw new NotFoundError(`Not found user with email ${inviteMemberDto.email}`);
     }
-    await connection.getRepository(BoardUserRole).insert({
-      boardId,
+    const boardUserRole = await connection.getRepository(BoardUserRole).findOne({
+      where: { boardId, userId: user.id },
+    });
+    if (boardUserRole) {
+      throw new BadRequestError('User already in board');
+    }
+    notificationService.createNotification({
+      message: `You have been invited to join the board ${board.title}`,
       userId: user.id,
-      roleId: role.id,
+      boardId: boardId,
     });
   }
 

@@ -13,7 +13,6 @@ const multerStorage = multer.diskStorage({
 
 const multerUpload = multer({ storage: multerStorage });
 
-// Export different middleware functions for different file upload scenarios
 export const upload = {
   single: (fieldName: string) => multerUpload.single(fieldName),
   array: (fieldName: string, maxCount: number) => multerUpload.array(fieldName, maxCount),

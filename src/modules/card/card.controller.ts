@@ -1,4 +1,4 @@
-import CardService from './card.service';
+import cardService from './card.service';
 import { Request, Response, NextFunction } from 'express';
 import { NewCardDTO, UpdateCardDTO, AddMemberDTO } from './dto';
 import { OK, CREATED } from '../../core/handler/success.reponse';
@@ -7,7 +7,7 @@ class CardController {
   public async newCard(req: Request, res: Response, _next: NextFunction) {
     const newCardDto = NewCardDTO(req.body);
     const userId = req.userJwt.id;
-    const createdCard = await CardService.newCard(newCardDto, userId);
+    const createdCard = await cardService.newCard(newCardDto, userId);
     new CREATED({
       message: 'Create Card Successfully',
       data: createdCard,
@@ -18,7 +18,7 @@ class CardController {
     const listId = req.params.listId as string;
     new OK({
       message: 'Get Card Successfully',
-      data: await CardService.getCardByList(listId),
+      data: await cardService.getCardByList(listId),
     }).send(res);
   }
 
@@ -26,14 +26,14 @@ class CardController {
     const cardId = req.params.id;
     new OK({
       message: 'Get Card Successfully',
-      data: await CardService.getDetail(cardId),
+      data: await cardService.getDetail(cardId),
     }).send(res);
   }
 
   public async updateCard(req: Request, res: Response, _next: NextFunction) {
     const updateCardDto = UpdateCardDTO(req.body);
     const cardId = req.params.id;
-    await CardService.updateCard(cardId, updateCardDto);
+    await cardService.updateCard(cardId, updateCardDto);
     new OK({
       message: 'Update Card Successfully',
     }).send(res);
@@ -41,7 +41,7 @@ class CardController {
 
   public async removeCard(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
-    await CardService.removeCard(cardId);
+    await cardService.removeCard(cardId);
     new OK({
       message: 'Remove Card Successfully',
     }).send(res);
@@ -50,7 +50,7 @@ class CardController {
   public async addMember(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
     const addMemberDto = AddMemberDTO(req.body);
-    await CardService.addMember(cardId, addMemberDto);
+    await cardService.addMember(cardId, addMemberDto);
     new OK({
       message: 'Add Member Successfully',
     }).send(res);

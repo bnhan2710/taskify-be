@@ -20,7 +20,7 @@ class CardService implements ICardService {
     if (!user) {
       throw new NotFoundError('User not found');
     }
-    const newCard = await cardRepository.insert(newCardDto, list, user);
+    const newCard = await cardRepository.insert(newCardDto, list);
     return newCard;
   }
 

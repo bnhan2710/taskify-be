@@ -63,6 +63,20 @@ class RoleService {
       .update({ userId: userId, boardId: boardId }, { roleId: roleId });
   }
 
+  public async getUserRole(userId: string, boardId: string) {
+    const userRole = await connection
+      .getRepository(BoardUserRole)
+      .createQueryBuilder('board_user_role')
+      .leftJoinAndSelect('board_user_role.role', 'role')
+      .where('board_user_role.userId = :userId', { userId: userId })
+      .andWhere('board_user_role.boardId = :boardId', { boardId: boardId })
+      .getOne();
+    if (!userRole) {
+      throw new NotFoundError('User role not found');
+    }
+    return userRole;
+  }
+
   public async GetPermissionofRole(roleId: string): Promise<Permission[]> {
     const role = await connection
       .getRepository(Role)

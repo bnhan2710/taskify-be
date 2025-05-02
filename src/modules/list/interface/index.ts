@@ -1,5 +1,5 @@
 import { ICreateList, IUpdateList } from '../dto';
-
+import { ListEntity } from '../../../database/entities/List';
 export interface List {
   id: string;
   title: string;
@@ -18,9 +18,9 @@ export interface IListService {
 }
 
 export interface IListRepository {
-  insert(createListDto: ICreateList): Promise<List>;
-  findById(listId: string): Promise<List | null>;
-  getByBoard(boardId: string): Promise<List[]>;
+  insert(createListDto: ICreateList): Promise<ListEntity>;
+  findById(listId: string): Promise<ListEntity | null>;
+  getByBoard(boardId: string): Promise<ListEntity[]>;
   update(updateListDto: IUpdateList, listId: string): Promise<void>;
   remove(listId: string): Promise<void>;
 }

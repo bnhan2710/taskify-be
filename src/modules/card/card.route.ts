@@ -14,12 +14,12 @@ CardRoute.post(
   asyncHandler(CardController.newCard),
 );
 //GET CARD BY LIST
-// CardRoute.get('/',checkAuth ,asyncHandler(CardController.getCardByList))
+// CardRoute.get('/',authenticate ,asyncHandler(CardController.getCardByList))
 CardRoute.get('/list/:listId', asyncHandler(CardController.getCardByList));
 //GET DETAIL CARD
 CardRoute.get('/:id', authenticate, asyncHandler(CardController.getCardById));
 //UPDATE CARD
-// CardRoute.put('/:id',checkAuth,validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
+// CardRoute.put('/:id',authenticate,validate(updateCardValidation) ,asyncHandler(CardController.updateCard))
 CardRoute.put('/:id', validate(updateCardValidation), asyncHandler(CardController.updateCard));
 //REMOVE CARD
 CardRoute.delete('/:id', authenticate, asyncHandler(CardController.removeCard));
