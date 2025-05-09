@@ -24,5 +24,5 @@ CardRoute.put('/:id', validate(updateCardValidation), asyncHandler(CardControlle
 //REMOVE CARD
 CardRoute.delete('/:id', authenticate, asyncHandler(CardController.removeCard));
 //ADD MEMBER TO CARD
-CardRoute.post('/:id/member/add', authenticate, asyncHandler(CardController.addMember));
+CardRoute.post('/:id/member/', authenticate, asyncHandler(CardController.addMember));
 export default CardRoute;

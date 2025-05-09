@@ -1,5 +1,5 @@
 import cardRepository from './card.repository';
-import { IAddMember, ICardService, ICreateCard, IUpdateCard } from './interface';
+import { IMember, ICardService, ICreateCard, IUpdateCard } from './interface';
 import { Card } from '../../database/entities/Card';
 import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
 import { ListRepository } from '../list/list.repository';
@@ -56,12 +56,16 @@ class CardService implements ICardService {
     await cardRepository.remove(card);
   }
 
-  public async addMember(cardId: string, addMemberDto: IAddMember): Promise<void> {
+  public async Member(cardId: string, memberDto: IMember): Promise<void> {
     const card = await cardRepository.findById(cardId);
     if (!card) {
       throw new NotFoundError('Card not found');
     }
-    await cardRepository.addMember(cardId, addMemberDto);
+    if (memberDto.action === 'add') {
+      await cardRepository.addMember(cardId, memberDto.userId);
+    } else if (memberDto.action === 'remove') {
+      await cardRepository.removeMember(cardId, memberDto.userId);
+    }
   }
 }
 

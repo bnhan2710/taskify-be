@@ -3,10 +3,10 @@ import connection from '../../core/configs/database.connect';
 import { Card } from '../../database/entities/Card';
 import { ListEntity } from '../../database/entities/List';
 import { User } from '../../database/entities/User';
-import { IAddMember, ICardRepository, ICreateCard, IUpdateCard } from './interface';
+import { ICardRepository, ICreateCard, IUpdateCard } from './interface';
 import { Comment } from '../../database/entities/Comment';
-import { List } from '../list/interface';
 import { ICardDetail } from './interface/index';
+import { BadRequestError, NotFoundError } from '../../core/handler/error.response';
 class CardRepository implements ICardRepository {
   private readonly repository: Repository<Card>;
   constructor() {
@@ -89,12 +89,39 @@ class CardRepository implements ICardRepository {
     await this.repository.remove(card);
   }
 
-  public async addMember(cardId: string, addMemberDto: IAddMember) {
+  public async addMember(cardId: string, userId: string): Promise<void> {
+    const user = await connection.getRepository(User).findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
     const card = await this.repository.findOne({ where: { id: cardId }, relations: ['member'] });
-    const users = await connection.getRepository(User).findByIds(addMemberDto.userId);
-    card?.member?.push(...users);
-    await this.repository.update(cardId, { member: card?.member });
+    if (!card) {
+      throw new NotFoundError('Card not found');
+    }
+    if (card.member?.some((member) => member.id === user.id)) {
+      throw new BadRequestError('User already in card');
+    }
+    if (!card.member) {
+      card.member = [];
+    }
+    card.member.push(user);
+    await this.repository.save(card);
+  }
+
+  public async removeMember(cardId: string, userId: string): Promise<void> {
+    const user = await connection.getRepository(User).findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+    const card = await this.repository.findOne({ where: { id: cardId }, relations: ['member'] });
+    if (!card) {
+      throw new NotFoundError('Card not found');
+    }
+    if (!card.member?.some((member) => member.id === user.id)) {
+      throw new BadRequestError('User not in card');
+    }
+    card.member = card.member.filter((member) => member.id !== user.id);
+    await this.repository.save(card);
   }
 }
-
 export default new CardRepository();

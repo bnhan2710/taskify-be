@@ -50,7 +50,7 @@ class AuthService implements IAuthService {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      maxAge: parseInt(env.REFRESH_TOKEN_EXPIRE),
+      maxAge: parseInt(env.REFRESH_TOKEN_EXPIRE) * 1000,
     });
 
     const { password, ...userInfo } = user;

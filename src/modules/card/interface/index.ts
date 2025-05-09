@@ -17,8 +17,9 @@ export interface IUpdateCard {
   listId: string;
 }
 
-export interface IAddMember {
-  userId: string[];
+export interface IMember {
+  userId: string;
+  action: 'add' | 'remove';
 }
 
 type CommentType = {
@@ -47,7 +48,7 @@ export interface ICardService {
   getDetail(cardId: string): Promise<ICardDetail>;
   updateCard(cardId: string, newCardDto: IUpdateCard): Promise<void>;
   removeCard(cardId: string): Promise<void>;
-  addMember(cardId: string, addMemberDto: IAddMember): Promise<void>;
+  Member(cardId: string, addMemberDto: IMember): Promise<void>;
 }
 
 export interface ICardRepository {
@@ -57,5 +58,6 @@ export interface ICardRepository {
   getDetail(cardId: string): Promise<ICardDetail | null>;
   update(newCardDto: IUpdateCard, cardId: string): Promise<void>;
   remove(card: Card): Promise<void>;
-  addMember(cardId: string, addMemberDto: IAddMember): Promise<void>;
+  addMember(cardId: string, userId: string): Promise<void>;
+  removeMember(cardId: string, userId: string): Promise<void>;
 }

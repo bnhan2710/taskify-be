@@ -7,6 +7,7 @@ import { authenticate } from '../../core/middleware/authentication-middleware';
 import validate from '../../core/middleware/validate';
 import { requireBoardPermissions } from '../../core/middleware/auhthorization-board';
 import { PermissionEnum } from '../../shared/common/enums/permission';
+
 //CREATE BOARD
 BoardRoute.post(
   '/',
@@ -14,11 +15,15 @@ BoardRoute.post(
   validate(NewBoardValidation),
   asyncHandler(BoardController.newBoard),
 );
+
 //GET MY BOARD
 BoardRoute.get('/', authenticate, asyncHandler(BoardController.getMyBoard));
 
 //GET PUBLIC BOARD
 BoardRoute.get('/public', authenticate, asyncHandler(BoardController.getPublicBoard));
+
+//GET CLOSED BOARD
+BoardRoute.get('/closed', authenticate, asyncHandler(BoardController.getClosedBoard));
 
 //GET BOARD BY ID
 BoardRoute.get(
@@ -28,21 +33,15 @@ BoardRoute.get(
   asyncHandler(BoardController.getBoardById),
 );
 
-//GET CLOSED BOARD
-BoardRoute.get(
-  '/closed',
+//UPDATE BOARD
+BoardRoute.put(
+  '/:id',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
-  asyncHandler(BoardController.getClosedBoard),
+  requireBoardPermissions([PermissionEnum.CAN_UPDATE_BOARD]),
+  validate(updateBoardValidation),
+  asyncHandler(BoardController.updateBoard),
 );
 
-//UPDATE BOARD
-BoardRoute.put('/:id', asyncHandler(BoardController.updateBoard));
-// BoardRoute.put('/:id',
-//     authenticate,
-//     requireBoardPermissions([PermissionEnum.CanEditBoard]),
-//     validate(updateBoardValidation),
-//     asyncHandler(BoardController.updateBoard))
 //REMOVE BOARD
 BoardRoute.delete(
   '/:id',
@@ -50,6 +49,7 @@ BoardRoute.delete(
   requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
   asyncHandler(BoardController.removeBoard),
 );
+
 //INVITE MEMBER
 BoardRoute.post(
   '/:id/add',
@@ -57,6 +57,7 @@ BoardRoute.post(
   requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.inviteMember),
 );
+
 //REMOVE MEMBER
 BoardRoute.delete(
   '/:id/member',
@@ -64,11 +65,12 @@ BoardRoute.delete(
   requireBoardPermissions([PermissionEnum.CAN_REMOVE_MEMBER]),
   asyncHandler(BoardController.removeMember),
 );
-//CHACNGE ROLE
+
+//CHANGE ROLE
 BoardRoute.put(
   '/:id/member/change-role',
   authenticate,
-  // requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
+  requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.changeRole),
 );
 
