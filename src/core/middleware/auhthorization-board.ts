@@ -74,6 +74,7 @@ export function requireBoardPermissions(requiredPermissions: string[]) {
       if (await isBoardPublic(boardId)) {
         return next();
       }
+
       const userRepo = connection.getRepository(User);
       const userExists = await userRepo.findOne({
         where: { id: userId },

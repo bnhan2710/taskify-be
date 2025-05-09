@@ -9,33 +9,52 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASS}
       MYSQL_DATABASE: ${DB_NAME}
     ports:
-      - "3307:3306"
+      - '3307:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - taskify-network
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p${DB_PASS}']
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   redis:
     image: redis:6.2
     restart: always
     ports:
-      - "6378:6379"
+      - '6378:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - taskify-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  taskify-backend:
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    image: bnhan2710/taskify-backend:latest
+    restart: always
+    command: sh -c "yarn migration:run && yarn seed-rbac && yarn dev"
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
     networks:
       - taskify-network
 
-  taskify-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mysqldb
-      - redis
-    env_file: .env
-    networks:
-      - taskify-network
-    
 volumes:
   mysql_data:
+    driver: local
+  redis_data:
     driver: local
 networks:
   taskify-network:

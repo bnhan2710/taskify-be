@@ -4,7 +4,7 @@ import { Workspace } from '../../database/entities/Workspace';
 import connection from '../../core/configs/database.connect';
 import { IBoardRepository, ICreateBoard, IUpdateBoard, ListBoard } from './interface';
 import { BoardUserRole } from '../../database/entities/BoardUserRole';
-
+import { RoleEnum } from '../../shared/common/enums/role';
 class BoardRepository implements IBoardRepository {
   private readonly repository: Repository<Board>;
   constructor() {
@@ -37,9 +37,27 @@ class BoardRepository implements IBoardRepository {
           boardUserRoles: 'board.boardUserRoles',
         },
       },
-      where: [{ boardUserRoles: { userId: userId } }],
+      where: [{ boardUserRoles: { userId: userId }, isClosed: false }],
       skip: skip,
       take: limit,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+    return { boards, totalBoards: total };
+  }
+
+  public async getClosedBoard(userId: string): Promise<ListBoard> {
+    const [boards, total] = await this.repository.findAndCount({
+      join: {
+        alias: 'board',
+        innerJoin: {
+          boardUserRoles: 'board.boardUserRoles',
+        },
+      },
+      where: [
+        { boardUserRoles: { userId: userId, role: { name: RoleEnum.OWNER } }, isClosed: true },
+      ],
       order: {
         createdAt: 'DESC',
       },
@@ -54,6 +72,7 @@ class BoardRepository implements IBoardRepository {
     const [boards, total] = await this.repository.findAndCount({
       where: {
         type: 'public',
+        isClosed: false,
       },
       skip: skip,
       take: limit,
@@ -74,7 +93,6 @@ class BoardRepository implements IBoardRepository {
       .find({ where: { boardId: boardId }, relations: ['user', 'role'] });
     const boardUsers: any[] = [];
     userInfo.forEach((user) => {
-      //push user with username and avatar to boardUsers
       boardUsers.push({
         id: user.user.id,
         role: user.role.name,
@@ -99,6 +117,14 @@ class BoardRepository implements IBoardRepository {
 
   public async detele(board: Board) {
     await this.repository.remove(board);
+  }
+
+  public async closeBoard(boardId: string) {
+    await this.repository.update({ id: boardId }, { isClosed: true });
+  }
+
+  public async reopenBoard(boardId: string) {
+    await this.repository.update({ id: boardId }, { isClosed: false });
   }
 }
 

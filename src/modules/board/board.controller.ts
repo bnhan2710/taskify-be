@@ -40,19 +40,27 @@ class BoardController {
     }).send(res);
   }
 
-  public async removeBoard(req: Request, res: Response, _next: NextFunction) {
-    const boardId = req.params.id;
-    await BoardService.removeBoard(boardId);
-    new OK({
-      message: 'Remove Board Successfully',
-    }).send(res);
-  }
-
   public async getBoardById(req: Request, res: Response, _next: NextFunction) {
     const boardId = req.params.id;
     new OK({
       message: 'Get Board Successfully',
       data: await BoardService.getBoardById(boardId),
+    }).send(res);
+  }
+
+  public async getClosedBoard(req: Request, res: Response, _next: NextFunction) {
+    const userId = req.userJwt.id;
+    new OK({
+      message: 'Get Closed Board Successfully',
+      data: await BoardService.getClosedBoard(userId),
+    }).send(res);
+  }
+
+  public async removeBoard(req: Request, res: Response, _next: NextFunction) {
+    const boardId = req.params.id;
+    await BoardService.removeBoard(boardId);
+    new OK({
+      message: 'Remove Board Successfully',
     }).send(res);
   }
 
@@ -81,6 +89,22 @@ class BoardController {
     await BoardService.changeRole(boardId, userId, roleName);
     new OK({
       message: 'Change Role Successfully',
+    }).send(res);
+  }
+
+  public async closeBoard(req: Request, res: Response, _next: NextFunction) {
+    const boardId = req.params.id;
+    await BoardService.closeBoard(boardId);
+    new OK({
+      message: 'Close Board Successfully',
+    }).send(res);
+  }
+
+  public async reopenBoard(req: Request, res: Response, _next: NextFunction) {
+    const boardId = req.params.id;
+    await BoardService.reopenBoard(boardId);
+    new OK({
+      message: 'Reopen Board Successfully',
     }).send(res);
   }
 }

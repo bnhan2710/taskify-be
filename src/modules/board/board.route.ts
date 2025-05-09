@@ -17,15 +17,25 @@ BoardRoute.post(
 //GET MY BOARD
 BoardRoute.get('/', authenticate, asyncHandler(BoardController.getMyBoard));
 
+//GET PUBLIC BOARD
 BoardRoute.get('/public', authenticate, asyncHandler(BoardController.getPublicBoard));
+
 //GET BOARD BY ID
-// BoardRoute.get('/:id', authenticate, asyncHandler(BoardController.getBoardById));
 BoardRoute.get(
   '/:id',
   authenticate,
   requireBoardPermissions([PermissionEnum.CAN_VIEW_BOARD]),
   asyncHandler(BoardController.getBoardById),
 );
+
+//GET CLOSED BOARD
+BoardRoute.get(
+  '/closed',
+  authenticate,
+  requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
+  asyncHandler(BoardController.getClosedBoard),
+);
+
 //UPDATE BOARD
 BoardRoute.put('/:id', asyncHandler(BoardController.updateBoard));
 // BoardRoute.put('/:id',
@@ -37,7 +47,7 @@ BoardRoute.put('/:id', asyncHandler(BoardController.updateBoard));
 BoardRoute.delete(
   '/:id',
   authenticate,
-  // requireBoardPermissions([PermissionEnum.CanEditBoard]),
+  requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
   asyncHandler(BoardController.removeBoard),
 );
 //INVITE MEMBER
@@ -60,6 +70,22 @@ BoardRoute.put(
   authenticate,
   // requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.changeRole),
+);
+
+//CLOSE BOARD
+BoardRoute.put(
+  '/:id/close',
+  authenticate,
+  requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
+  asyncHandler(BoardController.closeBoard),
+);
+
+//REOPEN BOARD
+BoardRoute.put(
+  '/:id/reopen',
+  authenticate,
+  requireBoardPermissions([PermissionEnum.CAN_DELETE_BOARD]),
+  asyncHandler(BoardController.reopenBoard),
 );
 
 export default BoardRoute;

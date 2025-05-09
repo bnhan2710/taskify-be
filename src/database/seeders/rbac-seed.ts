@@ -11,10 +11,10 @@ export async function seedRBAC(): Promise<void> {
   const roleRepo = connection.getRepository(Role);
   const permissionRepo = connection.getRepository(Permission);
 
-  // const checkSeederExist = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });
-  // if (checkSeederExist) {
-  //   return;
-  // }
+  const checkSeederExist = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });
+  if (checkSeederExist) {
+    return;
+  }
 
   const roles = [
     { name: RoleEnum.ADMIN },
@@ -37,7 +37,7 @@ export async function seedRBAC(): Promise<void> {
     { name: PermissionEnum.CAN_UPDATE_CARD },
     { name: PermissionEnum.CAN_DELETE_CARD },
   ];
-  // await roleRepo.save(roles);
+  await roleRepo.save(roles);
   await permissionRepo.save(permissions);
   const adminRole = await roleRepo.findOne({ where: { name: RoleEnum.ADMIN } });
   const ownerRole = await roleRepo.findOne({ where: { name: RoleEnum.OWNER } });

@@ -16,6 +16,9 @@ export class Board extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
   type!: string;
 
+  @Column({ type: 'boolean', default: false })
+  isClosed!: boolean;
+
   @ManyToOne(() => Workspace, (workspace) => workspace.boards, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workspace_id' })
   workspace!: Workspace;

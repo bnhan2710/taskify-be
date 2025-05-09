@@ -9,7 +9,7 @@
     "migration:run": "npx ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:run -d ./src/core/configs/database.connect.ts",
     "migration:revert": "npx ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:revert -d ./src/core/configs/database.connect.ts",
     "seed-rbac": "npx ts-node -r dotenv/config ./src/database/seeders/rbac-seed.ts",
-    "start": "npm run build && cross-env BUILD_MODE=production node dist/app.js",
+    "start": "npm run build && cross-env BUILD_MODE=production node src/main.ts",
     "dev": "cross-env BUILD_MODE=development nodemon src/main.ts",
     "test": "jest",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
