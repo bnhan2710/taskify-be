@@ -4,7 +4,6 @@ import { ListEntity } from './List';
 import { ActivityLog } from './Activity_Log';
 import { Workspace } from './Workspace';
 import { BoardUserRole } from './BoardUserRole';
-
 @Entity('boards')
 export class Board extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
@@ -18,6 +17,9 @@ export class Board extends BaseEntity {
 
   @Column({ type: 'boolean', default: false })
   isClosed!: boolean;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  cover!: string | null;
 
   @ManyToOne(() => Workspace, (workspace) => workspace.boards, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'workspace_id' })

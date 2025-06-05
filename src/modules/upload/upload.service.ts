@@ -10,6 +10,7 @@ import { IAttachmentDto, IUploadService } from './interface';
 import { UploadResult } from './interface';
 import { User } from '../../database/entities/User';
 import { Card } from '../../database/entities/Card';
+import { Board } from '../../database/entities/Board';
 class UploadService implements IUploadService {
   public async uploadAttachment(
     file: Express.Multer.File | undefined,
@@ -139,6 +140,56 @@ class UploadService implements IUploadService {
     }
   }
 
+  public async uploadBoardCover(file: Express.Multer.File | undefined, boardId: string) {
+    if (!file) {
+      throw new BadRequestError('No file uploaded');
+    }
+    const { error } = attachmentValidation.validate({ size: file.size });
+    if (error) {
+      throw new BadRequestError(error.message);
+    }
+    try {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: 'taskify-board-covers',
+        resource_type: 'auto',
+      });
+      try {
+        unlinkSync(file.path);
+      } catch (err) {
+        console.log('Error deleting file:', err);
+      }
+      const board = await connection.getRepository(Board).findOne({ where: { id: boardId } });
+      if (!board) {
+        throw new NotFoundError('Board not found');
+      }
+      if (board.cover) {
+        const oldCover = board.cover.split('/').pop();
+        await cloudinary.uploader.destroy(`taskify-board-covers/${oldCover}`);
+      }
+      await connection.getRepository(Board).update(boardId, {
+        cover: result.secure_url,
+      });
+      return { url: result.secure_url };
+    } catch (error) {
+      console.log('Error uploading file:', error);
+      throw new BadRequestError('Upload failed');
+    }
+  }
+
+  public async removeBoardCover(boardId: string): Promise<void> {
+    const board = await connection.getRepository(Board).findOne({ where: { id: boardId } });
+    if (!board) {
+      throw new NotFoundError('Board not found');
+    }
+    if (board.cover) {
+      const cover = board.cover.split('/').pop();
+      await cloudinary.uploader.destroy(`taskify-board-covers/${cover}`);
+      await connection.getRepository(Board).update(boardId, {
+        cover: null,
+      });
+    }
+  }
+
   public async linkAttachment(attachDto: IAttachmentDto): Promise<void> {
     const card = await cardRepository.findById(attachDto.cardId);
     if (!card) {
@@ -167,7 +218,6 @@ class UploadService implements IUploadService {
         }
         await connection.getRepository(Attachment).delete(id);
       } catch (error) {
-        console.log('Error deleting attachment:', error);
         throw new BadRequestError('Delete failed');
       }
     }

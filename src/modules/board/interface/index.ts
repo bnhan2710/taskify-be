@@ -1,6 +1,5 @@
 import { Workspace } from '../../../database/entities/Workspace';
 import { Board } from '../../../database/entities/Board';
-
 export interface ICreateBoard {
   title: string;
   description?: string;
@@ -12,6 +11,7 @@ export interface IUpdateBoard {
   title?: string;
   description?: string;
   listOrderIds?: string[];
+  type?: string;
 }
 
 export interface IInviteMember {

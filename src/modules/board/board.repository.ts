@@ -111,6 +111,7 @@ class BoardRepository implements IBoardRepository {
         title: updateBoardDto.title,
         description: updateBoardDto.description,
         listOrderIds: updateBoardDto.listOrderIds,
+        type: updateBoardDto.type,
       },
     );
   }

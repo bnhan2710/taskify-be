@@ -32,6 +32,25 @@ class UploadtController {
       data: result,
     }).send(res);
   }
+
+  public async uploadBoardCover(req: Request, res: Response, _next: NextFunction) {
+    const file = req.file;
+    const boardId = req.params.boardId;
+    const result = await uploadService.uploadBoardCover(file, boardId);
+    new CREATED({
+      message: 'Upload successfully',
+      data: result,
+    }).send(res);
+  }
+
+  public async removeBoardCover(req: Request, res: Response, _next: NextFunction) {
+    const { boardId } = req.params;
+    await uploadService.removeBoardCover(boardId);
+    new OK({
+      message: 'Delete successfully',
+    }).send(res);
+  }
+
   public async linkAttachment(req: Request, res: Response, _next: NextFunction) {
     const attachDto = AttachmentDTO(req.body);
     await uploadService.linkAttachment(attachDto);
@@ -55,6 +74,5 @@ class UploadtController {
       message: 'Delete successfully',
     }).send(res);
   }
-
 }
 export default new UploadtController();

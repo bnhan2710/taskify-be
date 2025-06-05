@@ -5,6 +5,7 @@ import asyncHandler from '../../core/middleware/async-handler';
 import validate from '../../core/middleware/validate';
 import { attachmentLinkValidation } from './validator/attachments.validate';
 import { authenticate } from '../../core/middleware/authentication-middleware';
+import { requireBoardPermissions } from '../../core/middleware/auhthorization-board';
 const router = Router();
 
 // Route for uploading attachments
@@ -22,15 +23,33 @@ router.post(
   validate(attachmentLinkValidation),
   asyncHandler(uploadController.linkAttachment),
 );
+
 router.post(
   '/card-cover/:cardId',
   authenticate,
+  requireBoardPermissions(['CAN_UPDATE_CARD']),
   upload.single('cardCover'),
   asyncHandler(uploadController.uploadCardCover),
 );
+
 //remove card cover
 router.delete('/card-cover/:cardId', authenticate, asyncHandler(uploadController.removeCardCover));
-// Route for getting attachments by card ID
+
+router.post(
+  '/board-cover/:boardId',
+  authenticate,
+  requireBoardPermissions(['CAN_UPDATE_BOARD']),
+  upload.single('boardCover'),
+  asyncHandler(uploadController.uploadBoardCover),
+);
+
+router.delete(
+  '/board-cover/:boardId',
+  authenticate,
+  requireBoardPermissions(['CAN_UPDATE_BOARD']),
+  asyncHandler(uploadController.removeBoardCover),
+);
+
 router.delete('/delete/:id', asyncHandler(uploadController.removeAttachment));
 
 export default router;

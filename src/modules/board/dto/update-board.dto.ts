@@ -5,5 +5,6 @@ export function UpdateBoardDTO(body: any): IUpdateBoard {
     title: body.title,
     description: body.description,
     listOrderIds: body.listOrderIds,
+    type: body.type,
   };
 }
