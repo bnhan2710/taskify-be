@@ -11,7 +11,7 @@ function extractBoardId(req: Request): string | undefined {
   // console.log('REQ BODY ', req.body);
   // console.log('REQ PARAMS ', req.params);
   // console.log('REQ QUERY ', req.query);
-  return req.body.boardId || req.params.id;
+  return req.body.boardId || req.params.id || req.params.boardId;
 }
 
 async function isBoardPublic(boardId: string): Promise<boolean> {
@@ -22,6 +22,7 @@ async function isBoardPublic(boardId: string): Promise<boolean> {
   });
   return board?.type === 'public' ? true : false;
 }
+
 async function getUserBoardPermissions(userId: string, boardId: string): Promise<string[]> {
   const cacheKey = `board:${boardId}:user:${userId}:permissions`;
 

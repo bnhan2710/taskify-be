@@ -6,6 +6,7 @@ import validate from '../../core/middleware/validate';
 import { attachmentLinkValidation } from './validator/attachments.validate';
 import { authenticate } from '../../core/middleware/authentication-middleware';
 import { requireBoardPermissions } from '../../core/middleware/auhthorization-board';
+import { PermissionEnum } from '../../shared/common/enums/permission';
 const router = Router();
 
 // Route for uploading attachments
@@ -27,7 +28,7 @@ router.post(
 router.post(
   '/card-cover/:cardId',
   authenticate,
-  requireBoardPermissions(['CAN_UPDATE_CARD']),
+  requireBoardPermissions([PermissionEnum.CAN_UPDATE_CARD]),
   upload.single('cardCover'),
   asyncHandler(uploadController.uploadCardCover),
 );
@@ -38,7 +39,7 @@ router.delete('/card-cover/:cardId', authenticate, asyncHandler(uploadController
 router.post(
   '/board-cover/:boardId',
   authenticate,
-  requireBoardPermissions(['CAN_UPDATE_BOARD']),
+  requireBoardPermissions([PermissionEnum.CAN_UPDATE_BOARD]),
   upload.single('boardCover'),
   asyncHandler(uploadController.uploadBoardCover),
 );
@@ -46,7 +47,7 @@ router.post(
 router.delete(
   '/board-cover/:boardId',
   authenticate,
-  requireBoardPermissions(['CAN_UPDATE_BOARD']),
+  requireBoardPermissions([PermissionEnum.CAN_UPDATE_BOARD]),
   asyncHandler(uploadController.removeBoardCover),
 );
 

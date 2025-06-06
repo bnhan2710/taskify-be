@@ -11,6 +11,10 @@ export const NewBoardValidation = Joi.object({
     'string.base': 'Type must be a string',
     'any.required': 'Type is required',
   }),
+  cover: Joi.string().uri().messages({
+    'string.base': 'Cover must be a string',
+    'string.uri': 'Cover must be a valid URI',
+  }),
   workspaceId: Joi.string().required().messages({
     'string.base': 'WorkspaceId must be a string',
     'any.required': 'WorkspaceId is required',

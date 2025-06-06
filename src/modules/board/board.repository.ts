@@ -16,6 +16,7 @@ class BoardRepository implements IBoardRepository {
       title: newBoardDto.title,
       description: newBoardDto.description,
       type: newBoardDto.type,
+      cover: newBoardDto.cover,
       workspace: workspace,
     });
     await this.repository.save(newBoard);
@@ -69,7 +70,14 @@ class BoardRepository implements IBoardRepository {
     const page = parseInt(qs.page) || 1;
     const limit = parseInt(qs.limit) || 10;
     const skip = (page - 1) * limit;
-    const [boards, total] = await this.repository.findAndCount({
+    const total = await this.repository.count({
+      where: {
+        type: 'public',
+        isClosed: false,
+      },
+    });
+
+    const boards = await this.repository.find({
       where: {
         type: 'public',
         isClosed: false,

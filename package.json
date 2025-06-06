@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "migration:generate": "npx ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:generate src/database/migrations/migration -d src/core/configs/database.connect.ts",
-    "migration:run": "npx ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:run -d ./src/core/configs/database.connect.ts",
-    "migration:revert": "npx ts-node -r dotenv/config ./node_modules/typeorm/cli.js migration:revert -d ./src/core/configs/database.connect.ts",
-    "seed-rbac": "npx ts-node -r dotenv/config ./src/database/seeders/rbac-seed.ts",
-    "start": "npm run build && cross-env BUILD_MODE=production node src/main.ts",
+    "migration:generate": "npx ts-node ./node_modules/typeorm/cli.js migration:generate src/orm/migrations/migration -d src/configs/database.connect.ts",
+    "migration:run": "npx ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/configs/database.connect.ts",
+    "migration:revert": "npx ts-node ./node_modules/typeorm/cli.js migration:revert -d ./src/configs/database.connect.ts",
+    "seed-01": "npx ts-node ./src/orm/seeders/rbac-seed.ts",
+    "start": "npm run build && cross-env BUILD_MODE=production node dist/app.js",
     "dev": "cross-env BUILD_MODE=development nodemon src/main.ts",
     "test": "jest",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
@@ -50,9 +50,9 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
+      "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
-    "@types/bcrypt": "^5.0.2",
+  "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",

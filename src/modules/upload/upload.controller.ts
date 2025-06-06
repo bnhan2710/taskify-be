@@ -35,7 +35,8 @@ class UploadtController {
 
   public async uploadBoardCover(req: Request, res: Response, _next: NextFunction) {
     const file = req.file;
-    const boardId = req.params.boardId;
+    const { boardId } = req.params;
+    console.log(boardId);
     const result = await uploadService.uploadBoardCover(file, boardId);
     new CREATED({
       message: 'Upload successfully',

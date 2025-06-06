@@ -3,6 +3,7 @@ import { Board } from '../../../database/entities/Board';
 export interface ICreateBoard {
   title: string;
   description?: string;
+  cover?: string;
   workspaceId: string;
   type: string;
 }

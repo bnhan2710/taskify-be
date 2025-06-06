@@ -5,6 +5,7 @@ export function NewBoardDTO(body: any): ICreateBoard {
     title: body.title,
     description: body.description,
     workspaceId: body.workspaceId,
+    cover: body.cover,
     type: body.type,
   };
 }
