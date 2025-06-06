@@ -91,6 +91,50 @@ class BoardRepository implements IBoardRepository {
     return { boards, totalBoards: total };
   }
 
+  public async searchBoards(userId: string, qs: any): Promise<ListBoard> {
+    const page = parseInt(qs.page) || 1;
+    const limit = parseInt(qs.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = qs.q || '';
+
+    if (!query.trim()) {
+      return { boards: [], totalBoards: 0 };
+    }
+
+    const userBoards = await this.repository
+      .createQueryBuilder('board')
+      .innerJoin('board.boardUserRoles', 'boardUserRoles')
+      .where('boardUserRoles.userId = :userId', { userId })
+      .andWhere('board.isClosed = false')
+      .andWhere(
+        '(LOWER(board.title) LIKE LOWER(:query) OR LOWER(board.description) LIKE LOWER(:query))',
+      )
+      .setParameters({ query: `%${query}%` })
+      .orderBy('board.createdAt', 'DESC')
+      .getMany();
+
+    const publicBoards = await this.repository
+      .createQueryBuilder('board')
+      .where('board.type = :type', { type: 'public' })
+      .andWhere('board.isClosed = false')
+      .andWhere(
+        '(LOWER(board.title) LIKE LOWER(:query) OR LOWER(board.description) LIKE LOWER(:query))',
+      )
+      .setParameters({ query: `%${query}%` })
+      .orderBy('board.createdAt', 'DESC')
+      .getMany();
+
+    const allBoards = [...userBoards, ...publicBoards];
+    const uniqueBoards = allBoards.filter(
+      (board, index, self) => index === self.findIndex((b) => b.id === board.id),
+    );
+
+    const totalBoards = uniqueBoards.length;
+    const boards = uniqueBoards.slice(skip, skip + limit);
+
+    return { boards, totalBoards };
+  }
+
   public async getBoardDetail(boardId: string): Promise<any> {
     const board = await this.repository.findOne({
       where: { id: boardId },

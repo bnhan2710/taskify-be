@@ -41,6 +41,10 @@ class BoardService implements IBoardService {
     return await boardRepository.getPublicBoard(qs);
   }
 
+  public async searchBoards(userId: string, qs: any): Promise<ListBoard> {
+    return await boardRepository.searchBoards(userId, qs);
+  }
+
   public async getClosedBoard(userId: string): Promise<ListBoard> {
     return await boardRepository.getClosedBoard(userId);
   }

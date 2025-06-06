@@ -40,6 +40,15 @@ class BoardController {
     }).send(res);
   }
 
+  public async searchBoards(req: Request, res: Response, _next: NextFunction) {
+    const userId = req.userJwt.id;
+    const qs = req.query;
+    new OK({
+      message: 'Search Boards Successfully',
+      data: await BoardService.searchBoards(userId, qs),
+    }).send(res);
+  }
+
   public async getBoardById(req: Request, res: Response, _next: NextFunction) {
     const boardId = req.params.id;
     new OK({

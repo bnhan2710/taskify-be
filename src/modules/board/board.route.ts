@@ -19,6 +19,9 @@ BoardRoute.post(
 //GET MY BOARD
 BoardRoute.get('/', authenticate, asyncHandler(BoardController.getMyBoard));
 
+//SEARCH BOARDS
+BoardRoute.get('/search', authenticate, asyncHandler(BoardController.searchBoards));
+
 //GET PUBLIC BOARD
 BoardRoute.get('/public', authenticate, asyncHandler(BoardController.getPublicBoard));
 

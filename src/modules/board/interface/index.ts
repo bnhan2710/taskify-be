@@ -34,6 +34,7 @@ export interface IBoardService {
   newBoard(newBoardDto: ICreateBoard, userId: string): Promise<string>;
   getMyBoards(userId: string, qs: any): Promise<ListBoard>;
   getPublicBoard(qs: any): Promise<ListBoard>;
+  searchBoards(userId: string, qs: any): Promise<ListBoard>;
   getBoardById(boardId: string): Promise<BoardDetail>;
   getClosedBoard(userId: string): Promise<ListBoard>;
   updateBoard(updateBoardDto: IUpdateBoard, boardId: string): Promise<void>;
@@ -47,6 +48,7 @@ export interface IBoardRepository {
   insert(newBoardDto: ICreateBoard, workspace: Workspace): Promise<string>;
   getMyBoard(userId: string, qs: any): Promise<ListBoard>;
   getPublicBoard(qs: any): Promise<ListBoard>;
+  searchBoards(userId: string, qs: any): Promise<ListBoard>;
   getBoardDetail(boardId: string): Promise<Board | null>;
   getClosedBoard(userId: string, qs: any): Promise<ListBoard>;
   findById(boardId: string): Promise<Board | null>;
