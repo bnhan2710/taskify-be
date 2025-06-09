@@ -33,7 +33,8 @@ class CardController {
   public async updateCard(req: Request, res: Response, _next: NextFunction) {
     const updateCardDto = UpdateCardDTO(req.body);
     const cardId = req.params.id;
-    await cardService.updateCard(cardId, updateCardDto);
+    const userId = req.userJwt?.id;
+    await cardService.updateCard(cardId, updateCardDto, userId);
     new OK({
       message: 'Update Card Successfully',
     }).send(res);
@@ -41,7 +42,8 @@ class CardController {
 
   public async removeCard(req: Request, res: Response, _next: NextFunction) {
     const cardId = req.params.id;
-    await cardService.removeCard(cardId);
+    const userId = req.userJwt?.id;
+    await cardService.removeCard(cardId, userId);
     new OK({
       message: 'Remove Card Successfully',
     }).send(res);

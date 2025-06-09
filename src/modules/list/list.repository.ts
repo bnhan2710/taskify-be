@@ -20,7 +20,10 @@ export class ListRepository implements IListRepository {
   }
 
   public async findById(listId: string): Promise<ListEntity | null> {
-    const list = await this.repository.findOne({ where: { id: listId } });
+    const list = await this.repository.findOne({
+      where: { id: listId },
+      relations: ['board'],
+    });
     return list;
   }
   public async getByBoard(boardId: string): Promise<ListEntity[]> {

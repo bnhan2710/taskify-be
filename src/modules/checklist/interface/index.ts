@@ -11,11 +11,11 @@ export interface IUpdateChecklist {
 }
 
 export interface IChecklistService {
-  newChecklist(newChecklistDto: ICreateChecklist): Promise<void>;
+  newChecklist(newChecklistDto: ICreateChecklist, userId?: string): Promise<void>;
   getChecklistbyCard(cardId: string): Promise<Checklist[]>;
   getChecklistbyId(checklistId: string): Promise<Checklist>;
-  updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId: string): Promise<void>;
-  removeChecklist(checklistId: string): Promise<void>;
+  updateChecklist(updateChecklistDto: IUpdateChecklist, checklistId: string, userId?: string): Promise<void>;
+  removeChecklist(checklistId: string, userId?: string): Promise<void>;
 }
 
 export interface IChecklistRepository {

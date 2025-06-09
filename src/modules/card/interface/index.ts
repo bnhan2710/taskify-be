@@ -46,8 +46,8 @@ export interface ICardService {
   newCard(newCardDto: ICreateCard, userId: string): Promise<Card>;
   getCardByList(listId: string): Promise<Card[]>;
   getDetail(cardId: string): Promise<ICardDetail>;
-  updateCard(cardId: string, newCardDto: IUpdateCard): Promise<void>;
-  removeCard(cardId: string): Promise<void>;
+  updateCard(cardId: string, newCardDto: IUpdateCard, userId?: string): Promise<void>;
+  removeCard(cardId: string, userId?: string): Promise<void>;
   Member(cardId: string, addMemberDto: IMember): Promise<void>;
 }
 

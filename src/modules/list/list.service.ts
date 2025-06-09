@@ -6,6 +6,9 @@ import { IListService } from './interface';
 import { ICreateList, IUpdateList } from './dto';
 import connection from '../../core/configs/database.connect';
 import { ListMapper } from './mapper/list.mapper';
+import ActivitiesService from '../activity/activities.service';
+import { ActivityType } from '../../shared/common/enums/activity';
+
 class ListService implements IListService {
   private listRepository: IListRepository;
 
@@ -13,7 +16,7 @@ class ListService implements IListService {
     this.listRepository = new ListRepository();
   }
 
-  public async createList(CreateListDto: ICreateList): Promise<List> {
+  public async createList(CreateListDto: ICreateList, userId?: string): Promise<List> {
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -28,6 +31,18 @@ class ListService implements IListService {
       const list = ListMapper.toList(newList);
       listOrderIds.push(list.id.toString());
       await boardRepository.update({ listOrderIds }, CreateListDto.boardId);
+
+      // Log activity
+      if (userId) {
+        await ActivitiesService.logActivity({
+          type: ActivityType.LIST_CREATED,
+          userId,
+          boardId: CreateListDto.boardId,
+          listId: list.id,
+          metadata: { listTitle: list.title },
+        });
+      }
+
       await queryRunner.commitTransaction();
       return list;
     } catch (error: any) {
@@ -58,19 +73,50 @@ class ListService implements IListService {
     return ListMapper.toList(list);
   }
 
-  public async updateList(updateListDto: IUpdateList, listId: string): Promise<void> {
+  public async updateList(
+    updateListDto: IUpdateList,
+    listId: string,
+    userId?: string,
+  ): Promise<void> {
     const list = await this.listRepository.findById(listId);
     if (!list) {
       throw new NotFoundError('List not found');
     }
+
     await this.listRepository.update(updateListDto, listId);
+
+    // Log activity
+    if (userId) {
+      await ActivitiesService.logActivity({
+        type: ActivityType.LIST_UPDATED,
+        userId,
+        boardId: list.board.id,
+        listId: listId,
+        metadata: {
+          listTitle: updateListDto.title || list.title,
+          changes: updateListDto,
+        },
+      });
+    }
   }
 
-  public async removeList(listId: string): Promise<void> {
+  public async removeList(listId: string, userId?: string): Promise<void> {
     const list = await this.listRepository.findById(listId);
     if (!list) {
       throw new NotFoundError('List not found');
     }
+
+    // Log activity before removing
+    if (userId) {
+      await ActivitiesService.logActivity({
+        type: ActivityType.LIST_DELETED,
+        userId,
+        boardId: list.board.id,
+        listId: listId,
+        metadata: { listTitle: list.title },
+      });
+    }
+
     await this.listRepository.remove(listId);
   }
 }

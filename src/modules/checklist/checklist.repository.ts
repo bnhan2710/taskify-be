@@ -18,7 +18,10 @@ class ChecklistRepository implements IChecklistRepository {
   }
 
   public async getChecklistById(checklistid: string): Promise<Checklist | null> {
-    return await this.repository.findOne({ where: { id: checklistid } });
+    return await this.repository.findOne({
+      where: { id: checklistid },
+      relations: ['card', 'card.list', 'card.list.board'],
+    });
   }
 
   public async getCheckListByCard(cardId: string): Promise<Checklist[]> {

@@ -10,11 +10,11 @@ export interface List {
 }
 
 export interface IListService {
-  createList(CreateListDto: ICreateList): Promise<List>;
+  createList(CreateListDto: ICreateList, userId?: string): Promise<List>;
   getListsByBoard(boardId: string): Promise<List[]>;
   getListById(listId: string): Promise<List>;
-  updateList(updateListDto: IUpdateList, listId: string): Promise<void>;
-  removeList(listId: string): Promise<void>;
+  updateList(updateListDto: IUpdateList, listId: string, userId?: string): Promise<void>;
+  removeList(listId: string, userId?: string): Promise<void>;
 }
 
 export interface IListRepository {

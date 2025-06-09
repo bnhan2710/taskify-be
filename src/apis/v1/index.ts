@@ -10,6 +10,7 @@ import ChecklistRoute from '../../modules/checklist/checklist.route';
 import UploadRoute from '../../modules/upload/upload.route';
 import NotificationRouter from '../../modules/notification/notification.router';
 import CommentRouter from '../../modules/comment/comment.route';
+import ActivitiesRoute from '../../modules/activity/activities.route';
 const router: Router = Router();
 
 router.use('/users', UserRoute);
@@ -23,5 +24,6 @@ router.use('/checklists', ChecklistRoute);
 router.use('/upload', UploadRoute);
 router.use('/notifications', NotificationRouter);
 router.use('/comments', CommentRouter);
+router.use('/activities', ActivitiesRoute);
 
 export default router;

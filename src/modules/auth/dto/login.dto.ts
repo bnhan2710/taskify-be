@@ -6,3 +6,4 @@ export function LoginDTO(body: any): ICredentials {
     password: body.password,
   };
 }
+  

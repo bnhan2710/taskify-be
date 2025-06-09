@@ -5,6 +5,8 @@ import { BadRequestError, NotFoundError } from '../../core/handler/error.respons
 import { ListRepository } from '../list/list.repository';
 import userRepository from '../user/user.repository';
 import { ICardDetail } from './interface/index';
+import ActivitiesService from '../activity/activities.service';
+import { ActivityType } from '../../shared/common/enums/activity';
 
 class CardService implements ICardService {
   private listRepository: ListRepository;
@@ -20,8 +22,20 @@ class CardService implements ICardService {
     if (!user) {
       throw new NotFoundError('User not found');
     }
-    const newCard = await cardRepository.insert(newCardDto, list);
-    return newCard;
+    const card = await cardRepository.insert(newCardDto, list, user);
+    // Log activity
+    if (userId) {
+      await ActivitiesService.logActivity({
+        type: ActivityType.CARD_CREATED,
+        userId,
+        boardId: list.board.id,
+        listId: newCardDto.listId,
+        cardId: card.id,
+        metadata: { cardTitle: card.title },
+      });
+    }
+
+    return card;
   }
 
   public async getCardByList(listId: string): Promise<Card[]> {
@@ -29,7 +43,8 @@ class CardService implements ICardService {
     if (!list) {
       throw new NotFoundError('List not found');
     }
-    return await cardRepository.getCardByList(listId);
+    const cards = await cardRepository.getCardByList(listId);
+    return cards;
   }
 
   public async getDetail(cardId: string): Promise<ICardDetail> {
@@ -40,19 +55,47 @@ class CardService implements ICardService {
     return card;
   }
 
-  public async updateCard(cardId: string, newCardDto: IUpdateCard): Promise<void> {
+  public async updateCard(cardId: string, newCardDto: IUpdateCard, userId?: string): Promise<void> {
     const card = await cardRepository.findById(cardId);
     if (!card) {
       throw new NotFoundError('Card not found');
     }
     await cardRepository.update(newCardDto, cardId);
+
+    // Log activity
+    if (userId) {
+      await ActivitiesService.logActivity({
+        type: ActivityType.CARD_UPDATED,
+        userId,
+        boardId: card.list.board.id,
+        listId: newCardDto.listId,
+        cardId: cardId,
+        metadata: {
+          cardTitle: newCardDto.title || card.title,
+          changes: newCardDto,
+        },
+      });
+    }
   }
 
-  public async removeCard(cardId: string): Promise<void> {
+  public async removeCard(cardId: string, userId?: string): Promise<void> {
     const card = await cardRepository.findById(cardId);
     if (!card) {
       throw new NotFoundError('Card not found');
     }
+
+    // Log activity before removing
+    if (userId) {
+      await ActivitiesService.logActivity({
+        type: ActivityType.CARD_DELETED,
+        userId,
+        boardId: card.list.board.id,
+        listId: card.list.id,
+        cardId: cardId,
+        metadata: { cardTitle: card.title },
+      });
+    }
+
     await cardRepository.remove(card);
   }
 

@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 class ListController {
   public async CreateList(req: Request, res: Response, _next: NextFunction) {
     const CreateListDto = ListMapper.toCreateListDTO(req.body);
-    const created = await ListService.createList(CreateListDto);
+    const userId = req.userJwt?.id;
+    const created = await ListService.createList(CreateListDto, userId);
     new CREATED({
       message: 'Create List Successfully',
       data: created,
@@ -15,7 +16,8 @@ class ListController {
   public async updateList(req: Request, res: Response, _next: NextFunction) {
     const listId = req.params.id;
     const updateListDto = ListMapper.toUpdateListDTO(req.body);
-    await ListService.updateList(updateListDto, listId);
+    const userId = req.userJwt?.id;
+    await ListService.updateList(updateListDto, listId, userId);
     new OK({
       message: 'Update List Successfully',
     }).send(res);
@@ -23,7 +25,8 @@ class ListController {
 
   public async removeList(req: Request, res: Response, _next: NextFunction) {
     const listId = req.params.id;
-    await ListService.removeList(listId);
+    const userId = req.userJwt?.id;
+    await ListService.removeList(listId, userId);
     new OK({
       message: 'Remove List Successfully',
     }).send(res);

@@ -7,7 +7,8 @@ import checklistService from './checklist.service';
 class ChecklistController {
   public async newChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const CreateChecklistDto = CreateChecklistDTO(req.body);
-    await ChecklistService.newChecklist(CreateChecklistDto);
+    const userId = req.userJwt?.id;
+    await ChecklistService.newChecklist(CreateChecklistDto, userId);
     new CREATED({
       message: 'Create Checklist Successfully',
     }).send(res);
@@ -32,7 +33,8 @@ class ChecklistController {
   public async updateChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const checklistId = req.params.id;
     const updateChecklistDto = UpdateChecklistDTO(req.body);
-    await checklistService.updateChecklist(updateChecklistDto, checklistId);
+    const userId = req.userJwt?.id;
+    await checklistService.updateChecklist(updateChecklistDto, checklistId, userId);
     new OK({
       message: 'Update checklist successfully',
     }).send(res);
@@ -40,7 +42,8 @@ class ChecklistController {
 
   public async removeChecklist(req: Request, res: Response, _next: NextFunction): Promise<void> {
     const checklistId = req.params.id;
-    await checklistService.removeChecklist(checklistId);
+    const userId = req.userJwt?.id;
+    await checklistService.removeChecklist(checklistId, userId);
     new OK({
       message: 'Delete checklist successfully',
     }).send(res);
