@@ -108,9 +108,18 @@ class BoardService implements IBoardService {
     if (!board) {
       throw new NotFoundError('Board not found');
     }
+
+    const boardUserRole = await connection.getRepository(BoardUserRole).findOne({
+      where: { boardId, userId },
+    });
+
+    if (!boardUserRole) {
+      throw new NotFoundError('User not found in board');
+    }
     await connection.getRepository(BoardUserRole).delete({
-      boardId,
-      userId,
+      boardId: boardUserRole.boardId,
+      userId: boardUserRole.userId,
+      roleId: boardUserRole.roleId,
     });
   }
 
@@ -125,6 +134,33 @@ class BoardService implements IBoardService {
     }
     await cacheService.del(`board:${boardId}:user:${userId}`);
     await connection.getRepository(BoardUserRole).update({ boardId, userId }, { roleId: role.id });
+  }
+
+  public async quitBoard(boardId: string, userId: string) {
+    const board = await boardRepository.findById(boardId);
+    if (!board) {
+      throw new NotFoundError('Board not found');
+    }
+
+    const boardUserRole = await connection.getRepository(BoardUserRole).findOne({
+      where: { boardId, userId },
+      relations: ['role'],
+    });
+
+    if (!boardUserRole) {
+      throw new NotFoundError('User not found in board');
+    }
+
+    // Prevent owner from quitting the board
+    if (boardUserRole.role?.name === RoleEnum.OWNER) {
+      throw new BadRequestError('Board owner cannot quit the board');
+    }
+
+    await connection.getRepository(BoardUserRole).delete({
+      boardId: boardUserRole.boardId,
+      userId: boardUserRole.userId,
+      roleId: boardUserRole.roleId,
+    });
   }
 
   public async closeBoard(boardId: string): Promise<void> {

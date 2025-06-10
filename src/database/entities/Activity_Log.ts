@@ -32,11 +32,11 @@ export class ActivityLog {
   @JoinColumn({ name: 'board_id' })
   board?: Board;
 
-  @ManyToOne(() => ListEntity, (list) => list.activityLogs, { nullable: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => ListEntity, (list) => list.activityLogs, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'list_id' })
   list?: ListEntity;
 
-  @ManyToOne(() => Card, (card) => card.activityLogs, { nullable: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Card, (card) => card.activityLogs, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'card_id' })
   card?: Card;
 

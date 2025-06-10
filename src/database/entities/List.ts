@@ -18,7 +18,7 @@ export class ListEntity extends BaseEntity {
   @Column('simple-array', { nullable: true })
   cardOrderIds!: string[];
 
-  @OneToMany(() => ActivityLog, (activityLog) => activityLog.list, {
+  @OneToMany(() => ActivityLog, (activity_logs) => activity_logs.list, {
     cascade: true,
     onDelete: 'CASCADE',
   })

@@ -63,7 +63,7 @@ BoardRoute.post(
 
 //REMOVE MEMBER
 BoardRoute.delete(
-  '/:id/member',
+  '/:id/member/:userId',
   authenticate,
   requireBoardPermissions([PermissionEnum.CAN_REMOVE_MEMBER]),
   asyncHandler(BoardController.removeMember),
@@ -75,6 +75,14 @@ BoardRoute.put(
   authenticate,
   requireBoardPermissions([PermissionEnum.CAN_INVITE_MEMBER]),
   asyncHandler(BoardController.changeRole),
+);
+
+//QUIT BOARD (User leaves board themselves)
+BoardRoute.delete(
+  '/:id/quit',
+  authenticate,
+  requireBoardPermissions([PermissionEnum.CAN_VIEW_BOARD]),
+  asyncHandler(BoardController.quitBoard),
 );
 
 //CLOSE BOARD

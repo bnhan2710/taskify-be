@@ -83,7 +83,7 @@ class BoardController {
   }
 
   public async removeMember(req: Request, res: Response, _next: NextFunction) {
-    const userId = req.body.userId;
+    const userId = req.params.userId;
     const boardId = req.params.id;
     await BoardService.removeMember(boardId, userId);
     new OK({
@@ -98,6 +98,15 @@ class BoardController {
     await BoardService.changeRole(boardId, userId, roleName);
     new OK({
       message: 'Change Role Successfully',
+    }).send(res);
+  }
+
+  public async quitBoard(req: Request, res: Response, _next: NextFunction) {
+    const boardId = req.params.id;
+    const userId = req.userJwt.id;
+    await BoardService.quitBoard(boardId, userId);
+    new OK({
+      message: 'Quit Board Successfully',
     }).send(res);
   }
 
