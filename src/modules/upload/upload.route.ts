@@ -28,7 +28,6 @@ router.post(
 router.post(
   '/card-cover/:cardId',
   authenticate,
-  requireBoardPermissions([PermissionEnum.CAN_UPDATE_CARD]),
   upload.single('cardCover'),
   asyncHandler(uploadController.uploadCardCover),
 );
